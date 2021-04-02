@@ -1,0 +1,24 @@
+/* Add maven for code font (keep other xaringan defaults */
+@import url(https://fonts.googleapis.com/css?family=Helvetica);
+@import url(https://fonts.googleapis.com/css?family=Roboto);
+@import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+@import url(https://fonts.googleapis.com/css?family=Source+Code+Pro:400,700);
+
+body { font-family: 'Roboto', 'Palatino Linotype', 'Book Antiqua', Palatino, 'Microsoft YaHei', 'Songti SC', serif; }
+
+@font-face {
+  font-family: myHelvi;
+  src: url("../assets/Helvetica-Neue-Condensed-Black.ttf");
+}
+
+h1 {
+  font-family: myHelvi;
+}
+
+h2, h3 {
+  font-family: 'Roboto';
+  font-weight: normal;
+}
+
+.remark-code, .remark-inline-code { font-family: 'Inconsolata', monospace; }
+.remark-code-line-highlighted     { background-color: #ffff88; }
