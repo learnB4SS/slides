@@ -1,0 +1,61 @@
+---
+title: "Serious title font Helvetica"
+subtitle: "matter of fact subtitle / body font: Roboto"
+author: "B4SS boys"
+institute: "learnB4SS"
+date: "2016/12/12 (updated: `r Sys.Date()`)"
+output:
+  xaringan::moon_reader:
+    css: ["../assets/css/b4ss.css", "../assets/css/b4ss-fonts.css"]
+    lib_dir: libs
+    nature:
+      beforeInit: ["../assets/js/b4ss.js"]
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: 16:9
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+```
+
+```{r xaringan-extra-all-the-things, echo=FALSE}
+xaringanExtra::use_xaringan_extra(
+  c("tile_view", "panelset", "editable"
+    #"scribble", "search", "webcam"
+    )
+)
+xaringanExtra:::use_freezeframe()
+```
+
+# Slide title
+
+## H2 - Roboto Bold
+
+### H3 - Roboto regular
+
+body - Roboto
+
+[link color](https://learnB4SS.github.io)
+
+---
+class: inverse
+
+# Inverse color slide
+
+---
+class: middle
+
+<iframe src="https://seeing-theory.brown.edu/bayesian-inference/index.html" style="border:none;" width="100%" height="100%">
+
+---
+background-image: url(https://raw.githubusercontent.com/jvcasillas/media/master/rstats/gifs/bayes_theorem.gif)
+background-size: contain
+
+--
+background-image: url(https://raw.githubusercontent.com/jvcasillas/media/master/rstats/memes/bayesian_bayes_theorem_desc.png)
+background-size: contain
+
+
+
