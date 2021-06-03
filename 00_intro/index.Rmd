@@ -6,10 +6,10 @@ institute: "learnB4SS"
 date: "2016/12/12 (updated: `r Sys.Date()`)"
 output:
   xaringan::moon_reader:
-    css: ["../assets/css/b4ss.css", "../assets/css/b4ss-fonts.css"]
+    css: ["https://learnb4ss.github.io/b4ss-theme/css/b4ss.css", "https://learnb4ss.github.io/b4ss-theme/css/b4ss-fonts.css"]
     lib_dir: libs
     nature:
-      beforeInit: ["../assets/js/b4ss.js"]
+      beforeInit: ["https://learnb4ss.github.io/b4ss-theme/js/b4ss_xaringan.js"]
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: false
