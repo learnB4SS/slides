@@ -1,0 +1,15 @@
+---
+title: "learnB4SS workshop slides"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = F)
+```
+
+```{r, results='asis'}
+base <- "https://learnb4ss.github.io/slides/"
+dirs <- fs::dir_ls(path = ".", regexp = "[0-9]")
+end  <- "/index.html"
+glue::glue("- [{dirs}]({base}{dirs}{end})")
+```
