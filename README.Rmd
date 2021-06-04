@@ -8,8 +8,21 @@ knitr::opts_chunk$set(echo = F)
 ```
 
 ```{r, results='asis'}
+pretty_names <- c(
+  "Introduction", 
+  "Application to regression I - Demo", 
+  "Bayes theorem - How does it work?", 
+  "Application to regression II - The prior and Bayesian updating", 
+  "NHST vs. Bayesian inference", 
+  "Interim review", 
+  "Application to regression III - More Bayesian inference", 
+  "Application to regression IV - Leveling up", 
+  "More on priors", 
+  "Sampling from the posterior", 
+  "Wrap up"
+  )
 base <- "https://learnb4ss.github.io/slides/"
 dirs <- fs::dir_ls(path = ".", regexp = "[0-9]")
 end  <- "/index.html"
-glue::glue("- [{dirs}]({base}{dirs}{end})")
+glue::glue("- [{pretty_names}]({base}{dirs}{end})")
 ```
