@@ -1,0 +1,47 @@
+---
+title: "Bayesian Data <br>Analysis<br> for <br>Speech Sciences"
+subtitle: "NHST vs. Bayesian inference"
+author: "Timo Roettger, Stefano Coretta and Joseph Casillas"
+institute: "LabPhon workshop"
+date: "2021/07/12 (updated: `r Sys.Date()`)"
+output:
+  xaringan::moon_reader:
+    css: ["https://learnb4ss.github.io/b4ss-theme/css/b4ss.css", "https://learnb4ss.github.io/b4ss-theme/css/b4ss-fonts.css"]
+    lib_dir: libs
+    nature:
+      beforeInit: ["https://learnb4ss.github.io/b4ss-theme/js/b4ss_xaringan.js"]
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: 16:9
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+```
+
+# Slide title
+
+## H2 - Roboto Bold
+
+### H3 - Roboto regular
+
+body - Roboto
+
+[link color](https://learnB4SS.github.io)
+
+---
+class: inverse
+
+# Inverse color slide
+
+---
+background-image: url(https://raw.githubusercontent.com/jvcasillas/media/master/rstats/gifs/bayes_theorem.gif)
+background-size: contain
+
+--
+background-image: url(https://raw.githubusercontent.com/jvcasillas/media/master/rstats/memes/bayesian_bayes_theorem_desc.png)
+background-size: contain
+
+
+
