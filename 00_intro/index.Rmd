@@ -29,8 +29,6 @@ xaringanExtra::use_xaringan_extra(
 xaringanExtra:::use_freezeframe()
 ```
 
-exclude: true
-
 # Slide title
 
 ## H2 - Roboto Bold
@@ -43,23 +41,19 @@ body - Roboto
 
 ---
 class: inverse
-exclude: true
 
 # Inverse color slide
 
 ---
 class: middle
-exclude: true
 
 <iframe src="https://seeing-theory.brown.edu/bayesian-inference/index.html" style="border:none;" width="100%" height="100%">
 
 ---
 background-image: url(https://raw.githubusercontent.com/jvcasillas/media/master/rstats/gifs/bayes_theorem.gif)
 background-size: contain
-exclude: true
 
 --
-exclude: true
 background-image: url(https://raw.githubusercontent.com/jvcasillas/media/master/rstats/memes/bayesian_bayes_theorem_desc.png)
 background-size: contain
 
