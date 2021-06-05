@@ -18,30 +18,89 @@ output:
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
+library(tidyverse)
+theme_set(theme_minimal())
 ```
 
-# Slide title
+---
+class: middle
 
-## H2 - Roboto Bold
+.pull-left[
+![](img/06-rainy-umbrella-humid.svg)
+]
 
-### H3 - Roboto regular
-
-body - Roboto
-
-[link color](https://learnB4SS.github.io)
+.pull-right[
+![](img/01-sunny.svg)
+]
 
 ---
-class: inverse
 
-# Inverse color slide
+# Grubabilities
+
+.center[
+![:scale 90%](img/grubabilities.png)
+]
 
 ---
-background-image: url(https://raw.githubusercontent.com/jvcasillas/media/master/rstats/gifs/bayes_theorem.gif)
-background-size: contain
 
---
-background-image: url(https://raw.githubusercontent.com/jvcasillas/media/master/rstats/memes/bayesian_bayes_theorem_desc.png)
-background-size: contain
+# Discrete probability distributions
+
+.center[
+![:scale 60%](img/dice.png)
+]
+
+---
+
+# Discrete probability distributions
+
+[examples]
+
+---
+
+# Continuous probability distributions
+
+```{r cont-p, echo=FALSE, fig.width=7, fig.height=4, out.width="800px", fig.retina=2, fig.align="center"}
+x <- seq(0, 400)
+ggplot() +
+  aes(x = x, y = dnorm(x, 200, 50)) +
+  geom_line()
+```
+
+---
+
+# Continuous probability distributions
+
+[examples]
+
+---
+
+# Describing probabilities
+
+[embed seeing theory prob distr normal]
+
+---
+class: middle
+
+<span style="font-size:3.5em;">$$y_i \sim Normal(\mu, \sigma)$$</span>
+
+---
+class: middle
+
+<span style="font-size:3.5em;">$$\text{f0}_i \sim Normal(200, 50)$$</span>
+
+---
+class: center middle
+
+```{r norm, echo=FALSE}
+x <- seq(0, 400)
+ggplot() +
+  aes(x = x, y = dnorm(x, 200, 50)) +
+  geom_line()
+```
+
+---
+
+# Prior knowledge as probabilities
 
 
 
