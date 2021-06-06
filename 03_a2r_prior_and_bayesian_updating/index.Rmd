@@ -59,6 +59,10 @@ class: middle
 
 # Continuous probability distributions
 
+[minions]
+
+---
+
 ```{r cont-p, echo=FALSE, fig.width=7, fig.height=4, out.width="800px", fig.retina=2, fig.align="center"}
 x <- seq(0, 400)
 ggplot() +
@@ -100,7 +104,9 @@ ggplot() +
 
 ---
 
-# Prior knowledge as probabilities
+# Prior knowledge as probability distributions
 
 
 
+
+# Conditional probabilities
