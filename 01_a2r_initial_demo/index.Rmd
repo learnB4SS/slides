@@ -17,31 +17,103 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-options(htmltools.dir.version = FALSE)
+options(htmltools.dir.version=F)
+knitr::opts_chunk$set(fig.retina=2, cache=F, warning=F, message=F)
 ```
 
-# Slide title
+```{r xaringan-extra-all-the-things, echo=F, eval=F}
+xaringanExtra::use_xaringan_extra(
+  c("tile_view", "panelset", "editable"
+    #"scribble", "search", "webcam"
+    )
+)
+xaringanExtra:::use_freezeframe()
+```
 
-## H2 - Roboto Bold
+```{r, 'helpers', echo=F}
+source(here::here("assets", "helpers.R"))
+```
 
-### H3 - Roboto regular
+```{r, load_refs, echo=FALSE, cache=FALSE, warning=F, message=F}
+bib <- ReadBib(here("assets", "b4ss_refs.bib"), check = FALSE)
+ui <- "- "
+```
 
-body - Roboto
+class: middle, center
 
-[link color](https://learnB4SS.github.io)
+# Bayesian inference is all about the posterior
 
 ---
-class: inverse
+class: middle
 
-# Inverse color slide
-
----
-background-image: url(https://raw.githubusercontent.com/jvcasillas/media/master/rstats/gifs/bayes_theorem.gif)
-background-size: contain
+## .blue[Classical]: There is a single "true" line of best fit, and I'll give my best estimate of it.
 
 --
-background-image: url(https://raw.githubusercontent.com/jvcasillas/media/master/rstats/memes/bayesian_bayes_theorem_desc.png)
+
+## **Bayesian**: There is a distribution of lines of fit...some more plausible than others...and I'll give you samples from that distribution.
+
+---
+background-color: black
+background-image: url(https://raw.githubusercontent.com/jvcasillas/media/master/rstats/memes/bayesian_bey.png)
 background-size: contain
 
+---
 
+# Distributions of plausible outcomes
 
+.pull-left[
+
+- In Bayesian inference we attempt to approximate this (these) distribution(s)... we call it the **posterior distribution**
+
+- It represents a distribution of estimates that could arise from the data
+
+]
+
+.pull-right[
+<br>
+```{r, normal-dist, echo=F, fig.width=6, fig.height=4}
+ggplot(data.frame(x = c(10, 90)), aes(x = x)) +
+    stat_function(fun = dnorm, n = 100, args = list(mean = 50, sd = 10),
+      size = 1, color = "darkred") + 
+    labs(y = "Density", x = expression(beta)) + 
+    b4ss_bw(base_size = 18) 
+```
+
+]
+
+---
+class: title-slide-section-blue
+
+# This is a test
+
+---
+count: false
+class: title-slide-final
+background-image: url(https://raw.githubusercontent.com/learnB4SS/b4ss-theme/main/assets/Logo.png)
+background-size: 275px
+background-position: 50% 40%
+
+# .white[Thank you]
+
+<br><br><br><br><br><br><br><br><br><br><br><br>
+
+### https://learnB4SS.github.io
+
+|                                 |                         |
+| ------------------------------: | :---------------------- |
+| `r fa("twitter", fill = "red")` | .white[@TimoRoettger]   |
+| `r fa("twitter", fill = "red")` | .white[@StefanoCoretta] |
+| `r fa("twitter", fill = "red")` | .white[@jvcasill]       |
+
+---
+exclude: true
+
+`r AutoCite(bib, "mcelreath2018statistical")`
+
+---
+class: title-slide-section-grey
+# References
+
+```{r, 'refs', results='asis', echo=FALSE, eval=T, cache=FALSE}
+PrintBibliography(bib)
+```
