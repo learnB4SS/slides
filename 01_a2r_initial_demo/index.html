@@ -16,38 +16,90 @@ class: center, middle, inverse, title-slide
 ## Application to regression
 ### Timo Roettger, Stefano Coretta and Joseph Casillas
 ### LabPhon workshop
-### 2021/07/12 (updated: 2021-06-04)
+### 2021/07/12 (updated: 2021-06-05)
 
 ---
 
 
 
 
-# Slide title
 
-## H2 - Roboto Bold
 
-### H3 - Roboto regular
 
-body - Roboto
 
-[link color](https://learnB4SS.github.io)
 
----
-class: inverse
 
-# Inverse color slide
+class: middle, center
+
+# Bayesian inference is all about the posterior
 
 ---
-background-image: url(https://raw.githubusercontent.com/jvcasillas/media/master/rstats/gifs/bayes_theorem.gif)
-background-size: contain
+class: middle
+
+## .blue[Classical]: There is a single "true" line of best fit, and I'll give my best estimate of it.
 
 --
-background-image: url(https://raw.githubusercontent.com/jvcasillas/media/master/rstats/memes/bayesian_bayes_theorem_desc.png)
+
+## **Bayesian**: There is a distribution of lines of fit...some more plausible than others...and I'll give you samples from that distribution.
+
+---
+background-color: black
+background-image: url(https://raw.githubusercontent.com/jvcasillas/media/master/rstats/memes/bayesian_bey.png)
 background-size: contain
 
+---
 
+# Distributions of plausible outcomes
 
+.pull-left[
+
+- In Bayesian inference we attempt to approximate this (these) distribution(s)... we call it the **posterior distribution**
+
+- It represents a distribution of estimates that could arise from the data
+
+]
+
+.pull-right[
+&lt;br&gt;
+&lt;img src="index_files/figure-html/normal-dist-1.png" width="432" /&gt;
+
+]
+
+---
+class: title-slide-section-blue
+
+# This is a test
+
+---
+count: false
+class: title-slide-final
+background-image: url(https://raw.githubusercontent.com/learnB4SS/b4ss-theme/main/assets/Logo.png)
+background-size: 275px
+background-position: 50% 40%
+
+# .white[Thank you]
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+### https://learnB4SS.github.io
+
+|                                 |                         |
+| ------------------------------: | :---------------------- |
+| <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:red;overflow:visible;position:relative;"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg> | .white[@TimoRoettger]   |
+| <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:red;overflow:visible;position:relative;"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg> | .white[@StefanoCoretta] |
+| <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:red;overflow:visible;position:relative;"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg> | .white[@jvcasill]       |
+
+---
+exclude: true
+
+(McElreath, 2018)
+
+---
+class: title-slide-section-grey
+# References
+
+[1] R. McElreath. _Statistical rethinking: A Bayesian course with
+examples in R and Stan_. Chapman and Hall/CRC, 2018.
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
