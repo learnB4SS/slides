@@ -470,7 +470,8 @@ dark_density
 ---
 class: center, middle
 background-color: black
-
+background-image: url(./libs/dark_density_posterior.png)
+background-size: contain
 
 ```{r, echo=F, eval=F}
 rayshader::plot_gg(dark_density, width = 7, height = 5, multicore = TRUE, 
@@ -480,13 +481,7 @@ Sys.sleep(0.2)
 rayshader::render_snapshot(
   here("01_a2r_initial_demo", "libs", "dark_density_posterior.png"), 
   clear = TRUE, color = "black")
-
 ```
-
-```{r, inc-img, echo=F}
-knitr::include_graphics(here("01_a2r_initial_demo", "libs", "dark_density_posterior.png"))
-```
-
 
 ---
 background-color: black
