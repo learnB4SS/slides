@@ -5,6 +5,7 @@
     <meta charset="utf-8" />
     <meta name="author" content="Timo Roettger, Stefano Coretta and Joseph Casillas" />
     <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/hygge.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://learnb4ss.github.io/b4ss-theme/css/b4ss.css" type="text/css" />
     <link rel="stylesheet" href="https://learnb4ss.github.io/b4ss-theme/css/b4ss-fonts.css" type="text/css" />
   </head>
@@ -16,7 +17,7 @@ class: center, middle, inverse, title-slide
 ## Application to regression
 ### Timo Roettger, Stefano Coretta and Joseph Casillas
 ### LabPhon workshop
-### 2021/07/12 (updated: 2021-06-05)
+### 2021/07/12 (updated: 2021-06-11)
 
 ---
 
@@ -31,10 +32,18 @@ class: center, middle, inverse, title-slide
 
 class: middle, center
 
-# Bayesian inference is all about the posterior
+# Bayesian inference &lt;br&gt;is all about the posterior
+
+???
+
+As we just heard from Timo, in Bayesian data analysis we produce/approximate a posterior distribution that we can then summarize in different ways to answer questions and quantify uncertainty
+
+I am going to walk us through applying this idea to regression
 
 ---
 class: middle
+
+# .center[Applied to regression]
 
 ## .blue[Classical]: There is a single "true" line of best fit, and I'll give my best estimate of it.
 
@@ -42,33 +51,432 @@ class: middle
 
 ## **Bayesian**: There is a distribution of lines of fit...some more plausible than others...and I'll give you samples from that distribution.
 
+???
+
+As many of us already know, in standard linear regression in a frequentist framework, we typically estimate a line of best fit, either using OLS or maximum likelihood estimation
+
+Under a Bayesian framework, we derive a distribution of lines that are compatible with our data and our prior assumptions
+
+Some of these lines are more plausible than others, so we can use standard methods to summarize and quantify uncertainty about them
+
+---
+class: middle
+
+
+
+&lt;img src="index_files/figure-html/cars-f-vs-cars-b1-1.png" width="936" /&gt;
+
+???
+
+This scatter plot represents a traditional linear regression with a line of best fit +/- standard error
+
+---
+class: middle
+count: false
+
+&lt;img src="index_files/figure-html/cars-f-vs-cars-b2-1.png" width="936" /&gt;
+
+???
+
+If we plot this next to the most plausible line from a Bayesian regression we see essentially the same line
+
+---
+class: middle
+count: false
+
+&lt;img src="index_files/figure-html/cars-b-draws1-1.png" width="936" /&gt;
+
+???
+
+Here we plot the most plausible line along with 20 random draws of plausible lines
+
+---
+class: middle
+count: false
+
+&lt;img src="index_files/figure-html/cars-b-draws2-1.png" width="936" /&gt;
+
+???
+
+Here we plot the most plausible line along with 50 random draws of other plausible lines
+
+---
+class: middle
+count: false
+
+&lt;img src="index_files/figure-html/cars-b-draws3-1.png" width="936" /&gt;
+
+???
+
+Here we plot the most plausible line along with 200 random draws of other plausible lines
+
+---
+class: middle
+
+&lt;img src="index_files/figure-html/cars-f-vs-cars-b-2-1.png" width="936" /&gt;
+
+???
+
+Notice that we seem to converge on the same result, though we are not expressing our best guess of the "true" regression line, 
+
+Instead we express uncertainty about the relationship by plotting the posterior distribution of lines that are compatible with our assumptions and the data
+
+The orange line merely represents the line the appears more often in the posterior, thus we assume it is the most plausible outcome
+
+We will build out first model in just a second, but first let's get to know the data set we will be using
+
+---
+
+# Get to know the data set
+
+
+```r
+dim(learnB4SS::dataset)
+```
+
+```
+## [1] 224  27
+```
+
+???
+
+The data set we will be using in this workshop is from Winter XXXX
+
+This study examined the effect of politeness on the realization of pitch
+
+We can see that the data set has 27 columns (or variables) and 224 observations
+
+---
+
+
+```
+## Rows: 224
+## Columns: 27
+## $ subject           &lt;chr&gt; "F1", "F1", "F1", "F1", "F1", "F1", "F1", "F1", "F1"…
+## $ gender            &lt;chr&gt; "F", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F…
+## $ birthplace        &lt;chr&gt; "seoul_area", "seoul_area", "seoul_area", "seoul_are…
+## $ musicstudent      &lt;chr&gt; "yes", "yes", "yes", "yes", "yes", "yes", "yes", "ye…
+## $ months_ger        &lt;dbl&gt; 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, …
+## $ scenario          &lt;dbl&gt; 6, 6, 7, 7, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7…
+## $ task              &lt;chr&gt; "not", "not", "not", "not", "dct", "dct", "dct", "dc…
+## $ attitude          &lt;chr&gt; "inf", "pol", "inf", "pol", "pol", "inf", "pol", "in…
+## $ total_duration    &lt;dbl&gt; 55.159, 28.508, 60.309, 40.825, 18.392, 13.551, 5.21…
+## $ articulation_rate &lt;dbl&gt; 3.380492, 12.159277, 6.188191, 6.025763, 5.614616, 5…
+## $ f0mn              &lt;dbl&gt; 229.3, 181.1, 219.8, 175.8, 214.6, 210.9, 284.7, 265…
+## $ f0sd              &lt;dbl&gt; 4.18, 3.78, 4.18, 4.59, 4.28, 3.43, 2.09, 4.93, 3.22…
+## $ f0range           &lt;dbl&gt; 10.6, 9.0, 10.4, 13.1, 10.3, 10.5, 7.1, 18.3, 6.7, 1…
+## $ inmn              &lt;dbl&gt; 64.6, 63.2, 61.8, 61.7, 62.0, 61.5, 65.7, 64.9, 61.3…
+## $ insd              &lt;dbl&gt; 7.94, 7.75, 8.89, 8.51, 8.29, 8.95, 5.81, 8.52, 8.43…
+## $ inrange           &lt;dbl&gt; 25.3, 24.3, 28.4, 26.1, 25.4, 28.0, 19.1, 27.6, 26.4…
+## $ shimmer           &lt;dbl&gt; 0.08207, 0.08074, 0.08645, 0.08713, 0.06942, 0.08247…
+## $ jitter            &lt;dbl&gt; 0.01138, 0.01161, 0.01282, 0.01320, 0.01069, 0.01112…
+## $ HNRmn             &lt;dbl&gt; 18.1, 17.8, 17.0, 17.1, 18.5, 18.8, 20.9, 14.6, 20.6…
+## $ H1H2              &lt;dbl&gt; 5.7893421, 6.3669091, 6.2444737, 5.0164835, 5.442307…
+## $ breath_count      &lt;dbl&gt; 11, 3, 6, 7, 3, 3, 1, 0, 1, 0, 0, 1, 1, 0, 9, 7, 11,…
+## $ filler_count      &lt;dbl&gt; 4, 2, 2, 4, 2, 2, 2, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0…
+## $ hiss_count        &lt;dbl&gt; 0, 1, 2, 0, 2, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0…
+## $ nasal_count       &lt;dbl&gt; 0, 3, 0, 0, 4, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+## $ sil_count         &lt;dbl&gt; 8, 3, 20, 7, 0, 2, 0, 1, 2, 2, 1, 0, 0, 0, 1, 1, 6, …
+## $ ya_count          &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0…
+## $ yey_count         &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+```
+
+???
+
+We certainly won't be using all of the 27 variables, but we can see that Winter XXXX measured many things, such as F0 min, F0 sd, and F0 range, to name just a few
+
+We are going to begin by exploring the variable articulation_rate
+
+---
+class: middle
+
+&lt;img src="index_files/figure-html/ar-hist-1.png" width="1008" /&gt;
+
+???
+
+We can use a histogram to get an idea of the distribution of the variable
+
+---
+
+# Get to know the data set
+
+&lt;img src="index_files/figure-html/ar-hist-rep-1.png" width="504" style="float:right" /&gt;
+
+.pull-left[
+
+Let's explore the `articulation_rate` variable
+
+- N = 224
+
+- The range is 3.38, 12.16. 
+
+- The .blue[mean] is 6.68. 
+
+- The .RUred[SD] is 1.16.
+
+- The 95% quantiles are 4.86, 9.11 
+
+]
+
+--
+
+.pull-left[
+
+We'll fit an intercept only model:
+
+$$
+articulation\ rate \sim Normal(\mu, \sigma) \\
+$$
+
+.center[
+```lm(articulation_rate ~ 1)```
+]
+
+]
+
+???
+
+We can use standard methods to describe the distribution of values for articulation_rate
+
+For we example, we have 224 observations, which range from 3.38 to 12.16
+
+The average articulation rate is 6.68 (SD = 1.16)
+
+Now we will use this distribution in a simple linear model, the simplest model we can fit is an intercept only model 
+
+An int-only model is essentially a flat line (slope of 0), the intercept will be the mean of the distribution
+
+We will fit frequentist and bayesian versions of this model and compare
+
+---
+
+# Frequentist model
+
+We'll fit an intercept only model. The mean `articulation_rate` is 6.68 ±1.16 SD. 
+
+--
+
+
+```r
+lm(articulation_rate ~ 1, data = polite) %&gt;% summary()
+```
+
+```
+## 
+## Call:
+## lm(formula = articulation_rate ~ 1, data = polite)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -3.2996 -0.8456 -0.1150  0.6270  5.4791 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  6.68013    0.07783   85.83   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 1.165 on 223 degrees of freedom
+```
+
+???
+
+The frequentist version is easily fit with the `lm` function. 
+
+We specify the criterion on the left side of the `~` and put a 1 on the right side to specify an intercept only model
+
+If we look at the summary of the model we see the estimate for the intercept is essentially the same as the mean of the articulation rate distribution
+
+---
+
+# Bayesian model
+
+We'll fit an intercept only model. The mean `articulation_rate` is 6.68 ±1.16 SD. 
+
+--
+
+
+```r
+brm(articulation_rate ~ 1, data = polite) %&gt;% summary
+```
+
+
+```
+##  Family: gaussian 
+##   Links: mu = identity; sigma = identity 
+## Formula: articulation_rate ~ 1 
+##    Data: polite (Number of observations: 224) 
+## Samples: 4 chains, each with iter = 2000; warmup = 1000; thin = 1;
+##          total post-warmup samples = 4000
+## 
+## Population-Level Effects: 
+##           Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## Intercept     6.68      0.08     6.52     6.83 1.00     2761     2458
+## 
+## Family Specific Parameters: 
+##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## sigma     1.17      0.06     1.07     1.29 1.00     3667     2689
+## 
+## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
+## and Tail_ESS are effective sample size measures, and Rhat is the potential
+## scale reduction factor on split chains (at convergence, Rhat = 1).
+```
+
+???
+
+We can fit the Bayesian version of this model using the brm function from the package `brms` (note the syntax is identical)
+
+There are some under-the-hood defaults that I am completely ignoring for now (priors and likelihood). 
+We will dedicate time to these as we move along.
+
+Notice that one key difference is that this model estimated 2 parameters: the intercept and sigma (the mean and SD of the articulation rate distribution)
+
+Also notice that the estimate are also essentially the same as the mean and SD we calculated before
+
+---
+class: title-slide-section-blue, middle, center
+
+# So what's the difference?
+
+???
+
+At this point you might be saying to yourself "So what? The models are the same?" and you would have a good point. 
+
+The information we have looked at in the summaries is essentially the same. 
+
+The main difference, and the key take away from this section, is that the bayesian model provides a posterior distribution of values for the parameters it estimates, the intercept and sigma. 
+
+Let's see what we can do with a posterior distribution
+
+---
+
+# Exploring the posterior
+
+.pull-left[
+
+```r
+arp &lt;- as_tibble(ar_bayes_int)
+```
+
+
+```
+## # A tibble: 15 x 2
+##    b_Intercept sigma
+##          &lt;dbl&gt; &lt;dbl&gt;
+##  1        6.66  1.13
+##  2        6.73  1.21
+##  3        6.65  1.17
+##  4        6.75  1.17
+##  5        6.81  1.14
+##  6        6.76  1.13
+##  7        6.51  1.26
+##  8        6.69  1.10
+##  9        6.80  1.24
+## 10        6.79  1.22
+## 11        6.66  1.05
+## 12        6.77  1.33
+## 13        6.59  1.10
+## 14        6.73  1.14
+## 15        6.74  1.20
+```
+
+]
+
+???
+
+I can turn the model object into a dataframe/tibble of the posterior using the as_tibble function (or posterior_samples)
+
+Because of the default values in brms I have 4000 samples. 
+Here I print the first 15
+
+--
+
+.pull-right[
+
+- This posterior distribution has 4000 draws of mean and SD values that are compatible with our data
+
+- The posterior is just like any other distribution of data
+
+- We can analyze/summarize it however we want
+
+
+```r
+mean(arp$b_Intercept)
+```
+
+```
+## [1] 6.679407
+```
+
+```r
+quantile(arp$b_Intercept, probs = c(0.025, 0.975))
+```
+
+```
+##     2.5%    97.5% 
+## 6.522054 6.832783
+```
+
+]
+
+???
+
+We can now use all of the mathematical tricks we have up our sleeve to describe the posterior distribution in any way we find meaningful. 
+
+Here I calculate the mean value for the intercept samples as well as a 95% credible interval, but I can describe the posterior in any way I want
+
+This is how we can quantify our uncertainty about the estimates the model generates
+
+---
+class: center, middle
+
+&lt;img src="index_files/figure-html/ar-post-param-plot-1.png" width="864" /&gt;
+
+???
+
+Here we describe the posterior distributions of the two model parameters in a single plot
+
+This is a handy way to summarize a model
+
+A key takeaway is that the peak of the distributions represents the value that is the most common
+
+---
+class: center, middle
+
+&lt;img src="index_files/figure-html/ar-post-paramspace-plot-1.png" width="864" /&gt;
+
+???
+
+Here is a scatter plot of the entire posterior distribution (4000 samples)
+
+This is a handy way to visualize the posterior parameter space (we will come back to this) because (1) it emphasizes the fact that we are looking at a 2D space, a joint probability distribution, and (2) there are many estimates for b_Intercept and sigma that are essentially the same. 
+
+When we have a lot of estimates that appear often in the posterior it implies that these values are more plausible
+
+I've highlighted the *most* plausible combination of the intercept and sigma, the medians (i.e., the values that are repeated the most), with the orange point. 
+
+We can think of the joint distribution as a mountain and the orange point represents the highest point
+
+---
+class: center, middle
+background-color: black
+
+&lt;img src="index_files/figure-html/ar-post-density-plot-1.png" width="864" /&gt;
+
+---
+class: center, middle
+background-color: black
+
+
+
+
+&lt;img src="/Users/casillas/code/r/bayes/learnB4SS_org/slides/01_a2r_initial_demo/libs/dark_density_posterior.png" width="806" /&gt;
+
+
 ---
 background-color: black
 background-image: url(https://raw.githubusercontent.com/jvcasillas/media/master/rstats/memes/bayesian_bey.png)
 background-size: contain
-
----
-
-# Distributions of plausible outcomes
-
-.pull-left[
-
-- In Bayesian inference we attempt to approximate this (these) distribution(s)... we call it the **posterior distribution**
-
-- It represents a distribution of estimates that could arise from the data
-
-]
-
-.pull-right[
-&lt;br&gt;
-&lt;img src="index_files/figure-html/normal-dist-1.png" width="432" /&gt;
-
-]
-
----
-class: title-slide-section-blue
-
-# This is a test
 
 ---
 count: false
