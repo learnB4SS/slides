@@ -6,7 +6,7 @@ institute: "LabPhon workshop"
 date: "2021/07/12 (updated: `r Sys.Date()`)"
 output:
   xaringan::moon_reader:
-    css: ["https://learnb4ss.github.io/b4ss-theme/css/b4ss.css", "https://learnb4ss.github.io/b4ss-theme/css/b4ss-fonts.css"]
+    css: ["hygge", "https://learnb4ss.github.io/b4ss-theme/css/b4ss.css", "https://learnb4ss.github.io/b4ss-theme/css/b4ss-fonts.css"]
     lib_dir: libs
     nature:
       beforeInit: ["https://learnb4ss.github.io/b4ss-theme/js/b4ss_xaringan.js"]
@@ -19,6 +19,7 @@ output:
 ```{r setup, include=FALSE}
 options(htmltools.dir.version=F)
 knitr::opts_chunk$set(fig.retina=2, cache=F, warning=F, message=F)
+polite <- learnB4SS::dataset
 ```
 
 ```{r xaringan-extra-all-the-things, echo=F, eval=F}
@@ -41,10 +42,18 @@ ui <- "- "
 
 class: middle, center
 
-# Bayesian inference is all about the posterior
+# Bayesian inference <br>is all about the posterior
+
+???
+
+As we just heard from Timo, in Bayesian data analysis we produce/approximate a posterior distribution that we can then summarize in different ways to answer questions and quantify uncertainty
+
+I am going to walk us through applying this idea to regression
 
 ---
 class: middle
+
+# .center[Applied to regression]
 
 ## .blue[Classical]: There is a single "true" line of best fit, and I'll give my best estimate of it.
 
@@ -52,39 +61,437 @@ class: middle
 
 ## **Bayesian**: There is a distribution of lines of fit...some more plausible than others...and I'll give you samples from that distribution.
 
+???
+
+As many of us already know, in standard linear regression in a frequentist framework, we typically estimate a line of best fit, either using OLS or maximum likelihood estimation
+
+Under a Bayesian framework, we derive a distribution of lines that are compatible with our data and our prior assumptions
+
+Some of these lines are more plausible than others, so we can use standard methods to summarize and quantify uncertainty about them
+
 ---
-background-color: black
-background-image: url(https://raw.githubusercontent.com/jvcasillas/media/master/rstats/memes/bayesian_bey.png)
-background-size: contain
+class: middle
+
+```{r, mtcars-ex, echo=F}
+mod_f <-  lm(mpg ~ drat, data = mtcars)
+mod_b <- brm(mpg ~ drat, data = mtcars, file = here("assets", "cars_b"))
+
+cars_post <- as_tibble(mod_b) %>% select(int = b_Intercept, b = b_drat)
+
+plot_base <- mtcars %>% 
+  ggplot(., aes(x = drat, y = mpg)) + 
+    geom_point(fill = b4ss_colors[[1]], pch = 21, stroke = 0.5, size = 3.5) + 
+    labs(y = "y", x = "x") + 
+    b4ss_bw(base_size = 18)
+
+plot_f <- plot_base + 
+  geom_smooth(method = lm, formula = "y ~ x", color = b4ss_colors[[2]], 
+      fill = b4ss_colors[[1]], size = 2) + 
+  labs(title = "Frequentist model", subtitle = "Line of best fit")
+plot_b <- plot_base + 
+  geom_abline(intercept = fixef(mod_b)[1, 1], slope = fixef(mod_b)[2, 1], 
+    color = b4ss_colors[[2]], size = 2) + 
+  labs(title = "Bayesian model", subtitle = "Most plausible line of best fit")
+plot_b_20 <- plot_base + 
+  geom_abline(data = sample_n(cars_post, 20), 
+    aes(intercept = int, slope = b), color = b4ss_colors[[1]], alpha = 0.2) + 
+  geom_abline(intercept = fixef(mod_b)[1, 1], slope = fixef(mod_b)[2, 1], 
+    color = b4ss_colors[[2]], size = 2) + 
+  labs(title = "Bayesian model", subtitle = "Median line +20 plausible lines")
+plot_b_50 <- plot_base + 
+  geom_abline(data = sample_n(cars_post, 50), 
+    aes(intercept = int, slope = b), color = b4ss_colors[[1]], alpha = 0.2) + 
+  geom_abline(intercept = fixef(mod_b)[1, 1], slope = fixef(mod_b)[2, 1], 
+    color = b4ss_colors[[2]], size = 2) + 
+  labs(title = "Bayesian model", subtitle = "Median line +50 plausible lines")
+plot_b_200 <- plot_base + 
+  geom_abline(data = sample_n(cars_post, 200), 
+    aes(intercept = int, slope = b), color = b4ss_colors[[1]], alpha = 0.07) + 
+  geom_abline(intercept = fixef(mod_b)[1, 1], slope = fixef(mod_b)[2, 1], 
+    color = b4ss_colors[[2]], size = 2) + 
+  labs(title = "Bayesian model", subtitle = "Median line +200 plausible lines")
+```
+
+```{r, cars-f-vs-cars-b1, echo=F, fig.width=13, fig.height=5.5}
+plot_f + plot_spacer() 
+```
+
+???
+
+This scatter plot represents a traditional linear regression with a line of best fit +/- standard error
+
+---
+class: middle
+count: false
+
+```{r, cars-f-vs-cars-b2, echo=F, fig.width=13, fig.height=5.5}
+plot_f + plot_b 
+```
+
+???
+
+If we plot this next to the most plausible line from a Bayesian regression we see essentially the same line
+
+---
+class: middle
+count: false
+
+```{r, cars-b-draws1, echo=F, fig.width=13, fig.height=5.5}
+plot_b_20 + plot_spacer() + plot_spacer()
+```
+
+???
+
+Here we plot the most plausible line along with 20 random draws of plausible lines
+
+---
+class: middle
+count: false
+
+```{r, cars-b-draws2, echo=F, fig.width=13, fig.height=5.5}
+plot_b_20 + plot_b_50 + plot_spacer()
+```
+
+???
+
+Here we plot the most plausible line along with 50 random draws of other plausible lines
+
+---
+class: middle
+count: false
+
+```{r, cars-b-draws3, echo=F, fig.width=13, fig.height=5.5}
+plot_b_20 + plot_b_50 + plot_b_200
+```
+
+???
+
+Here we plot the most plausible line along with 200 random draws of other plausible lines
+
+---
+class: middle
+
+```{r, cars-f-vs-cars-b-2, echo=F, fig.width=13, fig.height=5.5}
+plot_f + plot_b_200
+```
+
+???
+
+Notice that we seem to converge on the same result, though we are not expressing our best guess of the "true" regression line, 
+
+Instead we express uncertainty about the relationship by plotting the posterior distribution of lines that are compatible with our assumptions and the data
+
+The orange line merely represents the line the appears more often in the posterior, thus we assume it is the most plausible outcome
+
+We will build out first model in just a second, but first let's get to know the data set we will be using
 
 ---
 
-# Distributions of plausible outcomes
+# Get to know the data set
+
+```{r, get-to-know-1}
+dim(learnB4SS::dataset)
+```
+
+???
+
+The data set we will be using in this workshop is from Winter XXXX
+
+This study examined the effect of politeness on the realization of pitch
+
+We can see that the data set has 27 columns (or variables) and 224 observations
+
+---
+
+```{r get-to-know-2, echo=F}
+glimpse(learnB4SS::dataset)
+```
+
+???
+
+We certainly won't be using all of the 27 variables, but we can see that Winter XXXX measured many things, such as F0 min, F0 sd, and F0 range, to name just a few
+
+We are going to begin by exploring the variable articulation_rate
+
+---
+class: middle
+
+```{r, ar-hist, fig.height=8, fig.width=14, echo=F}
+ar_hist <- polite %>% 
+  ggplot(., aes(x = articulation_rate)) + 
+    geom_histogram(color = "black", fill = b4ss_colors[[2]], binwidth = 0.25) + 
+    geom_point(aes(y = -1), 
+      size = 5, alpha = 0.1, pch = 21, fill = "grey80") + 
+    stat_pointinterval(aes(y = -2.5), .width = 0.95, point_size = 5, pch = 21, 
+      point_fill = b4ss_colors[[2]]) + 
+    labs(y = "Count", x = "Articulation rate", 
+      title = "Distribution of articulation rate", 
+      subtitle = "Raw data and mean ±SD") + 
+    b4ss_bw(base_size = 28, base_family = "Times") 
+
+ar_hist
+```
+
+???
+
+We can use a histogram to get an idea of the distribution of the variable
+
+---
+
+# Get to know the data set
+
+```{r, ar-hist-rep, fig.height=5, echo=F, out.extra='style="float:right"'}
+ar_hist + b4ss_bw(base_size = 20, base_family = "Times") 
+```
 
 .pull-left[
 
-- In Bayesian inference we attempt to approximate this (these) distribution(s)... we call it the **posterior distribution**
+Let's explore the `articulation_rate` variable
 
-- It represents a distribution of estimates that could arise from the data
+- N = `r length(polite$articulation_rate)`
+
+- The range is `r range(polite$articulation_rate) %>% round(., 2)`. 
+
+- The .blue[mean] is `r mean(polite$articulation_rate) %>% round(., 2)`. 
+
+- The .RUred[SD] is `r sd(polite$articulation_rate) %>% round(., 2)`.
+
+- The 95% quantiles are `r quantile(polite$articulation_rate, probs = c(0.025, 0.975)) %>% round(., 2)` 
 
 ]
 
-.pull-right[
-<br>
-```{r, normal-dist, echo=F, fig.width=6, fig.height=4}
-ggplot(data.frame(x = c(10, 90)), aes(x = x)) +
-    stat_function(fun = dnorm, n = 100, args = list(mean = 50, sd = 10),
-      size = 1, color = "darkred") + 
-    labs(y = "Density", x = expression(beta)) + 
-    b4ss_bw(base_size = 18) 
+--
+
+.pull-left[
+
+We'll fit an intercept only model:
+
+$$
+articulation\ rate \sim Normal(\mu, \sigma) \\
+$$
+
+.center[
+```lm(articulation_rate ~ 1)```
+]
+
+]
+
+???
+
+We can use standard methods to describe the distribution of values for articulation_rate
+
+For we example, we have 224 observations, which range from 3.38 to 12.16
+
+The average articulation rate is 6.68 (SD = 1.16)
+
+Now we will use this distribution in a simple linear model, the simplest model we can fit is an intercept only model 
+
+An int-only model is essentially a flat line (slope of 0), the intercept will be the mean of the distribution
+
+We will fit frequentist and bayesian versions of this model and compare
+
+---
+
+# Frequentist model
+
+We'll fit an intercept only model. The mean `articulation_rate` is `r mean(polite$articulation_rate) %>% round(., 2)` ±`r sd(polite$articulation_rate) %>% round(., 2)` SD. 
+
+--
+
+```{r, ar-int-only-freq}
+lm(articulation_rate ~ 1, data = polite) %>% summary()
+```
+
+???
+
+The frequentist version is easily fit with the `lm` function. 
+
+We specify the criterion on the left side of the `~` and put a 1 on the right side to specify an intercept only model
+
+If we look at the summary of the model we see the estimate for the intercept is essentially the same as the mean of the articulation rate distribution
+
+---
+
+# Bayesian model
+
+We'll fit an intercept only model. The mean `articulation_rate` is `r mean(polite$articulation_rate) %>% round(., 2)` ±`r sd(polite$articulation_rate) %>% round(., 2)` SD. 
+
+--
+
+```{r, ar-int-only-bayes-hold, eval=F}
+brm(articulation_rate ~ 1, data = polite) %>% summary
+```
+
+```{r, ar-int-only-bayes, echo=F}
+ar_bayes_int <- brm(articulation_rate ~ 1, data = polite, 
+  file = here("assets", "ar_int"))
+summary(ar_bayes_int)
+arp <- as_tibble(ar_bayes_int)
+```
+
+???
+
+We can fit the Bayesian version of this model using the brm function from the package `brms` (note the syntax is identical)
+
+There are some under-the-hood defaults that I am completely ignoring for now (priors and likelihood). 
+We will dedicate time to these as we move along.
+
+Notice that one key difference is that this model estimated 2 parameters: the intercept and sigma (the mean and SD of the articulation rate distribution)
+
+Also notice that the estimate are also essentially the same as the mean and SD we calculated before
+
+---
+class: title-slide-section-blue, middle, center
+
+# So what's the difference?
+
+???
+
+At this point you might be saying to yourself "So what? The models are the same?" and you would have a good point. 
+
+The information we have looked at in the summaries is essentially the same. 
+
+The main difference, and the key take away from this section, is that the bayesian model provides a posterior distribution of values for the parameters it estimates, the intercept and sigma. 
+
+Let's see what we can do with a posterior distribution
+
+---
+
+# Exploring the posterior
+
+.pull-left[
+```{r, ar-int-posterior, eval=F}
+arp <- as_tibble(ar_bayes_int)
+```
+
+```{r, ar-int-posterior-show, echo=F}
+as_tibble(ar_bayes_int) %>% select(-lp__) %>% slice(1:15)
 ```
 
 ]
 
----
-class: title-slide-section-blue
+???
 
-# This is a test
+I can turn the model object into a dataframe/tibble of the posterior using the as_tibble function (or posterior_samples)
+
+Because of the default values in brms I have 4000 samples. 
+Here I print the first 15
+
+--
+
+.pull-right[
+
+- This posterior distribution has 4000 draws of mean and SD values that are compatible with our data
+
+- The posterior is just like any other distribution of data
+
+- We can analyze/summarize it however we want
+
+```{r, ar-post-play}
+mean(arp$b_Intercept)
+
+quantile(arp$b_Intercept, probs = c(0.025, 0.975))
+```
+
+]
+
+???
+
+We can now use all of the mathematical tricks we have up our sleeve to describe the posterior distribution in any way we find meaningful. 
+
+Here I calculate the mean value for the intercept samples as well as a 95% credible interval, but I can describe the posterior in any way I want
+
+This is how we can quantify our uncertainty about the estimates the model generates
+
+---
+class: center, middle
+
+```{r, ar-post-param-plot, echo=F, fig.height=8, fig.width=12}
+arp %>% 
+  select(-lp__) %>% 
+  pivot_longer(cols = everything(), names_to = "Parameter", values_to = "Estimate") %>% 
+  ggplot(., aes(x = Estimate, y = Parameter)) + 
+    stat_halfeye() + 
+    b4ss_bw(base_size = 26)
+```
+
+???
+
+Here we describe the posterior distributions of the two model parameters in a single plot
+
+This is a handy way to summarize a model
+
+A key takeaway is that the peak of the distributions represents the value that is the most common
+
+---
+class: center, middle
+
+```{r, ar-post-paramspace-plot, echo=F, fig.height=8, fig.width=12}
+jp_plot <- arp %>%
+  ggplot(., aes(x = b_Intercept, y = sigma)) + 
+    geom_point(size = 3, pch = 16, alpha = 0.2, color = b4ss_colors[[1]]) + 
+    geom_point(data = tibble(b_Intercept = median(arp$b_Intercept), sigma = median(arp$sigma)), 
+      size = 7, pch = 21, fill = b4ss_colors[[2]]) + 
+    labs(y = expression(sigma), x = c(expression(beta), "Intercept")) + 
+    b4ss_bw(base_size = 26) 
+
+ggExtra::ggMarginal(jp_plot, type = "histogram", fill = b4ss_colors[[1]])
+
+```
+
+???
+
+Here is a scatter plot of the entire posterior distribution (4000 samples)
+
+This is a handy way to visualize the posterior parameter space (we will come back to this) because (1) it emphasizes the fact that we are looking at a 2D space, a joint probability distribution, and (2) there are many estimates for b_Intercept and sigma that are essentially the same. 
+
+When we have a lot of estimates that appear often in the posterior it implies that these values are more plausible
+
+I've highlighted the *most* plausible combination of the intercept and sigma, the medians (i.e., the values that are repeated the most), with the orange point. 
+
+We can think of the joint distribution as a mountain and the orange point represents the highest point
+
+---
+class: center, middle
+background-color: black
+
+```{r, ar-post-density-plot, echo=F, fig.height=8, fig.width=12}
+dark_density <- arp %>%
+  ggplot(., aes(x = b_Intercept, y = sigma)) + 
+    stat_density_2d(geom = "raster", aes(fill = ..density..),
+    n = 100, contour = FALSE, show.legend = F, contour_var = "ndensity") + 
+    scale_fill_viridis_c(option = "A") + 
+    labs(y = expression(sigma), x = c(expression(beta), "Intercept")) + 
+    ggdark::dark_theme_gray(base_size = 24) 
+
+dark_density
+```
+
+---
+class: center, middle
+background-color: black
+
+
+```{r, echo=F, eval=F}
+rayshader::plot_gg(dark_density, width = 7, height = 5, multicore = TRUE, 
+  scale = 150, zoom = 0.5, theta = 10, phi = 30, windowsize = c(800, 800), 
+  shadow_intensity = 0.1)
+Sys.sleep(0.2)
+rayshader::render_snapshot(
+  here("01_a2r_initial_demo", "libs", "dark_density_posterior.png"), 
+  clear = TRUE, color = "black")
+
+```
+
+```{r, inc-img, echo=F}
+knitr::include_graphics(here("01_a2r_initial_demo", "libs", "dark_density_posterior.png"))
+```
+
+
+---
+background-color: black
+background-image: url(https://raw.githubusercontent.com/jvcasillas/media/master/rstats/memes/bayesian_bey.png)
+background-size: contain
 
 ---
 count: false
