@@ -43,6 +43,14 @@ class: middle
 
 ---
 
+# Discrete and continuous
+
+.center[
+![:scale 80%](img/discr-cont-probs.png)
+]
+
+---
+
 # Discrete probability distributions
 
 .center[
@@ -59,22 +67,21 @@ class: middle
 
 # Continuous probability distributions
 
-[minions]
-
----
-
-```{r cont-p, echo=FALSE, fig.width=7, fig.height=4, out.width="800px", fig.retina=2, fig.align="center"}
-x <- seq(0, 400)
-ggplot() +
-  aes(x = x, y = dnorm(x, 200, 50)) +
-  geom_line()
-```
+[illustration]
 
 ---
 
 # Continuous probability distributions
 
-[examples]
+```{r cont-p, echo=FALSE, fig.width=7, fig.height=4, out.width="800px", fig.retina=2, fig.align="center"}
+x <- seq(0, 400)
+ggplot() +
+  aes(x = x, y = dnorm(x, 200, 50)) +
+  geom_line() +
+  labs(
+    x = "f0 (Hz)", y = "Density"
+  )
+```
 
 ---
 
@@ -107,6 +114,6 @@ ggplot() +
 # Prior knowledge as probability distributions
 
 
-
+---
 
 # Conditional probabilities
