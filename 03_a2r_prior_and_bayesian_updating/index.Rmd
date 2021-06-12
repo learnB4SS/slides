@@ -22,7 +22,6 @@ library(tidyverse)
 theme_set(theme_minimal())
 ```
 
----
 class: middle
 
 .pull-left[
@@ -33,13 +32,31 @@ class: middle
 ![](img/01-sunny.svg)
 ]
 
+???
+
+We are faced every day with probabilities. Just think about the weather forecast.
+
+There is a 70% prob that it will rain today. Prob of an event occurring.
+
+What about complex events? => list of probs.
+
+(I might want to introduce random variables here... with an extra slide)
+
 ---
 
 # Grubabilities
 
+&nbsp;
+
 .center[
 ![:scale 90%](img/grubabilities.png)
 ]
+
+???
+
+Lists of probs are probability distributions.
+
+A list of values with corresponding probability.
 
 ---
 
@@ -49,6 +66,12 @@ class: middle
 ![:scale 80%](img/discr-cont-probs.png)
 ]
 
+???
+
+Depending on the nature of the values a variable can take, there are 2 types of probs.
+
+
+
 ---
 
 # Discrete probability distributions
@@ -56,6 +79,10 @@ class: middle
 .center[
 ![:scale 60%](img/dice.png)
 ]
+
+???
+
+Counting as probability. Fractions as probability.
 
 ---
 
@@ -91,6 +118,67 @@ ggplot() +
     subtitle = expression(paste(mu, "=200", ", ", sigma, "=50"))
   )
 ```
+
+???
+
+With cont probs we cannot count for all possible values (0.0, 0.00, 0.000, 0.000...) and we cannot assign a prob to any specific value.
+
+Instead we can assign a prob to a range of values.
+
+---
+
+# Continuous probability distributions
+
+```{r cont-p, echo=FALSE, fig.width=7, fig.height=4, out.width="800px", fig.retina=2, fig.align="center"}
+x <- seq(0, 400)
+y = dnorm(x, 200, 50)
+ggplot() +
+  aes(x, y) +
+  geom_ribbon(aes(x = ifelse(x < 160 , x, NA), ymin = 0, ymax = y), alpha = 0.5, fill = "#FFA70B") +
+  geom_line(size = 2) +
+  labs(
+    x = "f0 (Hz)", y = "Density",
+    title = "Gaussian distribution",
+    subtitle = expression(paste(mu, "=200", ", ", sigma, "=50"))
+  )
+```
+
+---
+
+# Continuous probability distributions
+
+```{r cont-p, echo=FALSE, fig.width=7, fig.height=4, out.width="800px", fig.retina=2, fig.align="center"}
+x <- seq(0, 400)
+y = dnorm(x, 200, 50)
+ggplot() +
+  aes(x, y) +
+  geom_ribbon(aes(x = ifelse(x > 220 , x, NA), ymin = 0, ymax = y), alpha = 0.5, fill = "#FFA70B") +
+  geom_line(size = 2) +
+  labs(
+    x = "f0 (Hz)", y = "Density",
+    title = "Gaussian distribution",
+    subtitle = expression(paste(mu, "=200", ", ", sigma, "=50"))
+  )
+```
+
+---
+
+# Continuous probability distributions
+
+```{r cont-p, echo=FALSE, fig.width=7, fig.height=4, out.width="800px", fig.retina=2, fig.align="center"}
+x <- seq(0, 400)
+y = dnorm(x, 200, 50)
+ggplot() +
+  aes(x, y) +
+  geom_ribbon(aes(x = ifelse(x > 120 & x < 210 , x, NA), ymin = 0, ymax = y), alpha = 0.5, fill = "#FFA70B") +
+  geom_line(size = 2) +
+  labs(
+    x = "f0 (Hz)", y = "Density",
+    title = "Gaussian distribution",
+    subtitle = expression(paste(mu, "=200", ", ", sigma, "=50"))
+  )
+```
+
 
 ---
 
