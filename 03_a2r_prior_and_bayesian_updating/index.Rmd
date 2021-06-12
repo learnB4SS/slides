@@ -61,13 +61,20 @@ class: middle
 
 # Discrete probability distributions
 
-[examples]
-
----
-
-# Continuous probability distributions
-
-[illustration]
+```{r discs-p, echo=FALSE, fig.width=7, fig.height=4, out.width="800px", fig.retina=2, fig.align="center"}
+x <- seq(0, 10)
+y <- dpois(x, 3)
+ggplot() +
+  aes(x, y) +
+  geom_point(size = 5) +
+  geom_linerange(aes(xmin = x, xmax = x, ymin = 0, ymax = y), size = 2) +
+  scale_x_continuous(n.breaks = 10) +
+  labs(
+    x = "Count", y = "Density",
+    title = "Poisson distribution",
+    subtitle = expression(paste(lambda, "=3"))
+  )
+```
 
 ---
 
@@ -77,9 +84,27 @@ class: middle
 x <- seq(0, 400)
 ggplot() +
   aes(x = x, y = dnorm(x, 200, 50)) +
-  geom_line() +
+  geom_line(size = 2) +
   labs(
-    x = "f0 (Hz)", y = "Density"
+    x = "f0 (Hz)", y = "Density",
+    title = "Gaussian distribution",
+    subtitle = expression(paste(mu, "=200", ", ", sigma, "=50"))
+  )
+```
+
+---
+
+# Continuous probability distributions
+
+```{r cont-p-2, echo=FALSE, fig.width=7, fig.height=4, out.width="800px", fig.retina=2, fig.align="center"}
+x <- seq(0, 1, by = 0.01)
+ggplot() +
+  aes(x = x, y = dbeta(x, 2, 5)) +
+  geom_line(size = 2) +
+  labs(
+    x = "f0 (Hz)", y = "Density",
+    title = "Beta distribution",
+    subtitle = expression(paste(alpha, "=2", ", ", beta, "=5"))
   )
 ```
 
@@ -113,7 +138,3 @@ ggplot() +
 
 # Prior knowledge as probability distributions
 
-
----
-
-# Conditional probabilities
