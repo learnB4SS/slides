@@ -129,7 +129,7 @@ Instead we can assign a prob to a range of values.
 
 # Continuous probability distributions
 
-```{r cont-p, echo=FALSE, fig.width=7, fig.height=4, out.width="800px", fig.retina=2, fig.align="center"}
+```{r cont-p-2, echo=FALSE, fig.width=7, fig.height=4, out.width="800px", fig.retina=2, fig.align="center"}
 x <- seq(0, 400)
 y = dnorm(x, 200, 50)
 ggplot() +
@@ -147,7 +147,7 @@ ggplot() +
 
 # Continuous probability distributions
 
-```{r cont-p, echo=FALSE, fig.width=7, fig.height=4, out.width="800px", fig.retina=2, fig.align="center"}
+```{r cont-p-3, echo=FALSE, fig.width=7, fig.height=4, out.width="800px", fig.retina=2, fig.align="center"}
 x <- seq(0, 400)
 y = dnorm(x, 200, 50)
 ggplot() +
@@ -165,7 +165,7 @@ ggplot() +
 
 # Continuous probability distributions
 
-```{r cont-p, echo=FALSE, fig.width=7, fig.height=4, out.width="800px", fig.retina=2, fig.align="center"}
+```{r cont-p-4, echo=FALSE, fig.width=7, fig.height=4, out.width="800px", fig.retina=2, fig.align="center"}
 x <- seq(0, 400)
 y = dnorm(x, 200, 50)
 ggplot() +
@@ -184,10 +184,13 @@ ggplot() +
 
 # Continuous probability distributions
 
-```{r cont-p-2, echo=FALSE, fig.width=7, fig.height=4, out.width="800px", fig.retina=2, fig.align="center"}
+```{r cont-p-5, echo=FALSE, fig.width=7, fig.height=4, out.width="800px", fig.retina=2, fig.align="center"}
 x <- seq(0, 1, by = 0.01)
+y = dbeta(x, 2, 5)
 ggplot() +
-  aes(x = x, y = dbeta(x, 2, 5)) +
+  aes(x, y) +
+  geom_vline(xintercept = c(0, 1), colour = "grey") +
+  geom_ribbon(aes(x, ymin = 0, ymax = y), alpha = 0.5, fill = "#FFA70B") +
   geom_line(size = 2) +
   labs(
     x = "f0 (Hz)", y = "Density",
@@ -196,21 +199,44 @@ ggplot() +
   )
 ```
 
+???
+
+There are many other types of cont prob distrs.
+
+The beta is one of them. It's bounded between 0 and 1, used for proportions, percentages.
+
 ---
 
 # Describing probabilities
 
 [embed seeing theory prob distr normal]
 
+
+???
+
+But how do we describe prob distrs? We can't make a list of all values and probs.
+
+Instead, we specify the value of a few parameters that describe the distribution in a succinct way.
+
+(The example from seeing theory shows that with different values you get different "shapes")
+
 ---
 class: middle
 
 <span style="font-size:3.5em;">$$y_i \sim Normal(\mu, \sigma)$$</span>
 
+???
+
+(Here I explain the simple formula of a Gauss distr.)
+
 ---
 class: middle
 
 <span style="font-size:3.5em;">$$\text{f0}_i \sim Normal(200, 50)$$</span>
+
+???
+
+(While here I give a real-world example: with f0.)
 
 ---
 class: center middle
@@ -222,7 +248,17 @@ ggplot() +
   geom_line()
 ```
 
+???
+
+Nothing new here. Just a distribution as we've seen before.
+
+(Show them how that looks like.)
+
 ---
 
-# Prior knowledge as probability distributions
+# Prior knowledge 
 
+
+---
+
+# Prior belief as probability distribution

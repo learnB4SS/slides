@@ -16,7 +16,7 @@ class: center, middle, inverse, title-slide
 ## Bayesian updating
 ### Timo Roettger, Stefano Coretta and Joseph Casillas
 ### LabPhon workshop
-### 2021/07/12 (updated: 2021-06-12)
+### 2021/07/12 (updated: 2021-06-14)
 
 ---
 
@@ -39,7 +39,9 @@ We are faced every day with probabilities. Just think about the weather forecast
 
 There is a 70% prob that it will rain today. Prob of an event occurring.
 
-What about complex events? =&gt; list of probs
+What about complex events? =&gt; list of probs.
+
+(I might want to introduce random variables here... with an extra slide)
 
 ---
 
@@ -53,7 +55,9 @@ What about complex events? =&gt; list of probs
 
 ???
 
-lists of probs are probability distributions
+Lists of probs are probability distributions.
+
+A list of values with corresponding probability.
 
 ---
 
@@ -63,6 +67,12 @@ lists of probs are probability distributions
 ![:scale 80%](img/discr-cont-probs.png)
 ]
 
+???
+
+Depending on the nature of the values a variable can take, there are 2 types of probs.
+
+
+
 ---
 
 # Discrete probability distributions
@@ -70,6 +80,10 @@ lists of probs are probability distributions
 .center[
 ![:scale 60%](img/dice.png)
 ]
+
+???
+
+Counting as probability. Fractions as probability.
 
 ---
 
@@ -83,6 +97,12 @@ lists of probs are probability distributions
 
 &lt;img src="index_files/figure-html/cont-p-1.png" width="800px" style="display: block; margin: auto;" /&gt;
 
+???
+
+With cont probs we cannot count for all possible values (0.0, 0.00, 0.000, 0.000...) and we cannot assign a prob to any specific value.
+
+Instead we can assign a prob to a range of values.
+
 ---
 
 # Continuous probability distributions
@@ -91,29 +111,81 @@ lists of probs are probability distributions
 
 ---
 
+# Continuous probability distributions
+
+&lt;img src="index_files/figure-html/cont-p-3-1.png" width="800px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Continuous probability distributions
+
+&lt;img src="index_files/figure-html/cont-p-4-1.png" width="800px" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Continuous probability distributions
+
+&lt;img src="index_files/figure-html/cont-p-5-1.png" width="800px" style="display: block; margin: auto;" /&gt;
+
+???
+
+There are many other types of cont prob distrs.
+
+The beta is one of them. It's bounded between 0 and 1, used for proportions, percentages.
+
+---
+
 # Describing probabilities
 
 [embed seeing theory prob distr normal]
+
+
+???
+
+But how do we describe prob distrs? We can't make a list of all values and probs.
+
+Instead, we specify the value of a few parameters that describe the distribution in a succinct way.
+
+(The example from seeing theory shows that with different values you get different "shapes")
 
 ---
 class: middle
 
 &lt;span style="font-size:3.5em;"&gt;$$y_i \sim Normal(\mu, \sigma)$$&lt;/span&gt;
 
+???
+
+(Here I explain the simple formula of a Gauss distr.)
+
 ---
 class: middle
 
 &lt;span style="font-size:3.5em;"&gt;$$\text{f0}_i \sim Normal(200, 50)$$&lt;/span&gt;
+
+???
+
+(While here I give a real-world example: with f0.)
 
 ---
 class: center middle
 
 ![](index_files/figure-html/norm-1.png)&lt;!-- --&gt;
 
+???
+
+Nothing new here. Just a distribution as we've seen before.
+
+(Show them how that looks like.)
+
 ---
 
-# Prior knowledge as probability distributions
+# Prior knowledge 
 
+
+---
+
+# Prior belief as probability distribution
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
