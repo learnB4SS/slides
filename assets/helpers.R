@@ -27,6 +27,18 @@ library("fontawesome")
 
 # Common functions ------------------------------------------------------------
 
+get_mode <- function(x) {
+  ux <- unique(x)
+  ux[which.max(tabulate(match(x, ux)))]
+}
+
+# -----------------------------------------------------------------------------
+
+
+
+
+# Plotting functions ----------------------------------------------------------
+
 b4ss_bw <- function(...) {
   list(
     theme_bw(...),
