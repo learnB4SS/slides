@@ -40,13 +40,122 @@ bib <- ReadBib(here("assets", "b4ss_refs.bib"), check = FALSE)
 ui <- "- "
 ```
 
+class: title-slide-section-grey, middle
+background-image: url(https://www.bellevuerarecoins.com/wp-content/uploads/bigstock-Coin-Flip-5807921.jpg)
+background-size: contain
+background-position: 100% 50%
+
+# What is probability?
+
+???
+
+Before we get started I'd like to ask you to take a second and think about "probability". 
+
+What does is it mean? 
+
+What do you understand if somebody asks you the probability you are going to be on time?
+
+What is the probability it will rain tomorrow?
+
+Over the next two days we will be thinking about the notion of probability and how define it in light of the research that we do
+
+
+---
+background-image: url(libs/worldview.png)
+background-size: contain
+background-color: black
+
+# .white[The world according to <br>frequentists]
+
+???
+
+A key reason for *why* we will talk about probability has to do with frequentism
+
+You might have heard this term before, but if not, that's fine. 
+
+I'm certain you already have a grasp of what it is. 
+
+Over the next few days we will be thinking a lot about frequentism and comparing it directly with Bayesian methods. 
+
+---
+background-image: url(https://www.bellevuerarecoins.com/wp-content/uploads/bigstock-Coin-Flip-5807921.jpg)
+background-size: contain
+background-position: 100% 50%
+
+# What is frequentism?
+
+.pull-left[
+
+- "Classical" statistics
+
+- Population parameters are fixed, actually exist
+
+- Probability refers to the long-run frequency of a given event
+
+- A sample of data is the result of one of an infinite number of exactly repeated experiments
+
+- Data are random, result from sampling a fixed population distribution
+
+]
+
+???
+
+- So what is it?
+- Frequentist statistics represent what most of us have always been doing
+- It's a bit of a blanket term used to refer to "classical" statistics
+- The frequentist view of probability is what leads to some of the odd definitions of the statistical machinery you already know, like confidence intervals
+- A key idea is that population parameters, what we estimate when we do statistics, are fixed, actually exist
+
+- Under this view, probability refers to the long-run frequency of a given event
+- We can consider a sample of data as the result of one of an infinite number of exactly repeated experiments
+- In this sense, the data are random, and result from sampling a fixed population distribution
+
+- The key idea that I'd like you to keep in mind at this point is that this view of probability seems to be at odds with how we think/reason
+- For example when we ask something like what is the probability it will rain tomorrow? (we aren't typically thinking about long term frequencies or exactly repeated experiments)
+- We will be coming back to these ideas of *probability* and *frequentism*
+
+---
+class: center, middle
+
+# What if...
+
+### There isn't one true population parameter... <br>
+--
+but an entire distribution of parameters, some more plausible than others
+
+???
+
+But for now, consider this...
+
+What if there isn't one *true* population parameter
+
+What if instead there is an entire distribution of parameters, some more plausible than others
+
+---
+background-color: black
+background-image: url(https://raw.githubusercontent.com/jvcasillas/media/master/rstats/memes/bayesian_bey.png)
+background-size: contain
+count: false
+
+???
+
+This idea is at the heart of Bayesian inference
+
+---
 class: middle, center
 
 # Bayesian inference <br>is all about the posterior
 
 ???
 
-As we just heard from Timo, in Bayesian data analysis we produce/approximate a posterior distribution that we can then summarize in different ways to answer questions and quantify uncertainty
+One key idea that I'd like you to hold on to for right now is that Bayesian inference is all about what we call the posterior distribution
+
+I'm going to spend the rest of my time in this brief presentation building up intuition about the posterior.
+
+In other words, in Bayesian data analysis we produce/approximate a posterior distribution of possible parameters that we can then summarize in different ways to answer questions and quantify uncertainty
+
+This is a fundamental difference with regard to frequentistism
+That is to say, there is no posterior distribution in frequentist statistics, you only estimate 1 single value for a parameter
 
 I am going to walk us through applying this idea to regression
 
@@ -63,11 +172,15 @@ class: middle
 
 ???
 
-As many of us already know, in standard linear regression in a frequentist framework, we typically estimate a line of best fit, either using OLS or maximum likelihood estimation
+As many of us already know, in standard linear regression in a frequentist framework, we typically estimate what we call a line of best fit, either using OLS or maximum likelihood estimation
+
+It's actually quite simple at it's core, we have some blob of data and we try to shove a line through it to describe it the best we can
 
 Under a Bayesian framework, we derive a distribution of lines that are compatible with our data and our prior assumptions
 
 Some of these lines are more plausible than others, so we can use standard methods to summarize and quantify uncertainty about them
+
+Let's illustrate this to make it clear
 
 ---
 class: middle
@@ -183,7 +296,7 @@ Instead we express uncertainty about the relationship by plotting the posterior 
 
 The orange line merely represents the line the appears more often in the posterior, thus we assume it is the most plausible outcome
 
-We will build out first model in just a second, but first let's get to know the data set we will be using
+We will build our first model in just a second, but first let's get to know the data set we will be using
 
 ---
 
@@ -390,7 +503,10 @@ Here I print the first 15
 ```{r, ar-post-play}
 mean(arp$b_Intercept)
 
-quantile(arp$b_Intercept, probs = c(0.025, 0.975))
+quantile(
+  arp$b_Intercept, 
+  probs = c(0.025, 0.975)
+  )
 ```
 
 ]
@@ -484,9 +600,35 @@ rayshader::render_snapshot(
 ```
 
 ---
+
+# Takeaways
+
+.Large[
+- There are primarily two camps in statistics: frequentists and Bayesians
+
+- The two camps see probability in different ways
+
+- **Bayesian statistics is all about the posterior**
+]
+
+???
+
+- There are primarily two camps in statistics: frequentists and Bayesians
+- The two camps see probability in different ways
+- Frequentists: parameters are real/true, provide best estimate of it
+- Bayesians: there are distributions of possible parameters, we summarize the distribution
+- Bayesian statistics is all about the posterior
+
+---
 background-color: black
 background-image: url(https://raw.githubusercontent.com/jvcasillas/media/master/rstats/memes/bayesian_bey.png)
 background-size: contain
+
+???
+
+With this in mind, you are now on your way to becoming Bayesians
+
+We will continue building intuitions about these core ideas
 
 ---
 count: false
