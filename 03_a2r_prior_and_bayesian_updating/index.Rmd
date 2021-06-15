@@ -256,9 +256,40 @@ Nothing new here. Just a distribution as we've seen before.
 
 ---
 
-# Prior knowledge 
+# Memory loss
 
+.center[
+![:scale 40%](img/Goldfish-MEME.png)
+]
+
+<span style="font-size:10pt;">https://thinking.umwblogs.org/2020/02/26/goldfish-memory/</span>
+
+???
+
+Freq stats forgets about the past (memory loss).
+
+Another important component of Bayesian analysis is prior knowledge (you've seen that in B theorem).
+
+We can take prior knowledge or belief into consideration in what is called "Bayesian belief update".
+
+---
+
+# Bayesian belief update
+
+.center[
+![:scale 60%](img/prior-update.png)
+]
 
 ---
 
 # Prior belief as probability distribution
+
+???
+
+How do we ensure that prior knowledge is not lost?
+
+You've seen in 01 that Bayesian analysis is about estimating the post distr of the variable of interest.
+
+The post distr is (roughly) the combination of the prior belief about the variable and the evidence derived from the data (remember Bayes Theorem).
+
+
