@@ -280,16 +280,117 @@ We can take prior knowledge or belief into consideration in what is called "Baye
 ![:scale 60%](img/prior-update.png)
 ]
 
----
-
-# Prior belief as probability distribution
-
 ???
 
 How do we ensure that prior knowledge is not lost?
 
 You've seen in 01 that Bayesian analysis is about estimating the post distr of the variable of interest.
 
-The post distr is (roughly) the combination of the prior belief about the variable and the evidence derived from the data (remember Bayes Theorem).
+The post distr is (roughly) the combination of the prior belief and the evidence derived from the data (remember Bayes Theorem).
 
+Both prior and evidence are probability distributions.
 
+---
+
+[embed seeing theory bayesian update]
+
+---
+
+# Prior belief as probability distributions
+
+&nbsp;
+
+<span style="font-size:3em;">$$\text{art_rate}_i \sim Normal(\mu, \sigma)$$</span>
+
+???
+
+Our prior belief about articulation rate is that it is distributed according to a Normal (aka Gaussian) distr.
+
+The Normal has two parameters: mean, SD.
+
+Here we are trying to estimate these parameters.
+
+---
+
+# Prior belief as probability distributions
+
+<span style="font-size:3em;">$$\text{art_rate}_i \sim Normal(\mu, \sigma)$$</span>
+
+<span style="font-size:3em;">$$\mu = ...?$$</span>
+
+???
+
+We do have an idea of what the mean could be like but we are not certain.
+
+When you are not certain, you make a list of values and their prob, i.e. a prob distr!
+
+---
+
+# Prior belief as probability distributions
+
+<span style="font-size:3em;">$$\text{art_rate}_i \sim Normal(\mu, \sigma)$$</span>
+
+<span style="font-size:3em;">$$\mu \sim Normal(\mu_1, \sigma_1)$$</span>
+
+???
+
+Usually, we assume the mean to be a value taken from another Normal distribution (with its mean and SD).
+
+This Normal is the prior probability distribution (or simply prior) of the mean.
+
+---
+
+# Prior probability distribution
+
+<span style="font-size:3em;">$$\text{art_rate}_i \sim Normal(\mu, \sigma)$$</span>
+
+<span style="font-size:3em;">$$\mu \sim Normal(0, \sigma_1)$$</span>
+
+???
+
+We will talk about types of priors later. For now it's sufficient to remember that a conservative approach (which is what we want) is to set $\mu_1$ to 0.
+
+What about $\sigma_1$?
+
+---
+
+# 68–95–99.7 rule
+
+.center[
+![:scale 50%](img/Empirical_rule_histogram.svg)
+]
+???
+
+As a general rule, plus/minus two times the SD ($\sigma_1$) covers 95% of the distribution, which means we are 95% confident that the value lies within that range.
+
+Let's be generous and assume that the mean articulation rate will not be greater than 20 syls per sec.
+
+20/2 = 10 (remember, two times the SD), so we can set $\sigma_1$ to 10.
+
+---
+
+# Seeing is believing
+
+```{r prior-1, echo=FALSE, fig.width=7, fig.height=4, out.width="800px", fig.retina=2, fig.align="center"}
+x <- seq(-40, 40)
+ggplot() +
+  aes(x = x, y = dnorm(x, 0, 10)) +
+  geom_line(size = 2) +
+  labs(
+    x = "f0 (Hz)", y = "Density",
+    title = expression(paste("Prior for ", sigma)),
+    subtitle = expression(paste(mu[1], "=0", ", ", sigma[1], "=10"))
+  )
+```
+
+???
+
+Visualising priors is important, because it's easier to grasp its meaning when you can actually see the shape of the distribution.
+
+We will see more about priors and how to visualise them tomorrow.
+
+---
+
+class: inverse center middle
+
+# LIVE CODING
