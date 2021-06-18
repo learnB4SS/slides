@@ -1,6 +1,6 @@
 ---
 title: "Bayesian Data <br>Analysis<br> for <br>Speech Sciences"
-subtitle: "Inference over the posterior"
+subtitle: "Bayesian inference"
 author: "Timo Roettger, Stefano Coretta and Joseph Casillas"
 institute: "LabPhon workshop"
 date: "2021/07/12 (updated: `r Sys.Date()`)"
@@ -17,31 +17,364 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-options(htmltools.dir.version = FALSE)
+options(htmltools.dir.version=F)
+knitr::opts_chunk$set(fig.retina=2, cache=F, warning=F, message=F)
+polite <- learnB4SS::dataset
 ```
 
-# Slide title
+```{r xaringan-extra-all-the-things, echo=F, eval=F}
+xaringanExtra::use_xaringan_extra(
+  c("tile_view", "panelset", "editable"
+    #"scribble", "search", "webcam"
+    )
+)
+xaringanExtra:::use_freezeframe()
+```
 
-## H2 - Roboto Bold
+```{r, 'helpers', echo=F}
+source(here::here("assets", "helpers.R"))
+```
 
-### H3 - Roboto regular
+```{r, load_refs, echo=FALSE, cache=FALSE, warning=F, message=F}
+bib <- ReadBib(here("assets", "b4ss_refs.bib"), check = FALSE)
+ui <- "- "
+```
 
-body - Roboto
+IMAGE PLACEHOLDER
 
-[link color](https://learnB4SS.github.io)
+???
+
+We have been motivating a framework that emphasizes describing our statistical inferences by quantifying uncertainty
+
+This is in contrast to the null hypothesis significance testing framework that was laid out by Timo yesterday and mentioned briefly today
+
+Now we will turn our attention to making statistical inferences under a Bayesian framework
+
+Currently, there are many methods to choose from and I will describe what we believe to be those that are the most common, though this overview will not be exhaustive
 
 ---
-class: inverse
 
-# Inverse color slide
+# Credible intervals
+
+```{r, credible-intervals-1, echo=F, fig.width=14, fig.align="center"}
+ggplot(data = tibble(x = rnorm(10e4, 15, 2.5))) +  
+  aes(x = x, fill = stat(x < 10 | x > 20)) + 
+  stat_halfeye(show.legend = F, size = -10, point_size = -10) +
+  scale_fill_manual(values = c(b4ss_colors[[1]], b4ss_colors[[2]])) + 
+  theme_void() + 
+  NULL
+```
+
+???
+
+If you have heard of Bayesian inference before, there is a good chance you have also heard of credible intervals
+
+We could describe them as the Bayesian counterpart to confidence intervals under a frequentist framework. 
+
+Some might say the difference is merely philosophical, but I won't go into that now. 
+
+Crucially, credible intervals are what most people think confidence intervals represent: that is, the interval within which an observed parameter estimate falls with a particular probability
+
+When we describe a posterior distribution we typically say that a specified % of the posterior falls within a certain range
+
+In this plot I am using color highlight part of the posterior that falls within a certain range
 
 ---
-background-image: url(https://raw.githubusercontent.com/jvcasillas/media/master/rstats/gifs/bayes_theorem.gif)
-background-size: contain
+class: middle
 
---
-background-image: url(https://raw.githubusercontent.com/jvcasillas/media/master/rstats/memes/bayesian_bayes_theorem_desc.png)
-background-size: contain
+# Credible intervals
+
+```{r, credible-intervals-2, echo=F, fig.width=14, fig.align="center"}
+ggplot(data = tibble(x = rnorm(10e4, 15, 2.5))) +  
+  aes(x = x, fill = stat(x < 10 | x > 20)) + 
+  stat_halfeye(show.legend = F, size = -10, point_size = -10) +
+  geom_segment(
+    data = tibble(y = 0, yend = 0.9, x = c(10, 20), xend = c(10, 20)), 
+    aes(y = y, yend = yend, x = x, xend = xend), lty = 2, size = 1) + 
+  scale_fill_manual(values = c(b4ss_colors[[1]], b4ss_colors[[2]])) + 
+  geom_text(
+    data = tibble(
+      x = c(10, 15, 20, 15), 
+      y = c(-0.025, -0.06, -0.025, 1), 
+      label = c("10", expression(beta), "20", expression(paste("95% credible interval")))
+      ), 
+    aes(x = x, y = y, label = label), color = "black", size = 8, parse = T) + 
+  theme_void() + 
+  NULL
+```
+
+???
+
+To give a more concrete example, you might hear somebody say something like: the probability that B ("a value") is between 10 and 20 is .95 (or "we're 95% sure that the value is between 10 and 20")
+
+This is an informative way to quantify uncertainty when describing a posterior distribution
+
+This is the case with the plot you see here... we're 95% certain that the value of beta falls between 10 and 20
+
+---
+class: middle
+
+# Credible intervals
+
+```{r, credible-intervals-3, echo=F, fig.width=14, fig.align="center"}
+ggplot(data = tibble(x = rnorm(10e4, 15, 2.5))) + 
+  aes(x = x, fill = stat(x < 10 | x > 20)) + 
+  stat_halfeye(show.legend = F, size = -10, point_size = -10) +
+  geom_vline(xintercept = 0, lty = 3, size = 1) + 
+  scale_fill_manual(values = c(b4ss_colors[[1]], "grey80")) + 
+  labs(y = NULL, x = expression(beta)) + 
+  b4ss_bw(base_size = 20) + 
+  theme(
+    axis.text.y = element_blank(), axis.ticks.y = element_blank(), 
+    panel.border = element_blank(), 
+    axis.line.x = element_line(color = "black", size = 0.25)) + 
+  NULL
+```
+
+???
+
+Some researchers use a 95% CI to make statistical inferences by saying something like "if the 95% credible interval of the posterior distribution for a given parameter does not include 0, then we will consider that to be compelling evidence for an effect"
+
+That would certainly be the case in the plot we see here, as the entire posterior falls far from 0, but obviously this is not always the case
+
+---
+class: middle
+
+# Credible intervals
+
+```{r, credible-intervals-4, echo=F, fig.width=14, fig.align="center"}
+ggplot(data = tibble(x = rnorm(10e4, 3, 2.5))) + 
+  aes(x = x, fill = stat(x < -2 | x > 8)) + 
+  stat_halfeye(show.legend = F, size = -10, point_size = -10) +
+  geom_vline(xintercept = 0, lty = 3, size = 1) + 
+  scale_fill_manual(values = c(b4ss_colors[[1]], "grey80")) + 
+  labs(y = NULL, x = expression(beta)) + 
+  b4ss_bw(base_size = 20) + 
+  theme(
+    axis.text.y = element_blank(), axis.ticks.y = element_blank(), 
+    panel.border = element_blank(), 
+    axis.line.x = element_line(color = "black", size = 0.25)) + 
+  NULL
+```
+
+???
+
+In this plot, for example, the 95% CI of the posterior overlaps 0 by a pretty large amount
+
+Thus some researchers would conclude that there is not compelling evidence for this particular effect
+
+Notice that I've used 95% for the range here and in the previous examples 
+
+This is without a doubt the most common value, which is carryover from NHST (p < 0.05) and completely arbitrary 
+
+You can use any interval you want to describe the posterior
+
+Let's practice a couple examples
+
+---
+class: title-slide-section-blue, middle, center
+
+# Live coding
+
+<!--
+short practical
+-->
+
+<!--
+CI Practical: Describe posteriors as a way to do inference
+USE MODEL FROM STEFs EXAMPLE FROM PREVIOUS DAY
+-->
+
+```{r, credible-intervals, include=F}
+# Fake posterior (for ex.)
+posterior <- rnorm(n = 1000, mean = 5, sd = 3)
+
+# Posterior from int only model (until I get stefs model)
+ar_bayes_int <- brm(articulation_rate ~ 1, data = polite, 
+  file = here("assets", "ar_int"))
+
+# base r example of getting quantile of distribution
+quantile(posterior, c(0.025, 0.975))
+
+# bayesTestR to simplify
+hdi_ex <- hdi(posterior)
+hdi_ex
+plot(hdi_ex)
+
+# Example with model
+# result <- model_parameters(ar_bayes_int, effects = "all", components = "all")
+# plot(result, show_intercept = T, n_columns = NULL)
+
+```
+
+---
 
 
 
+
+
+class: title-slide-section-grey, middle
+
+# .RUred[Probability of direction]
+
+IMAGE PLACEHOLDER
+
+---
+
+# Probability of direction
+
+IMAGE PLACEHOLDER
+
+???
+
+Another option decision making is to use the probability of direction, also known as the maximum probability of effect
+
+This value can range from 50% to 100% (0.5 - 1.0)
+
+It is the proportion of the posterior that has the same sign (that is, if its + or -) as the median of the distribution
+
+In simple terms, it tells us the probability that a given parameter estimate is positive or negative
+
+To illustrate, if you have a probability of direction of 100%, then you are 100% certain that a given parameter is positive (or negative)
+
+On the other hand, if you obtain a probability of direction of 50%, then the parameter is equally likely to be positive as it is to be negative (that is a lot of uncertainty!)
+
+The pbe is likely the closest equivalent to a p-value
+
+It is quite simple to calculate, so let's look at a few examples...
+
+---
+class: title-slide-section-blue, middle, center
+
+# Live coding
+
+<!--
+short practical
+-->
+
+```{r, include=F}
+test <- p_direction(ar_bayes_int, component = "all")
+plot(test, show_intercept = T, n_columns = NULL, priors = T)
+```
+
+
+
+
+
+
+
+
+
+
+
+---
+class: title-slide-section-grey, middle
+
+# .RUred[Region of practical <br>equivalence] 
+
+### (ROPE)
+
+IMAGE PLACEHOLDER
+
+---
+
+# ROPE
+
+IMAGE PLACEHOLDER
+
+???
+
+
+
+---
+class: title-slide-section-blue, middle, center
+
+# Live coding
+
+<!--
+short practical
+-->
+
+```{r, include=F}
+test <- rope(ar_bayes_int, ci = c(0.9, 0.95), effects = "all", component = "all")
+plot(test, show_intercept = T, n_columns = NULL, rope_color = "white")
+```
+
+
+
+
+
+
+
+
+---
+class: title-slide-section-grey, middle
+
+# Other methods
+
+---
+
+# Define your hypothesis
+
+IMAGE PLACEHOLDER
+
+???
+
+Brief explanation and back to R
+
+---
+class: title-slide-section-blue, middle, center
+
+# Live coding
+
+<!--
+SHORT PRACTICAL
+brms::hypothesis()
+
+- minor wrangling posteriors (ex. pr that B is > X value)
+- testing hypotheses (pr that B is > X value but using hypothesis function)
+-->
+
+
+---
+
+# Bayes factors
+
+IMAGE PLACEHOLDER
+
+???
+
+- Bayes factors (only conceptually)
+
+---
+
+# Summary
+
+- Credible intervals
+
+- Probability of direction (maximum probability of effect)
+
+- Region of practical equivalence (ROPE)
+
+- User defined hypotheses
+
+- Bayes factors
+
+???
+
+We have touched on some of the many ways in which one can use the posterior for statistical inferences
+
+The main focus has been on emphasizing different ways we can use these tools to quantify uncertainty and help us in making decisions
+
+They provide a rich set of tools at the researchers disposal that contrasts with the sole p-value available under a frequentist/NHST framework
+
+---
+class: title-slide-section-blue, middle, center
+
+# Live coding
+
+<!--
+PRACTICAL (longer): Run model on Bodo’s data with prepared RMarkdown
+
+think of new hypotheses to test, use your favorite method (or all of them)
+--> 
