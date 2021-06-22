@@ -17,7 +17,7 @@ class: center, middle, inverse, title-slide
 ## Application to regression
 ### Timo Roettger, Stefano Coretta and Joseph Casillas
 ### LabPhon workshop
-### 2021/07/12 (updated: 2021-06-14)
+### 2021/07/12 (updated: 2021-06-22)
 
 ---
 
@@ -424,11 +424,11 @@ brm(articulation_rate ~ 1, data = polite) %&gt;% summary
 ## 
 ## Population-Level Effects: 
 ##           Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## Intercept     6.68      0.08     6.52     6.83 1.00     2761     2458
+## Intercept     6.68      0.08     6.53     6.83 1.00     3375     2668
 ## 
 ## Family Specific Parameters: 
 ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## sigma     1.17      0.06     1.07     1.29 1.00     3667     2689
+## sigma     1.17      0.06     1.07     1.29 1.00     3391     2832
 ## 
 ## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
 ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -468,29 +468,27 @@ Let's see what we can do with a posterior distribution
 .pull-left[
 
 ```r
-arp &lt;- as_tibble(ar_bayes_int)
+post_00 &lt;- posterior_samples(b_mod_00)
 ```
 
 
 ```
-## # A tibble: 15 x 2
-##    b_Intercept sigma
-##          &lt;dbl&gt; &lt;dbl&gt;
-##  1        6.66  1.13
-##  2        6.73  1.21
-##  3        6.65  1.17
-##  4        6.75  1.17
-##  5        6.81  1.14
-##  6        6.76  1.13
-##  7        6.51  1.26
-##  8        6.69  1.10
-##  9        6.80  1.24
-## 10        6.79  1.22
-## 11        6.66  1.05
-## 12        6.77  1.33
-## 13        6.59  1.10
-## 14        6.73  1.14
-## 15        6.74  1.20
+##    b_Intercept    sigma
+## 1     6.645696 1.237890
+## 2     6.665647 1.125728
+## 3     6.670478 1.129146
+## 4     6.760504 1.196283
+## 5     6.870616 1.264796
+## 6     6.777265 1.259011
+## 7     6.659514 1.153504
+## 8     6.699240 1.157076
+## 9     6.691047 1.222263
+## 10    6.724507 1.208100
+## 11    6.716813 1.218816
+## 12    6.737001 1.323182
+## 13    6.697180 1.294377
+## 14    6.645625 1.065328
+## 15    6.692892 1.163420
 ```
 
 ]
@@ -514,23 +512,23 @@ Here I print the first 15
 
 
 ```r
-mean(arp$b_Intercept)
+mean(post_00$b_Intercept)
 ```
 
 ```
-## [1] 6.679407
+## [1] 6.678269
 ```
 
 ```r
 quantile(
-  arp$b_Intercept, 
+  post_00$b_Intercept, 
   probs = c(0.025, 0.975)
   )
 ```
 
 ```
 ##     2.5%    97.5% 
-## 6.522054 6.832783
+## 6.527723 6.826254
 ```
 
 ]
