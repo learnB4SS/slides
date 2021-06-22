@@ -436,10 +436,10 @@ brm(articulation_rate ~ 1, data = polite) %>% summary
 ```
 
 ```{r, ar-int-only-bayes, echo=F}
-ar_bayes_int <- brm(articulation_rate ~ 1, data = polite, 
-  file = here("assets", "ar_int"))
-summary(ar_bayes_int)
-arp <- as_tibble(ar_bayes_int)
+b_mod_00 <- brm(articulation_rate ~ 1, data = polite, 
+  file = here("assets", "b_mod_00"))
+summary(b_mod_00)
+post_00 <- posterior_samples(b_mod_00)
 ```
 
 ???
@@ -474,11 +474,11 @@ Let's see what we can do with a posterior distribution
 
 .pull-left[
 ```{r, ar-int-posterior, eval=F}
-arp <- as_tibble(ar_bayes_int)
+post_00 <- posterior_samples(b_mod_00)
 ```
 
 ```{r, ar-int-posterior-show, echo=F}
-as_tibble(ar_bayes_int) %>% select(-lp__) %>% slice(1:15)
+posterior_samples(b_mod_00) %>% select(-lp__) %>% slice(1:15)
 ```
 
 ]
@@ -501,10 +501,10 @@ Here I print the first 15
 - We can analyze/summarize it however we want
 
 ```{r, ar-post-play}
-mean(arp$b_Intercept)
+mean(post_00$b_Intercept)
 
 quantile(
-  arp$b_Intercept, 
+  post_00$b_Intercept, 
   probs = c(0.025, 0.975)
   )
 ```
@@ -523,7 +523,7 @@ This is how we can quantify our uncertainty about the estimates the model genera
 class: center, middle
 
 ```{r, ar-post-param-plot, echo=F, fig.height=8, fig.width=12}
-arp %>% 
+post_00 %>% 
   select(-lp__) %>% 
   pivot_longer(cols = everything(), names_to = "Parameter", values_to = "Estimate") %>% 
   ggplot(., aes(x = Estimate, y = Parameter)) + 
@@ -543,10 +543,10 @@ A key takeaway is that the peak of the distributions represents the value that i
 class: center, middle
 
 ```{r, ar-post-paramspace-plot, echo=F, fig.height=8, fig.width=12}
-jp_plot <- arp %>%
+jp_plot <- post_00 %>%
   ggplot(., aes(x = b_Intercept, y = sigma)) + 
     geom_point(size = 3, pch = 16, alpha = 0.2, color = b4ss_colors[[1]]) + 
-    geom_point(data = tibble(b_Intercept = median(arp$b_Intercept), sigma = median(arp$sigma)), 
+    geom_point(data = tibble(b_Intercept = median(post_00$b_Intercept), sigma = median(post_00$sigma)), 
       size = 7, pch = 21, fill = b4ss_colors[[2]]) + 
     labs(y = expression(sigma), x = c(expression(beta), "Intercept")) + 
     b4ss_bw(base_size = 26) 
@@ -572,7 +572,7 @@ class: center, middle
 background-color: black
 
 ```{r, ar-post-density-plot, echo=F, fig.height=8, fig.width=12}
-dark_density <- arp %>%
+dark_density <- post_00 %>%
   ggplot(., aes(x = b_Intercept, y = sigma)) + 
     stat_density_2d(geom = "raster", aes(fill = ..density..),
     n = 100, contour = FALSE, show.legend = F, contour_var = "ndensity") + 
