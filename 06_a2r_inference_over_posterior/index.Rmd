@@ -19,7 +19,6 @@ output:
 ```{r setup, include=FALSE}
 options(htmltools.dir.version=F)
 knitr::opts_chunk$set(fig.retina=2, cache=F, warning=F, message=F)
-polite <- learnB4SS::dataset
 ```
 
 ```{r xaringan-extra-all-the-things, echo=F, eval=F}
@@ -40,7 +39,8 @@ bib <- ReadBib(here("assets", "b4ss_refs.bib"), check = FALSE)
 ui <- "- "
 ```
 
-IMAGE PLACEHOLDER
+background-image: url(https://images.unsplash.com/reserve/oIpwxeeSPy1cnwYpqJ1w_Dufer%20Collateral%20test.jpg?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1516&q=80)
+background-size: 1200px
 
 ???
 
@@ -51,6 +51,15 @@ This is in contrast to the null hypothesis significance testing framework that w
 Now we will turn our attention to making statistical inferences under a Bayesian framework
 
 Currently, there are many methods to choose from and I will describe what we believe to be those that are the most common, though this overview will not be exhaustive
+
+You can think of these methods as new tools that we will be putting in our toolbox. 
+
+I don't believe that any single tool is better than the others, though one may be more appropriate for the types of questions you are interested in answering.
+
+---
+class: title-slide-section-grey, middle
+
+# .RUred[Credible intervals]
 
 ---
 
@@ -66,6 +75,8 @@ ggplot(data = tibble(x = rnorm(10e4, 15, 2.5))) +
 ```
 
 ???
+
+We'll start by talking about credible intervals. 
 
 If you have heard of Bayesian inference before, there is a good chance you have also heard of credible intervals
 
@@ -110,6 +121,8 @@ To give a more concrete example, you might hear somebody say something like: the
 This is an informative way to quantify uncertainty when describing a posterior distribution
 
 This is the case with the plot you see here... we're 95% certain that the value of beta falls between 10 and 20
+
+As I alluded to before, you don't get this same type of interpretation with a traditional confidence interval
 
 ---
 class: middle
@@ -161,11 +174,11 @@ ggplot(data = tibble(x = rnorm(10e4, 3, 2.5))) +
 
 In this plot, for example, the 95% CI of the posterior overlaps 0 by a pretty large amount
 
-Thus some researchers would conclude that there is not compelling evidence for this particular effect
+Thus some researchers would conclude that there is not compelling evidence for this particular effect, or that the evidence in inconclusive
 
 Notice that I've used 95% for the range here and in the previous examples 
 
-This is without a doubt the most common value, which is carryover from NHST (p < 0.05) and completely arbitrary 
+This is, without a doubt, the most common value, which is carryover from NHST (p < 0.05) and completely arbitrary 
 
 You can use any interval you want to describe the posterior
 
@@ -190,20 +203,29 @@ USE MODEL FROM STEFs EXAMPLE FROM PREVIOUS DAY
 posterior <- rnorm(n = 1000, mean = 5, sd = 3)
 
 # Posterior from int only model (until I get stefs model)
-ar_bayes_int <- brm(articulation_rate ~ 1, data = polite, 
-  file = here("assets", "ar_int"))
+b_mod_00 <- brm(articulation_rate ~ 1, data = polite, 
+  file = here("assets", "b_mod_00"))
+
+post_00 <- posterior_samples(b_mod_00)
 
 # base r example of getting quantile of distribution
 quantile(posterior, c(0.025, 0.975))
+quantile(post_00$b_Intercept, c(0.025, 0.975))
 
-# bayesTestR to simplify
-hdi_ex <- hdi(posterior)
-hdi_ex
-plot(hdi_ex)
+# bayesTestR::hdi to simplify
+hdi_ex1 <- hdi(posterior)
+hdi_ex1
+
+hdi_ex2 <- hdi(post_00$b_Intercept)
+hdi_ex2
+
+# We can also generate a plot from the hdi object
+plot(hdi_ex1)
+plot(hdi_ex2)
 
 # Example with model
-# result <- model_parameters(ar_bayes_int, effects = "all", components = "all")
-# plot(result, show_intercept = T, n_columns = NULL)
+#result <- model_parameters(b_mod_00, effects = "all", components = "all")
+#plot(result, show_intercept = T, n_columns = NULL)
 
 ```
 
@@ -213,25 +235,56 @@ plot(hdi_ex)
 
 
 
+
+
+
 class: title-slide-section-grey, middle
+background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Brosen_windrose.svg/1200px-Brosen_windrose.svg.png)
+background-size: 500px
+background-position: 100% 50%
 
 # .RUred[Probability of direction]
 
-IMAGE PLACEHOLDER
+<!--
+Image of compass
+--> 
 
 ---
+background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Brosen_windrose.svg/1200px-Brosen_windrose.svg.png)
+background-size: 200px
+background-position: 95% 15%
 
 # Probability of direction
 
-IMAGE PLACEHOLDER
-
 ???
 
-Another option decision making is to use the probability of direction, also known as the maximum probability of effect
+Another tool we have for decision making is the probability of direction, also known as the maximum probability of effect
 
 This value can range from 50% to 100% (0.5 - 1.0)
 
+--
+
+<br><br><br><br>
+
+.middle[
+.center[
+## .RUred[The proportion of the posterior that has the same sign as the median of the distribution]
+]
+]
+
+???
+
 It is the proportion of the posterior that has the same sign (that is, if its + or -) as the median of the distribution
+
+--
+
+<br>
+
+<b4ss-blockquote>
+The probability that a given parameter estimate is positive or negative
+</b4ss-blockquote>
+
+???
 
 In simple terms, it tells us the probability that a given parameter estimate is positive or negative
 
@@ -239,7 +292,7 @@ To illustrate, if you have a probability of direction of 100%, then you are 100%
 
 On the other hand, if you obtain a probability of direction of 50%, then the parameter is equally likely to be positive as it is to be negative (that is a lot of uncertainty!)
 
-The pbe is likely the closest equivalent to a p-value
+The pbd is likely the closest equivalent to a p-value
 
 It is quite simple to calculate, so let's look at a few examples...
 
@@ -253,11 +306,30 @@ short practical
 -->
 
 ```{r, include=F}
-test <- p_direction(ar_bayes_int, component = "all")
+test <- p_direction(b_mod_00, component = "all")
 plot(test, show_intercept = T, n_columns = NULL, priors = T)
+
+pd_to_p(0.987)
+p_to_pd(0.01)
 ```
 
+---
+class: center, middle
 
+```{r, pd-p-comparison, fig.width=14, fig.height=8, echo=F}
+tibble(`Prob. of direction` = seq(0.95, 1.0, 0.0025)) %>% 
+  mutate(`p-value` = pd_to_p(`Prob. of direction`)) %>% 
+  ggplot(., aes(x = `p-value`, y = `Prob. of direction`)) + 
+    geom_rect(aes(xmin = 0, xmax = 0.05, ymin = -Inf, ymax = Inf), 
+      fill = "lightblue", alpha = 0.01) + 
+    geom_line() + 
+    geom_point(aes(fill = `p-value` < 0.05), 
+      size = 5, pch = 21, color = "white", stroke = 2) + 
+    scale_fill_manual(name = "p-value < 0.05", 
+      values = c(b4ss_colors[[1]], b4ss_colors[[2]])) + 
+    scale_x_continuous(breaks = seq(0.0, 0.1, 0.01)) + 
+    b4ss_bw(base_size = 26)
+```
 
 
 
@@ -296,7 +368,7 @@ short practical
 -->
 
 ```{r, include=F}
-test <- rope(ar_bayes_int, ci = c(0.9, 0.95), effects = "all", component = "all")
+test <- rope(b_mod_00, ci = c(0.9, 0.95), effects = "all", component = "all")
 plot(test, show_intercept = T, n_columns = NULL, rope_color = "white")
 ```
 
