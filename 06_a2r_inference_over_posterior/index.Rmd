@@ -6,7 +6,7 @@ institute: "LabPhon workshop"
 date: "2021/07/12 (updated: `r Sys.Date()`)"
 output:
   xaringan::moon_reader:
-    css: ["https://learnb4ss.github.io/b4ss-theme/css/b4ss.css", "https://learnb4ss.github.io/b4ss-theme/css/b4ss-fonts.css"]
+    css: ["hygge", "https://learnb4ss.github.io/b4ss-theme/css/b4ss.css", "https://learnb4ss.github.io/b4ss-theme/css/b4ss-fonts.css"]
     lib_dir: libs
     nature:
       beforeInit: ["https://learnb4ss.github.io/b4ss-theme/js/b4ss_xaringan.js"]
@@ -305,7 +305,7 @@ class: title-slide-section-blue, middle, center
 short practical
 -->
 
-```{r, include=F}
+```{r, p-direction, include=F}
 test <- p_direction(b_mod_00, component = "all")
 plot(test, show_intercept = T, n_columns = NULL, priors = T)
 
@@ -424,6 +424,8 @@ For example, consider this plot that illustrates a region of practical equivalen
 
 In this case I established a ROPE of +/- 0.1
 
+Imagine we fit a model and we want to see how much of the 95% credible interval overlaps with our rope
+
 ---
 class: center, middle
 
@@ -444,6 +446,14 @@ p_rope0 +
       ), hjust = 1, size = 7)
 
 ```
+
+???
+
+Here we can see that the posterior mean is `r mean(rope_dist$b1) %>% round(., 2)` and the 95% credible interval ranges from `r quantile(rope_dist$b1, c(0.275, 0.975)) %>% round(., 2)`
+
+Furthermore we see that `r b1$rope_perc * 100`% of the HDI falls within the ROPE
+
+This is visible in the plot with the orange vertical slab
 
 ---
 class: center, middle
@@ -466,6 +476,10 @@ p_rope0 %+% tibble(b1 = rope_dist$b2) +
 
 ```
 
+???
+
+If the posterior falls further from the ROPE, as is the case here, it follows that the % of the HDI within the ROPE also decreases
+
 ---
 class: center, middle
 
@@ -477,7 +491,7 @@ b3 <- rope(rope_dist$b3, range = c(-0.1, 0.1), ci = 0.95) %>% as_tibble %>%
 p_rope0 %+% tibble(b1 = rope_dist$b3) + 
   stat_halfeye(show.legend = F, aes(fill = stat(x < -.1 | x > 0.1))) + 
   scale_fill_manual(name = NULL, 
-      values = b4ss_colors[[1]]) + 
+      values = c(b4ss_colors[[1]], b4ss_colors[[2]])) + 
   labs(x = expression(beta), y = NULL) + 
   annotate("text", x = 2.2, y = 0.5, label = paste0(
       "ROPE = ±0.1\n", 
@@ -489,7 +503,81 @@ p_rope0 %+% tibble(b1 = rope_dist$b3) +
 
 ```
 
+???
 
+We could consider an HDI completely outside our ROPE as compelling evidence for a given effect
+
+It is important to note that the researcher is responsible for determining the range of the ROPE and the width of the credible interval
+
+---
+background-image: url(https://raw.githubusercontent.com/jvcasillas/media/master/teaching/img/confused.png)
+background-size: 400px
+background-position: 95% 50%
+
+# How to establish a ROPE
+
+<br>
+
+.Large[
+- Domain expertise/previous research
+]
+
+???
+
+So how does one go about doing that?
+
+In many cases we have domain expertise regarding what a meaningful effect size might be (e.g., RTs) or we can examine related research
+
+--
+
+.Large[
+- Pilot data
+]
+
+???
+
+It is also possible to collect pilot data
+
+--
+
+.Large[
+- Power analysis
+]
+
+???
+
+Which can be used in conjunction with a power analysis
+
+--
+
+.Large[
+- Rules of thumb, e.g., ±0.1 for standardized <br>variables<sup>1</sup>
+]
+
+.footnote[
+<sup>1</sup> Half of what is considered a small effect using Cohen's D (Cohen, 1988, 2013)  
+]
+
+???
+
+Some researchers also offer rules of thumb, like +/- 0.1 for standardized effect which is half of what Cohen considered a "small effect"
+
+---
+class: middle
+
+# $$\color{black}{\frac{\mu_{1} - \mu_{2}}{\sqrt{\frac{\sigma^2_{1} + \sigma^2_{2}}{2}}}}$$
+
+.footnote[
+Kruschke 2018
+]
+
+???
+
+For AB testing type designs, Kruschke 2018 offers the following formula
+
+The takeaway here, and this is one of the overarching themes of this workshop, is that this requires thinking and planning on the part of the researcher and all decisions should be justified
+
+So let's give this a try in R...
 
 ---
 class: title-slide-section-blue, middle, center
@@ -500,9 +588,14 @@ class: title-slide-section-blue, middle, center
 short practical
 -->
 
-```{r, include=F}
+```{r, rope-ex, include=F}
 test <- rope(b_mod_00, ci = c(0.9, 0.95), effects = "all", component = "all")
 plot(test, show_intercept = T, n_columns = NULL, rope_color = "white")
+
+# How to establish a reasonable rope
+# ?rope_range is helpful
+rope_range(b_mod_00)
+
 ```
 
 
@@ -517,53 +610,59 @@ class: title-slide-section-grey, middle
 
 # Other methods
 
+???
+
+There are other methods for making statistical inferences and many more a being actively developed
+
+I'll briefly mention a few so that you are aware of them and provide links so that you can get more information if you are interested
+
 ---
 
-# Define your hypothesis
+# Other methods
 
-IMAGE PLACEHOLDER
+- Define your hypothesis (`brms::hypothesis()`)
+
+--
+
+- Bayes factors [info](https://easystats.github.io/bayestestR/articles/bayes_factors.html)
+
+- Support intervals [info](https://easystats.github.io/bayestestR/reference/si.html)
 
 ???
 
-Brief explanation and back to R
+Bayes factors represent other methods for decision making, I won't talk about them much but I'll mention that their use is rather controversial... see LINK for a primer and tutorial
 
----
-class: title-slide-section-blue, middle, center
+--
 
-# Live coding
+- Equivalence test [info](https://easystats.github.io/parameters/reference/equivalence_test.lm.html)
 
-<!--
-SHORT PRACTICAL
-brms::hypothesis()
-
-- minor wrangling posteriors (ex. pr that B is > X value)
-- testing hypotheses (pr that B is > X value but using hypothesis function)
--->
-
-
----
-
-# Bayes factors
-
-IMAGE PLACEHOLDER
+- Practical significance [info](https://www.frontiersin.org/articles/10.3389/fpsyg.2019.02767/full)
 
 ???
 
-- Bayes factors (only conceptually)
+Finally, I also wanted to mention equivalence testing, which allows one to see if an estimate and its uncertainty (confidence interval) falls within a ROPE
+
+and practical significance, which is similar (conceptualized as a unidirectional equivalence test)
+
+These type of tests allows one to provide evidence for a null effect, e.g., that two groups behave similarly
 
 ---
 
 # Summary
 
+.Large[
 - Credible intervals
 
 - Probability of direction (maximum probability of effect)
 
 - Region of practical equivalence (ROPE)
 
-- User defined hypotheses
+- Other methods
+]
 
-- Bayes factors
+.footnote[
+Highly recommended reading: https://www.frontiersin.org/articles/10.3389/fpsyg.2019.02767/full
+]
 
 ???
 
@@ -572,6 +671,8 @@ We have touched on some of the many ways in which one can use the posterior for 
 The main focus has been on emphasizing different ways we can use these tools to quantify uncertainty and help us in making decisions
 
 They provide a rich set of tools at the researchers disposal that contrasts with the sole p-value available under a frequentist/NHST framework
+
+Now we will do one last coding demo in which I will show you an easy way to conduct an array of tests with a single function call and you will practice testing your own hypotheses
 
 ---
 class: title-slide-section-blue, middle, center
