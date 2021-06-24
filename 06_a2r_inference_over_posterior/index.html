@@ -16,7 +16,7 @@ class: center, middle, inverse, title-slide
 ## Bayesian inference
 ### Timo Roettger, Stefano Coretta and Joseph Casillas
 ### LabPhon workshop
-### 2021/07/12 (updated: 2021-06-18)
+### 2021/07/12 (updated: 2021-06-24)
 
 ---
 
@@ -29,7 +29,8 @@ class: center, middle, inverse, title-slide
 
 
 
-IMAGE PLACEHOLDER
+background-image: url(https://images.unsplash.com/reserve/oIpwxeeSPy1cnwYpqJ1w_Dufer%20Collateral%20test.jpg?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=1516&amp;q=80)
+background-size: 1200px
 
 ???
 
@@ -41,6 +42,15 @@ Now we will turn our attention to making statistical inferences under a Bayesian
 
 Currently, there are many methods to choose from and I will describe what we believe to be those that are the most common, though this overview will not be exhaustive
 
+You can think of these methods as new tools that we will be putting in our toolbox. 
+
+I don't believe that any single tool is better than the others, though one may be more appropriate for the types of questions you are interested in answering.
+
+---
+class: title-slide-section-grey, middle
+
+# .RUred[Credible intervals]
+
 ---
 
 # Credible intervals
@@ -48,6 +58,8 @@ Currently, there are many methods to choose from and I will describe what we bel
 &lt;img src="index_files/figure-html/credible-intervals-1-1.png" width="1008" style="display: block; margin: auto;" /&gt;
 
 ???
+
+We'll start by talking about credible intervals. 
 
 If you have heard of Bayesian inference before, there is a good chance you have also heard of credible intervals
 
@@ -76,6 +88,8 @@ This is an informative way to quantify uncertainty when describing a posterior d
 
 This is the case with the plot you see here... we're 95% certain that the value of beta falls between 10 and 20
 
+As I alluded to before, you don't get this same type of interpretation with a traditional confidence interval
+
 ---
 class: middle
 
@@ -100,11 +114,11 @@ class: middle
 
 In this plot, for example, the 95% CI of the posterior overlaps 0 by a pretty large amount
 
-Thus some researchers would conclude that there is not compelling evidence for this particular effect
+Thus some researchers would conclude that there is not compelling evidence for this particular effect, or that the evidence in inconclusive
 
 Notice that I've used 95% for the range here and in the previous examples 
 
-This is without a doubt the most common value, which is carryover from NHST (p &lt; 0.05) and completely arbitrary 
+This is, without a doubt, the most common value, which is carryover from NHST (p &lt; 0.05) and completely arbitrary 
 
 You can use any interval you want to describe the posterior
 
@@ -132,25 +146,56 @@ USE MODEL FROM STEFs EXAMPLE FROM PREVIOUS DAY
 
 
 
+
+
+
 class: title-slide-section-grey, middle
+background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Brosen_windrose.svg/1200px-Brosen_windrose.svg.png)
+background-size: 500px
+background-position: 100% 50%
 
 # .RUred[Probability of direction]
 
-IMAGE PLACEHOLDER
+&lt;!--
+Image of compass
+--&gt; 
 
 ---
+background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Brosen_windrose.svg/1200px-Brosen_windrose.svg.png)
+background-size: 200px
+background-position: 95% 15%
 
 # Probability of direction
 
-IMAGE PLACEHOLDER
-
 ???
 
-Another option decision making is to use the probability of direction, also known as the maximum probability of effect
+Another tool we have for decision making is the probability of direction, also known as the maximum probability of effect
 
 This value can range from 50% to 100% (0.5 - 1.0)
 
+--
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+.middle[
+.center[
+## .RUred[The proportion of the posterior that has the same sign as the median of the distribution]
+]
+]
+
+???
+
 It is the proportion of the posterior that has the same sign (that is, if its + or -) as the median of the distribution
+
+--
+
+&lt;br&gt;
+
+&lt;b4ss-blockquote&gt;
+The probability that a given parameter estimate is positive or negative
+&lt;/b4ss-blockquote&gt;
+
+???
 
 In simple terms, it tells us the probability that a given parameter estimate is positive or negative
 
@@ -158,7 +203,7 @@ To illustrate, if you have a probability of direction of 100%, then you are 100%
 
 On the other hand, if you obtain a probability of direction of 50%, then the parameter is equally likely to be positive as it is to be negative (that is a lot of uncertainty!)
 
-The pbe is likely the closest equivalent to a p-value
+The pbd is likely the closest equivalent to a p-value
 
 It is quite simple to calculate, so let's look at a few examples...
 
@@ -173,7 +218,10 @@ short practical
 
 
 
+---
+class: center, middle
 
+&lt;img src="index_files/figure-html/pd-p-comparison-1.png" width="1008" /&gt;
 
 
 
