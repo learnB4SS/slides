@@ -339,22 +339,155 @@ tibble(`Prob. of direction` = seq(0.95, 1.0, 0.0025)) %>%
 
 
 
+
+
 ---
 class: title-slide-section-grey, middle
+background-image: url(https://cdn10.bigcommerce.com/s-sqvei3ff9f/product_images/theme_images/rope-background.jpg?t=1507721858)
+background-size: 1300px
+background-position: 50% 0%
 
-# .RUred[Region of practical <br>equivalence] 
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+# .RUred[Region of practical equivalence] 
 
 ### (ROPE)
 
-IMAGE PLACEHOLDER
+<!--
+img of a rope
+-->
+
+???
+
+The next tool we are going to talk about combines the highest density credible interval with a region of practical equivalence, or a ROPE
 
 ---
+background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR36meNrDaFPK1X3XSpGOg8w5yLiljw46jZ5ZVdnmMecvmCUg2gTyX8j-UE0HNIALZ6OqU&usqp=CAU)
+background-size: 535px
+background-position: 110% 50%
 
 # ROPE
 
-IMAGE PLACEHOLDER
+???
+
+The idea behind the rope is that it is rather pointless in many cases to test whether an effect is equivalent to 0 (effects are rarely exactly 0)
+
+Thus a ROPE allows the researcher to define a range of values which they consider to practically equivalent to a null effect
+
+In other words...
+
+--
+
+.pull-left[
+### .RUred[The ROPE represents the proportion of the HDI of a posterior distribution that lies within a region of practical equivalence]
+
+.footnote[See Kruschke 2010, 2011, 2014]
+]
 
 ???
+
+In many cases we establish this region around a point null of 0
+
+---
+class: center, middle
+
+```{r, rope0, fig.width=14, fig.height=8, echo=F}
+rope_dist <- tibble(
+  b1 = rnorm(1000, 0.3, 0.25), 
+  b2 = rnorm(1000, 0.5, 0.25), 
+  b3 = rnorm(1000, 1, 0.25)
+  )
+
+p_rope0 <- rope_dist %>% 
+  ggplot(., aes(x = b1)) + 
+    geom_rect(aes(xmin = -0.1, xmax = 0.1, ymin = 0, ymax = 1), 
+      fill = "grey90") + 
+    geom_vline(xintercept = 0, lty = 3, size = 1) + 
+    coord_cartesian(xlim = c(-1, 3)) + 
+    scale_fill_manual(name = NULL, 
+      values = c(b4ss_colors[[2]], b4ss_colors[[1]])) + 
+    labs(y = NULL, x = expression(beta)) + 
+    theme_minimal(base_size = 26, base_family = "Times") + 
+    theme(axis.text.y = element_blank(), 
+      panel.grid.major = element_line(colour = 'grey70', size = 0.15),
+      panel.grid.minor = element_line(colour = 'grey70', size = 0.15)
+      )
+
+p_rope0 + 
+  annotate("text", x = 2, y = 0.5, label = "ROPE = ±0.1\nHDI = 95%", 
+    hjust = 1, size = 7)
+
+```
+
+???
+
+For example, consider this plot that illustrates a region of practical equivalence around a point null of 0
+
+In this case I established a ROPE of +/- 0.1
+
+---
+class: center, middle
+
+```{r, rope1, fig.width=14, fig.height=8, echo=F}
+b1 <- rope(rope_dist$b1, range = c(-0.1, 0.1), ci = 0.95) %>% as_tibble %>% 
+  mutate(rope_perc = ROPE_Percentage) %>% 
+  mutate_all(round, digits = 4)
+
+p_rope0 + 
+  stat_halfeye(show.legend = F, aes(fill = stat(x < -.1 | x > 0.1))) + 
+  labs(x = expression(beta), y = NULL) + 
+  annotate("text", x = 2.2, y = 0.5, label = paste0(
+      "ROPE = ±0.1\n", 
+      "Mean = ", mean(rope_dist$b1) %>% round(., 2), 
+      " [", quantile(rope_dist$b1, 0.275) %>% round(., 2), " ", 
+            quantile(rope_dist$b1, 0.975) %>% round(., 2),  "]", 
+      "\n% in ROPE = ", b1$rope_perc * 100, "%"
+      ), hjust = 1, size = 7)
+
+```
+
+---
+class: center, middle
+
+```{r, rope2, fig.width=14, fig.height=8, echo=F}
+b2 <- rope(rope_dist$b2, range = c(-0.1, 0.1), ci = 0.95) %>% as_tibble %>% 
+  mutate(rope_perc = ROPE_Percentage) %>% 
+  mutate_all(round, digits = 4)
+
+p_rope0 %+% tibble(b1 = rope_dist$b2) + 
+  stat_halfeye(show.legend = F, aes(fill = stat(x < -.1 | x > 0.1))) + 
+  labs(x = expression(beta), y = NULL) + 
+  annotate("text", x = 2.2, y = 0.5, label = paste0(
+      "ROPE = ±0.1\n", 
+      "Mean = ", mean(rope_dist$b2) %>% round(., 2), 
+      " [", quantile(rope_dist$b2, 0.275) %>% round(., 2), " ", 
+            quantile(rope_dist$b2, 0.975) %>% round(., 2),  "]", 
+      "\n% in ROPE = ", b2$rope_perc * 100, "%"
+      ), hjust = 1, size = 7)
+
+```
+
+---
+class: center, middle
+
+```{r, rope3, fig.width=14, fig.height=8, echo=F}
+b3 <- rope(rope_dist$b3, range = c(-0.1, 0.1), ci = 0.95) %>% as_tibble %>% 
+  mutate(rope_perc = ROPE_Percentage) %>% 
+  mutate_all(round, digits = 4)
+
+p_rope0 %+% tibble(b1 = rope_dist$b3) + 
+  stat_halfeye(show.legend = F, aes(fill = stat(x < -.1 | x > 0.1))) + 
+  scale_fill_manual(name = NULL, 
+      values = b4ss_colors[[1]]) + 
+  labs(x = expression(beta), y = NULL) + 
+  annotate("text", x = 2.2, y = 0.5, label = paste0(
+      "ROPE = ±0.1\n", 
+      "Mean = ", mean(rope_dist$b3) %>% round(., 2), 
+      " [", quantile(rope_dist$b3, 0.275) %>% round(., 2), " ", 
+            quantile(rope_dist$b3, 0.975) %>% round(., 2),  "]", 
+      "\n% in ROPE = ", b3$rope_perc * 100, "%"
+      ), hjust = 1, size = 7)
+
+```
 
 
 
