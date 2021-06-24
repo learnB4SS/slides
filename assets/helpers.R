@@ -22,6 +22,7 @@ library("patchwork")
 library("RefManageR")
 library("equatiomatic")
 library("fontawesome")
+library("learnB4SS")
 
 # -----------------------------------------------------------------------------
 
