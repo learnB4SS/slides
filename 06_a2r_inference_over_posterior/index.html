@@ -5,6 +5,7 @@
     <meta charset="utf-8" />
     <meta name="author" content="Timo Roettger, Stefano Coretta and Joseph Casillas" />
     <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/hygge.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://learnb4ss.github.io/b4ss-theme/css/b4ss.css" type="text/css" />
     <link rel="stylesheet" href="https://learnb4ss.github.io/b4ss-theme/css/b4ss-fonts.css" type="text/css" />
   </head>
@@ -16,7 +17,7 @@ class: center, middle, inverse, title-slide
 ## Bayesian inference
 ### Timo Roettger, Stefano Coretta and Joseph Casillas
 ### LabPhon workshop
-### 2021/07/12 (updated: 2021-06-18)
+### 2021/07/12 (updated: 2021-06-24)
 
 ---
 
@@ -29,7 +30,8 @@ class: center, middle, inverse, title-slide
 
 
 
-IMAGE PLACEHOLDER
+background-image: url(https://images.unsplash.com/reserve/oIpwxeeSPy1cnwYpqJ1w_Dufer%20Collateral%20test.jpg?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=1516&amp;q=80)
+background-size: 1200px
 
 ???
 
@@ -41,6 +43,15 @@ Now we will turn our attention to making statistical inferences under a Bayesian
 
 Currently, there are many methods to choose from and I will describe what we believe to be those that are the most common, though this overview will not be exhaustive
 
+You can think of these methods as new tools that we will be putting in our toolbox. 
+
+I don't believe that any single tool is better than the others, though one may be more appropriate for the types of questions you are interested in answering.
+
+---
+class: title-slide-section-grey, middle
+
+# .RUred[Credible intervals]
+
 ---
 
 # Credible intervals
@@ -48,6 +59,8 @@ Currently, there are many methods to choose from and I will describe what we bel
 &lt;img src="index_files/figure-html/credible-intervals-1-1.png" width="1008" style="display: block; margin: auto;" /&gt;
 
 ???
+
+We'll start by talking about credible intervals. 
 
 If you have heard of Bayesian inference before, there is a good chance you have also heard of credible intervals
 
@@ -76,6 +89,8 @@ This is an informative way to quantify uncertainty when describing a posterior d
 
 This is the case with the plot you see here... we're 95% certain that the value of beta falls between 10 and 20
 
+As I alluded to before, you don't get this same type of interpretation with a traditional confidence interval
+
 ---
 class: middle
 
@@ -100,11 +115,11 @@ class: middle
 
 In this plot, for example, the 95% CI of the posterior overlaps 0 by a pretty large amount
 
-Thus some researchers would conclude that there is not compelling evidence for this particular effect
+Thus some researchers would conclude that there is not compelling evidence for this particular effect, or that the evidence in inconclusive
 
 Notice that I've used 95% for the range here and in the previous examples 
 
-This is without a doubt the most common value, which is carryover from NHST (p &lt; 0.05) and completely arbitrary 
+This is, without a doubt, the most common value, which is carryover from NHST (p &lt; 0.05) and completely arbitrary 
 
 You can use any interval you want to describe the posterior
 
@@ -132,25 +147,56 @@ USE MODEL FROM STEFs EXAMPLE FROM PREVIOUS DAY
 
 
 
+
+
+
 class: title-slide-section-grey, middle
+background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Brosen_windrose.svg/1200px-Brosen_windrose.svg.png)
+background-size: 500px
+background-position: 100% 50%
 
 # .RUred[Probability of direction]
 
-IMAGE PLACEHOLDER
+&lt;!--
+Image of compass
+--&gt; 
 
 ---
+background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Brosen_windrose.svg/1200px-Brosen_windrose.svg.png)
+background-size: 200px
+background-position: 95% 15%
 
 # Probability of direction
 
-IMAGE PLACEHOLDER
-
 ???
 
-Another option decision making is to use the probability of direction, also known as the maximum probability of effect
+Another tool we have for decision making is the probability of direction, also known as the maximum probability of effect
 
 This value can range from 50% to 100% (0.5 - 1.0)
 
+--
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+.middle[
+.center[
+## .RUred[The proportion of the posterior that has the same sign as the median of the distribution]
+]
+]
+
+???
+
 It is the proportion of the posterior that has the same sign (that is, if its + or -) as the median of the distribution
+
+--
+
+&lt;br&gt;
+
+&lt;b4ss-blockquote&gt;
+The probability that a given parameter estimate is positive or negative
+&lt;/b4ss-blockquote&gt;
+
+???
 
 In simple terms, it tells us the probability that a given parameter estimate is positive or negative
 
@@ -158,7 +204,7 @@ To illustrate, if you have a probability of direction of 100%, then you are 100%
 
 On the other hand, if you obtain a probability of direction of 50%, then the parameter is equally likely to be positive as it is to be negative (that is a lot of uncertainty!)
 
-The pbe is likely the closest equivalent to a p-value
+The pbd is likely the closest equivalent to a p-value
 
 It is quite simple to calculate, so let's look at a few examples...
 
@@ -173,6 +219,11 @@ short practical
 
 
 
+---
+class: center, middle
+
+&lt;img src="index_files/figure-html/pd-p-comparison-1.png" width="1008" /&gt;
+
 
 
 
@@ -185,22 +236,165 @@ short practical
 
 ---
 class: title-slide-section-grey, middle
+background-image: url(https://cdn10.bigcommerce.com/s-sqvei3ff9f/product_images/theme_images/rope-background.jpg?t=1507721858)
+background-size: 1300px
+background-position: 50% 0%
 
-# .RUred[Region of practical &lt;br&gt;equivalence] 
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+# .RUred[Region of practical equivalence] 
 
 ### (ROPE)
 
-IMAGE PLACEHOLDER
-
----
-
-# ROPE
-
-IMAGE PLACEHOLDER
+&lt;!--
+img of a rope
+--&gt;
 
 ???
 
+The next tool we are going to talk about combines the highest density credible interval with a region of practical equivalence, or a ROPE
 
+---
+background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR36meNrDaFPK1X3XSpGOg8w5yLiljw46jZ5ZVdnmMecvmCUg2gTyX8j-UE0HNIALZ6OqU&amp;usqp=CAU)
+background-size: 535px
+background-position: 110% 50%
+
+# ROPE
+
+???
+
+The idea behind the rope is that it is rather pointless in many cases to test whether an effect is equivalent to 0 (effects are rarely exactly 0)
+
+Thus a ROPE allows the researcher to define a range of values which they consider to practically equivalent to a null effect
+
+In other words...
+
+--
+
+.pull-left[
+### .RUred[The ROPE represents the proportion of the HDI of a posterior distribution that lies within a region of practical equivalence]
+
+.footnote[See Kruschke 2010, 2011, 2014]
+]
+
+???
+
+In many cases we establish this region around a point null of 0
+
+---
+class: center, middle
+
+&lt;img src="index_files/figure-html/rope0-1.png" width="1008" /&gt;
+
+???
+
+For example, consider this plot that illustrates a region of practical equivalence around a point null of 0
+
+In this case I established a ROPE of +/- 0.1
+
+Imagine we fit a model and we want to see how much of the 95% credible interval overlaps with our rope
+
+---
+class: center, middle
+
+&lt;img src="index_files/figure-html/rope1-1.png" width="1008" /&gt;
+
+???
+
+Here we can see that the posterior mean is 0.29 and the 95% credible interval ranges from 0.15, 0.79
+
+Furthermore we see that 14.72% of the HDI falls within the ROPE
+
+This is visible in the plot with the orange vertical slab
+
+---
+class: center, middle
+
+&lt;img src="index_files/figure-html/rope2-1.png" width="1008" /&gt;
+
+???
+
+If the posterior falls further from the ROPE, as is the case here, it follows that the % of the HDI within the ROPE also decreases
+
+---
+class: center, middle
+
+&lt;img src="index_files/figure-html/rope3-1.png" width="1008" /&gt;
+
+???
+
+We could consider an HDI completely outside our ROPE as compelling evidence for a given effect
+
+It is important to note that the researcher is responsible for determining the range of the ROPE and the width of the credible interval
+
+---
+background-image: url(https://raw.githubusercontent.com/jvcasillas/media/master/teaching/img/confused.png)
+background-size: 400px
+background-position: 95% 50%
+
+# How to establish a ROPE
+
+&lt;br&gt;
+
+.Large[
+- Domain expertise/previous research
+]
+
+???
+
+So how does one go about doing that?
+
+In many cases we have domain expertise regarding what a meaningful effect size might be (e.g., RTs) or we can examine related research
+
+--
+
+.Large[
+- Pilot data
+]
+
+???
+
+It is also possible to collect pilot data
+
+--
+
+.Large[
+- Power analysis
+]
+
+???
+
+Which can be used in conjunction with a power analysis
+
+--
+
+.Large[
+- Rules of thumb, e.g., ±0.1 for standardized &lt;br&gt;variables&lt;sup&gt;1&lt;/sup&gt;
+]
+
+.footnote[
+&lt;sup&gt;1&lt;/sup&gt; Half of what is considered a small effect using Cohen's D (Cohen, 1988, 2013)  
+]
+
+???
+
+Some researchers also offer rules of thumb, like +/- 0.1 for standardized effect which is half of what Cohen considered a "small effect"
+
+---
+class: middle
+
+# `$$\color{black}{\frac{\mu_{1} - \mu_{2}}{\sqrt{\frac{\sigma^2_{1} + \sigma^2_{2}}{2}}}}$$`
+
+.footnote[
+Kruschke 2018
+]
+
+???
+
+For AB testing type designs, Kruschke 2018 offers the following formula
+
+The takeaway here, and this is one of the overarching themes of this workshop, is that this requires thinking and planning on the part of the researcher and all decisions should be justified
+
+So let's give this a try in R...
 
 ---
 class: title-slide-section-blue, middle, center
@@ -225,53 +419,59 @@ class: title-slide-section-grey, middle
 
 # Other methods
 
+???
+
+There are other methods for making statistical inferences and many more a being actively developed
+
+I'll briefly mention a few so that you are aware of them and provide links so that you can get more information if you are interested
+
 ---
 
-# Define your hypothesis
+# Other methods
 
-IMAGE PLACEHOLDER
+- Define your hypothesis (`brms::hypothesis()`)
+
+--
+
+- Bayes factors [info](https://easystats.github.io/bayestestR/articles/bayes_factors.html)
+
+- Support intervals [info](https://easystats.github.io/bayestestR/reference/si.html)
 
 ???
 
-Brief explanation and back to R
+Bayes factors represent other methods for decision making, I won't talk about them much but I'll mention that their use is rather controversial... see LINK for a primer and tutorial
 
----
-class: title-slide-section-blue, middle, center
+--
 
-# Live coding
+- Equivalence test [info](https://easystats.github.io/parameters/reference/equivalence_test.lm.html)
 
-&lt;!--
-SHORT PRACTICAL
-brms::hypothesis()
-
-- minor wrangling posteriors (ex. pr that B is &gt; X value)
-- testing hypotheses (pr that B is &gt; X value but using hypothesis function)
---&gt;
-
-
----
-
-# Bayes factors
-
-IMAGE PLACEHOLDER
+- Practical significance [info](https://www.frontiersin.org/articles/10.3389/fpsyg.2019.02767/full)
 
 ???
 
-- Bayes factors (only conceptually)
+Finally, I also wanted to mention equivalence testing, which allows one to see if an estimate and its uncertainty (confidence interval) falls within a ROPE
+
+and practical significance, which is similar (conceptualized as a unidirectional equivalence test)
+
+These type of tests allows one to provide evidence for a null effect, e.g., that two groups behave similarly
 
 ---
 
 # Summary
 
+.Large[
 - Credible intervals
 
 - Probability of direction (maximum probability of effect)
 
 - Region of practical equivalence (ROPE)
 
-- User defined hypotheses
+- Other methods
+]
 
-- Bayes factors
+.footnote[
+Highly recommended reading: https://www.frontiersin.org/articles/10.3389/fpsyg.2019.02767/full
+]
 
 ???
 
@@ -280,6 +480,8 @@ We have touched on some of the many ways in which one can use the posterior for 
 The main focus has been on emphasizing different ways we can use these tools to quantify uncertainty and help us in making decisions
 
 They provide a rich set of tools at the researchers disposal that contrasts with the sole p-value available under a frequentist/NHST framework
+
+Now we will do one last coding demo in which I will show you an easy way to conduct an array of tests with a single function call and you will practice testing your own hypotheses
 
 ---
 class: title-slide-section-blue, middle, center
