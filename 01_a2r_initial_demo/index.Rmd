@@ -19,7 +19,6 @@ output:
 ```{r setup, include=FALSE}
 options(htmltools.dir.version=F)
 knitr::opts_chunk$set(fig.retina=2, cache=F, warning=F, message=F)
-polite <- learnB4SS::dataset
 ```
 
 ```{r xaringan-extra-all-the-things, echo=F, eval=F}
@@ -195,6 +194,7 @@ plot_base <- mtcars %>%
   ggplot(., aes(x = drat, y = mpg)) + 
     geom_point(fill = b4ss_colors[[1]], pch = 21, stroke = 0.5, size = 3.5) + 
     labs(y = "y", x = "x") + 
+    coord_cartesian(ylim = c(10, 35)) + 
     b4ss_bw(base_size = 18)
 
 plot_f <- plot_base + 
@@ -303,7 +303,7 @@ We will build our first model in just a second, but first let's get to know the 
 # Get to know the data set
 
 ```{r, get-to-know-1}
-dim(learnB4SS::dataset)
+dim(polite)
 ```
 
 ???
@@ -317,7 +317,7 @@ We can see that the data set has 27 columns (or variables) and 224 observations
 ---
 
 ```{r get-to-know-2, echo=F}
-glimpse(learnB4SS::dataset)
+glimpse(polite)
 ```
 
 ???
