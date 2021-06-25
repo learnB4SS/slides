@@ -6,7 +6,7 @@ institute: "LabPhon workshop"
 date: "2021/07/12 (updated: `r Sys.Date()`)"
 output:
   xaringan::moon_reader:
-    css: ["https://learnb4ss.github.io/b4ss-theme/css/b4ss.css", "https://learnb4ss.github.io/b4ss-theme/css/b4ss-fonts.css"]
+    css: ["hygge", "https://learnb4ss.github.io/b4ss-theme/css/b4ss.css", "https://learnb4ss.github.io/b4ss-theme/css/b4ss-fonts.css"]
     lib_dir: libs
     nature:
       beforeInit: ["https://learnb4ss.github.io/b4ss-theme/js/b4ss_xaringan.js"]
@@ -20,7 +20,42 @@ output:
 options(htmltools.dir.version = FALSE)
 ```
 
+???
+
+Calculating a posterior is computationally costly
+
+This is part of the reason why we didn't start seeing complex Bayesian models until relatively recently
+
+As computational power has increased so has our ability to approximate posterior distributions
+
+Furthermore, we've developed faster methods of sampling from the parameter space
+
+In this penultimate session we are going to build on our intuitions regarding what it means to sample from parameter space and how this is done
+
+---
+
+# So what is parameter space?
+
+---
+
+<br><br>
 
 <iframe src="https://jvcasillas.shinyapps.io/shiny_parameter_space/" style="border:none;" width="100%" height="100%">
+
+---
+
+<iframe src="https://chi-feng.github.io/mcmc-demo/app.html" style="border:none;" width="100%" height="100%">
+
+---
+background-image: url(./libs/dark_density_posterior1.png)
+background-size: contain
+background-color: black
+
+---
+background-image: url(./libs/dark_density_posterior2.png)
+background-size: contain
+background-color: black
+
+
 
 
