@@ -17,7 +17,25 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-options(htmltools.dir.version = FALSE)
+options(htmltools.dir.version=F)
+knitr::opts_chunk$set(fig.retina=2, cache=F, warning=F, message=F)
+```
+
+```{r xaringan-extra-all-the-things, echo=F, eval=F}
+xaringanExtra::use_xaringan_extra(
+  c("tile_view", "panelset", "editable"
+    #"scribble", "search", "webcam"
+    )
+)
+```
+
+```{r, 'helpers', echo=F}
+source(here::here("assets", "helpers.R"))
+```
+
+```{r, load_refs, echo=FALSE, cache=FALSE, warning=F, message=F}
+bib <- ReadBib(here("assets", "b4ss_refs.bib"), check = FALSE)
+ui <- "- "
 ```
 
 ???
@@ -30,21 +48,57 @@ As computational power has increased so has our ability to approximate posterior
 
 Furthermore, we've developed faster methods of sampling from the parameter space
 
-In this penultimate session we are going to build on our intuitions regarding what it means to sample from parameter space and how this is done
+The "meat and potatos" of this workshop has already been served, if you will. 
+At this point you already know quite regarding what BDA is all about
+
+In this penultimate session we are going to build on our intuitions regarding what it means to sample from parameter space and how this is done, but know that you have already finished the principle components of this workshop. 
+This final session is merely to give you more of an idea of how some of the "under the hood" machinery works as you move forward as Bayesians
 
 ---
+class: center, middle
 
 # So what is parameter space?
+
+???
+
+So, what is parameter space?
+
+You  may have noticed that I say this quite a bit
+
+---
+class: middle, center
+
+```{r, data-space, echo=F, fig.width=12}
+# Set seed to match shiny app data
+set.seed(20210302)
+dat <- tibble(
+  x = rnorm(25, 0, 1), 
+  y = 0 + x * 0.5 + rnorm(25, 0, 1)
+  )
+
+# Fit model
+mod <- lm(y ~ x, data = dat)
+
+# Data space plot
+broom::augment(mod) %>% 
+  ggplot(., aes(x = x, y = y)) + 
+    geom_vline(xintercept = 0, lty = 3) + 
+    geom_hline(yintercept = 0, lty = 3) + 
+    geom_point(aes(fill = .resid), pch = 21, size = 6, show.legend = F) + 
+    scale_fill_gradient2() + 
+    geom_abline(intercept = coef(mod)[1], slope = coef(mod)[2], 
+                color = "#cc0033", size = 1.2) + 
+    coord_cartesian(xlim = c(-2.5, 2.5), ylim = c(-2.5, 2.5)) + 
+    labs(title = "Data space") + 
+    b4ss_bw(base_size = 24)
+
+```
 
 ---
 
 <br><br>
 
 <iframe src="https://jvcasillas.shinyapps.io/shiny_parameter_space/" style="border:none;" width="100%" height="100%">
-
----
-
-<iframe src="https://chi-feng.github.io/mcmc-demo/app.html" style="border:none;" width="100%" height="100%">
 
 ---
 background-image: url(./libs/dark_density_posterior1.png)
@@ -56,6 +110,9 @@ background-image: url(./libs/dark_density_posterior2.png)
 background-size: contain
 background-color: black
 
+---
+
+<iframe src="https://chi-feng.github.io/mcmc-demo/app.html" style="border:none;" width="100%" height="100%">
 
 
 
