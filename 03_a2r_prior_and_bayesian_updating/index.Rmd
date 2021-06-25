@@ -1,6 +1,6 @@
 ---
 title: "Bayesian Data <br>Analysis<br> for <br>Speech Sciences"
-subtitle: "Bayesian updating"
+subtitle: "Priors and Bayesian updating"
 author: "Timo Roettger, Stefano Coretta and Joseph Casillas"
 institute: "LabPhon workshop"
 date: "2021/07/12 (updated: `r Sys.Date()`)"
@@ -207,10 +207,9 @@ The beta is one of them. It's bounded between 0 and 1, used for proportions, per
 
 ---
 
-# Describing probabilities
+class: middle
 
-[embed seeing theory prob distr normal]
-
+<iframe src="https://seeing-theory.brown.edu/probability-distributions/index.html#section2" style="border:none;" width="100%" height="100%">
 
 ???
 
@@ -239,13 +238,19 @@ class: middle
 (While here I give a real-world example: with f0.)
 
 ---
+
 class: center middle
 
-```{r norm, echo=FALSE}
+```{r f0-prior, echo=FALSE, fig.width=7, fig.height=4, out.width="800px", fig.retina=2, fig.align="center"}
 x <- seq(0, 400)
 ggplot() +
   aes(x = x, y = dnorm(x, 200, 50)) +
-  geom_line()
+  geom_line(size = 2) +
+  labs(
+    x = "f0 (Hz)", y = "Density",
+    title = "Prior of the mean f0",
+    subtitle = expression(paste(mu, "=200", ", ", sigma, "=50"))
+  )
 ```
 
 ???
@@ -292,7 +297,39 @@ Both prior and evidence are probability distributions.
 
 ---
 
-[embed seeing theory bayesian update]
+class: middle center
+
+![](img/clear-night.png)
+
+---
+
+class: middle center
+
+![](img/one-craft.png)
+
+---
+
+class: middle center
+
+![](img/clear-night.png)
+
+---
+
+class: middle center
+
+![](img/three-crafts.png)
+
+---
+
+class: middle center
+
+![](img/many-crafts.png)
+
+---
+
+class: middle
+
+<iframe src="https://seeing-theory.brown.edu/bayesian-inference/index.html#section3" style="border:none;" width="100%" height="100%">
 
 ---
 
@@ -340,7 +377,7 @@ This Normal is the prior probability distribution (or simply prior) of the mean.
 
 ---
 
-# Prior probability distribution
+# Prior belief as probability distributions
 
 <span style="font-size:3em;">$$\text{art_rate}_i \sim Normal(\mu, \sigma)$$</span>
 
@@ -392,5 +429,6 @@ We will see more about priors and how to visualise them tomorrow.
 ---
 
 class: inverse center middle
+background-image: url("img/code-matrix.jpg")
 
-# LIVE CODING
+# <span style="font-size:3em;">LIVE CODING</span>
