@@ -1,6 +1,6 @@
 ---
 title: "Bayesian Data <br>Analysis<br> for <br>Speech Sciences"
-subtitle: "More on priors and likelihoods"
+subtitle: "More on priors"
 author: "Timo Roettger, Stefano Coretta and Joseph Casillas"
 institute: "LabPhon workshop"
 date: "2021/07/12 (updated: `r Sys.Date()`)"
@@ -19,29 +19,4 @@ output:
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
 ```
-
-# Slide title
-
-## H2 - Roboto Bold
-
-### H3 - Roboto regular
-
-body - Roboto
-
-[link color](https://learnB4SS.github.io)
-
----
-class: inverse
-
-# Inverse color slide
-
----
-background-image: url(https://raw.githubusercontent.com/jvcasillas/media/master/rstats/gifs/bayes_theorem.gif)
-background-size: contain
-
---
-background-image: url(https://raw.githubusercontent.com/jvcasillas/media/master/rstats/memes/bayesian_bayes_theorem_desc.png)
-background-size: contain
-
-
 
