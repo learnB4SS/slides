@@ -13,41 +13,334 @@
 class: center, middle, inverse, title-slide
 
 # Bayesian Data <br>Analysis<br> for <br>Speech Sciences
-## Bayesian updating
+## Priors and Bayesian updating
 ### Timo Roettger, Stefano Coretta and Joseph Casillas
 ### LabPhon workshop
-### 2021/07/12 (updated: 2021-06-04)
+### 2021/07/12 (updated: 2021-06-25)
 
 ---
 
 
 
 
-# Slide title
+class: middle
 
-## H2 - Roboto Bold
+.pull-left[
+![](img/06-rainy-umbrella-humid.svg)
+]
 
-### H3 - Roboto regular
+.pull-right[
+![](img/01-sunny.svg)
+]
 
-body - Roboto
+???
 
-[link color](https://learnB4SS.github.io)
+We are faced every day with probabilities. Just think about the weather forecast.
+
+There is a 70% prob that it will rain today. Prob of an event occurring.
+
+What about complex events? =&gt; list of probs.
+
+(I might want to introduce random variables here... with an extra slide)
 
 ---
-class: inverse
 
-# Inverse color slide
+# Grubabilities
+
+&amp;nbsp;
+
+.center[
+![:scale 90%](img/grubabilities.png)
+]
+
+???
+
+Lists of probs are probability distributions.
+
+A list of values with corresponding probability.
 
 ---
-background-image: url(https://raw.githubusercontent.com/jvcasillas/media/master/rstats/gifs/bayes_theorem.gif)
-background-size: contain
 
---
-background-image: url(https://raw.githubusercontent.com/jvcasillas/media/master/rstats/memes/bayesian_bayes_theorem_desc.png)
-background-size: contain
+# Discrete and continuous
+
+.center[
+![:scale 80%](img/discr-cont-probs.png)
+]
+
+???
+
+Depending on the nature of the values a variable can take, there are 2 types of probs.
 
 
 
+---
+
+# Discrete probability distributions
+
+.center[
+![:scale 60%](img/dice.png)
+]
+
+???
+
+Counting as probability. Fractions as probability.
+
+---
+
+# Discrete probability distributions
+
+&lt;img src="index_files/figure-html/discs-p-1.png" width="800px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Continuous probability distributions
+
+&lt;img src="index_files/figure-html/cont-p-1.png" width="800px" style="display: block; margin: auto;" /&gt;
+
+???
+
+With cont probs we cannot count for all possible values (0.0, 0.00, 0.000, 0.000...) and we cannot assign a prob to any specific value.
+
+Instead we can assign a prob to a range of values.
+
+---
+
+# Continuous probability distributions
+
+&lt;img src="index_files/figure-html/cont-p-2-1.png" width="800px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Continuous probability distributions
+
+&lt;img src="index_files/figure-html/cont-p-3-1.png" width="800px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Continuous probability distributions
+
+&lt;img src="index_files/figure-html/cont-p-4-1.png" width="800px" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Continuous probability distributions
+
+&lt;img src="index_files/figure-html/cont-p-5-1.png" width="800px" style="display: block; margin: auto;" /&gt;
+
+???
+
+There are many other types of cont prob distrs.
+
+The beta is one of them. It's bounded between 0 and 1, used for proportions, percentages.
+
+---
+
+class: middle
+
+&lt;iframe src="https://seeing-theory.brown.edu/probability-distributions/index.html#section2" style="border:none;" width="100%" height="100%"&gt;
+
+???
+
+But how do we describe prob distrs? We can't make a list of all values and probs.
+
+Instead, we specify the value of a few parameters that describe the distribution in a succinct way.
+
+(The example from seeing theory shows that with different values you get different "shapes")
+
+---
+class: middle
+
+&lt;span style="font-size:3.5em;"&gt;$$y_i \sim Normal(\mu, \sigma)$$&lt;/span&gt;
+
+???
+
+(Here I explain the simple formula of a Gauss distr.)
+
+---
+class: middle
+
+&lt;span style="font-size:3.5em;"&gt;$$\text{f0}_i \sim Normal(200, 50)$$&lt;/span&gt;
+
+???
+
+(While here I give a real-world example: with f0.)
+
+---
+
+class: center middle
+
+&lt;img src="index_files/figure-html/f0-prior-1.png" width="800px" style="display: block; margin: auto;" /&gt;
+
+???
+
+Nothing new here. Just a distribution as we've seen before.
+
+(Show them how that looks like.)
+
+---
+
+# Memory loss
+
+.center[
+![:scale 40%](img/Goldfish-MEME.png)
+]
+
+&lt;span style="font-size:10pt;"&gt;https://thinking.umwblogs.org/2020/02/26/goldfish-memory/&lt;/span&gt;
+
+???
+
+Freq stats forgets about the past (memory loss).
+
+Another important component of Bayesian analysis is prior knowledge (you've seen that in B theorem).
+
+We can take prior knowledge or belief into consideration in what is called "Bayesian belief update".
+
+---
+
+# Bayesian belief update
+
+.center[
+![:scale 60%](img/prior-update.png)
+]
+
+???
+
+How do we ensure that prior knowledge is not lost?
+
+You've seen in 01 that Bayesian analysis is about estimating the post distr of the variable of interest.
+
+The post distr is (roughly) the combination of the prior belief and the evidence derived from the data (remember Bayes Theorem).
+
+Both prior and evidence are probability distributions.
+
+---
+
+class: middle center
+
+![](img/clear-night.png)
+
+---
+
+class: middle center
+
+![](img/one-craft.png)
+
+---
+
+class: middle center
+
+![](img/clear-night.png)
+
+---
+
+class: middle center
+
+![](img/three-crafts.png)
+
+---
+
+class: middle center
+
+![](img/many-crafts.png)
+
+---
+
+class: middle
+
+&lt;iframe src="https://seeing-theory.brown.edu/bayesian-inference/index.html#section3" style="border:none;" width="100%" height="100%"&gt;
+
+---
+
+# Prior belief as probability distributions
+
+&amp;nbsp;
+
+&lt;span style="font-size:3em;"&gt;$$\text{art_rate}_i \sim Normal(\mu, \sigma)$$&lt;/span&gt;
+
+???
+
+Our prior belief about articulation rate is that it is distributed according to a Normal (aka Gaussian) distr.
+
+The Normal has two parameters: mean, SD.
+
+Here we are trying to estimate these parameters.
+
+---
+
+# Prior belief as probability distributions
+
+&lt;span style="font-size:3em;"&gt;$$\text{art_rate}_i \sim Normal(\mu, \sigma)$$&lt;/span&gt;
+
+&lt;span style="font-size:3em;"&gt;$$\mu = ...?$$&lt;/span&gt;
+
+???
+
+We do have an idea of what the mean could be like but we are not certain.
+
+When you are not certain, you make a list of values and their prob, i.e. a prob distr!
+
+---
+
+# Prior belief as probability distributions
+
+&lt;span style="font-size:3em;"&gt;$$\text{art_rate}_i \sim Normal(\mu, \sigma)$$&lt;/span&gt;
+
+&lt;span style="font-size:3em;"&gt;$$\mu \sim Normal(\mu_1, \sigma_1)$$&lt;/span&gt;
+
+???
+
+Usually, we assume the mean to be a value taken from another Normal distribution (with its mean and SD).
+
+This Normal is the prior probability distribution (or simply prior) of the mean.
+
+---
+
+# Prior belief as probability distributions
+
+&lt;span style="font-size:3em;"&gt;$$\text{art_rate}_i \sim Normal(\mu, \sigma)$$&lt;/span&gt;
+
+&lt;span style="font-size:3em;"&gt;$$\mu \sim Normal(0, \sigma_1)$$&lt;/span&gt;
+
+???
+
+We will talk about types of priors later. For now it's sufficient to remember that a conservative approach (which is what we want) is to set `\(\mu_1\)` to 0.
+
+What about `\(\sigma_1\)`?
+
+---
+
+# 68–95–99.7 rule
+
+.center[
+![:scale 50%](img/Empirical_rule_histogram.svg)
+]
+???
+
+As a general rule, plus/minus two times the SD ($\sigma_1$) covers 95% of the distribution, which means we are 95% confident that the value lies within that range.
+
+Let's be generous and assume that the mean articulation rate will not be greater than 20 syls per sec.
+
+20/2 = 10 (remember, two times the SD), so we can set `\(\sigma_1\)` to 10.
+
+---
+
+# Seeing is believing
+
+&lt;img src="index_files/figure-html/prior-1-1.png" width="800px" style="display: block; margin: auto;" /&gt;
+
+???
+
+Visualising priors is important, because it's easier to grasp its meaning when you can actually see the shape of the distribution.
+
+We will see more about priors and how to visualise them tomorrow.
+
+---
+
+class: inverse center middle
+background-image: url("img/code-matrix.jpg")
+
+# &lt;span style="font-size:3em;"&gt;LIVE CODING&lt;/span&gt;
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
