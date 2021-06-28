@@ -297,36 +297,6 @@ Both prior and evidence are probability distributions.
 
 ---
 
-class: middle center
-
-![](img/clear-night.png)
-
----
-
-class: middle center
-
-![](img/one-craft.png)
-
----
-
-class: middle center
-
-![](img/clear-night.png)
-
----
-
-class: middle center
-
-![](img/three-crafts.png)
-
----
-
-class: middle center
-
-![](img/many-crafts.png)
-
----
-
 class: middle
 
 <iframe src="https://seeing-theory.brown.edu/bayesian-inference/index.html#section3" style="border:none;" width="100%" height="100%">
