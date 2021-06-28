@@ -629,13 +629,30 @@ short practical
 -->
 
 ```{r, rope-ex, include=F}
-test <- rope(b_mod_00, ci = c(0.9, 0.95), effects = "all", component = "all")
-plot(test, show_intercept = T, n_columns = NULL, rope_color = "white")
+# Like before, we can operate on a single distribution stored in a vector
+# The `rope` function will calculate the proportion of the posterior that falls 
+# within our rope range. 
+rope(posterior)
 
-# How to establish a reasonable rope
-# ?rope_range is helpful
-rope_range(b_mod_00)
+# We can set the rope_range and the size of the CI
+rope(posterior, rope_range = c(-0.1, 0.1), ci = 0.95)
 
+# The default is set to 95% and +/-0.1, unless the input is a Bayesian model
+# In that case, the function `rope_range` is used to calculate a ROPE 
+# (following Kruschke 2018, see ?rope_range). 
+rope_range(b_mod_01)
+
+# Let's run it on our model
+rope_on_mod01 <- rope(b_mod_01, ci = 0.95)
+rope_on_mod01
+
+# There are printing methods for rope objects
+plot(rope_on_mod01, show_intercept = T)
+
+# We can also set multiple ROPEs
+rope_on_mod02 <- rope(b_mod_01, ci = c(0.8, 0.85, 0.9, 0.95))
+rope_on_mod02
+plot(rope_on_mod02)
 ```
 
 
