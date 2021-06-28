@@ -198,7 +198,7 @@ CI Practical: Describe posteriors as a way to do inference
 USE MODEL FROM STEFs EXAMPLE FROM PREVIOUS DAY
 -->
 
-```{r, credible-intervals, include=F}
+```{r, credible-intervals, include=F, eval=F}
 
 # Fake posterior (for ex.)
 posterior <- rnorm(n = 1000, mean = 5, sd = 3)
@@ -239,7 +239,7 @@ plot(hdi_ex2)
 
 
 # Now we repeat this process with yesterdays model
-b_mod_01 <- readRDS(here("assets", "m1.rds"))
+b_mod_01 <- readRDS(here("assets", "b_mod_01.rds"))
 post_01 <- posterior_samples(b_mod_01)
 
 quantile(post_01$b_attitudepol, c(0.025, 0.975))
@@ -330,7 +330,7 @@ class: title-slide-section-blue, middle, center
 short practical
 -->
 
-```{r, p-direction, include=F}
+```{r, p-direction, include=F, eval=F}
 # We can use the p_direction function to calculate the PD (PME) on a vector
 p_direction(posterior)
 
@@ -628,7 +628,7 @@ class: title-slide-section-blue, middle, center
 short practical
 -->
 
-```{r, rope-ex, include=F}
+```{r, rope-ex, include=F, eval=F}
 # Like before, we can operate on a single distribution stored in a vector
 # The `rope` function will calculate the proportion of the posterior that falls 
 # within our rope range. 
@@ -736,8 +736,3 @@ class: title-slide-section-blue, middle, center
 
 # Live coding
 
-<!--
-PRACTICAL (longer): Run model on Bodo’s data with prepared RMarkdown
-
-think of new hypotheses to test, use your favorite method (or all of them)
---> 
