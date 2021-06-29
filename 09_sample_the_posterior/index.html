@@ -17,7 +17,7 @@ class: center, middle, inverse, title-slide
 ## Sampling from the posterior
 ### Timo Roettger, Stefano Coretta and Joseph Casillas
 ### LabPhon workshop
-### 2021/07/12 (updated: 2021-06-25)
+### 2021/07/06 (updated: 2021-06-29)
 
 ---
 
@@ -26,6 +26,37 @@ class: center, middle, inverse, title-slide
 
 
 
+
+
+
+
+
+# Model assessment
+
+### Effective sample size and rhat
+
+- brms output
+	- ess
+	- rhat
+
+
+---
+
+# Model assessment
+
+### chains
+
+- chains assessment
+
+---
+
+# Model assessment
+
+- divergences
+
+---
+
+# Sampling
 
 
 
@@ -84,6 +115,26 @@ background-color: black
 
 
 
+&lt;!--
+If there’s a random way to do something, there’s usually a less random way that is both better and requires more thought. Instead of making random proposals, suppose instead that you run a physics simulation. This is going to sound crazy, but it isn’t. Your vector of parameters is now a particle in n-dimensional space. The surface in this space is a giant n-dimensional bowl. The shape of the bowl is determined by the shape of the logarithm of the target distribution. If the target is a nice Gaussian, for example, then the log-Gaussian is a smooth parabolic bowl like this (in one-dimension):
+
+
+To make things a little crazier, suppose that this surface is frictionless. Now what we do is flick the particle in a random direction. It will frictionlessly flow across the bowl, eventually turning around. If we take samples of the particle’s position along its path, before flicking it off in another random trajectory, then we can learn about the shape of the surface.
+
+This is the principle behind Hamiltonian Monte Carlo. It will be easier to see it in action. Here is another simulation, this time using Hamiltonian Monte Carlo, again on the two-dimensional Gaussian target. The paths are flicks of the particle, and the green arrows again represent accepted proposals.
+
+Now the proposals are both within the high-probability region of the target—so many fewer proposals are rejected—and the proposals can get far away from their starting point, so that the chain efficiently explores the whole shape of the target in less time. Effectively, it flows across the target and maps out its whole shape much faster.
+
+The cost of all this elegance is needing more information about the target. Hamiltonian Monte Carlo does a lot more calculation. But it also needs fewer samples to get a good image of the target. 
+--&gt;
+
+
+
+Hoffman and Gelman (2011) “The No-U-Turn Sampler: Adaptively Setting Path Lengths in Hamiltonian Monte Carlo.” arxiv.org/abs/1111.4246
+
+Betancourt. “Conceptual Introduction to Hamiltonian Monte Carlo” arxiv.org/abs/1701.02434
+
+http://elevanth.org/blog/2017/11/28/build-a-better-markov-chain/
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
