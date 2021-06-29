@@ -9,7 +9,7 @@ learnB4SS workshop slides
 -   [Bayes theorem - How does it
     work?](https://learnb4ss.github.io/slides/02_bayes_theorem/index.pdf)
 -   [Application to regression II - Priors and Bayesian
-    updating](https://learnb4ss.github.io/slides/03_a2r_prior_and_bayesian_updating/index.html)
+    updating](https://learnb4ss.github.io/slides/03_a2r_priors_and_bayesian_updating/index.html)
 -   [NHST vs. Bayesian
     inference](https://learnb4ss.github.io/slides/04_nhst_vs_bayesian_inference/index.pdf)
 
@@ -20,9 +20,9 @@ learnB4SS workshop slides
 -   [Application to regression III - More Bayesian
     inference](https://learnb4ss.github.io/slides/06_a2r_inference_over_posterior/index.html)
 -   [More on
-    priors](https://learnb4ss.github.io/slides/07_a2r_leveling_up/index.html)
+    priors](https://learnb4ss.github.io/slides/07_more_priors/index.html)
 -   [Application to regression IV - Leveling
-    up](https://learnb4ss.github.io/slides/08_more_priors_likelihoods/index.pdf)
+    up](https://learnb4ss.github.io/slides/08_a2r_leveling_up/index.pdf)
 -   [Sampling from the
     posterior](https://learnb4ss.github.io/slides/09_sample_the_posterior/index.html)
 -   [Wrap up](https://learnb4ss.github.io/slides/10_wrap_up/index.html)
