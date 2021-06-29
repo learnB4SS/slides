@@ -3,7 +3,7 @@ title: "Bayesian Data <br>Analysis<br> for <br>Speech Sciences"
 subtitle: "Sampling from the posterior"
 author: "Timo Roettger, Stefano Coretta and Joseph Casillas"
 institute: "LabPhon workshop"
-date: "2021/07/12 (updated: `r Sys.Date()`)"
+date: "2021/07/06 (updated: `r Sys.Date()`)"
 output:
   xaringan::moon_reader:
     css: ["hygge", "https://learnb4ss.github.io/b4ss-theme/css/b4ss.css", "https://learnb4ss.github.io/b4ss-theme/css/b4ss-fonts.css"]
@@ -39,12 +39,32 @@ ui <- "- "
 ```
 
 
+# Model assessment
+
+### Effective sample size and rhat
+
 - brms output
 	- ess
 	- rhat
+
+
+---
+
+# Model assessment
+
+### chains
+
 - chains assessment
+
+---
+
+# Model assessment
+
 - divergences
-- sampling
+
+---
+
+# Sampling
 
 
 
