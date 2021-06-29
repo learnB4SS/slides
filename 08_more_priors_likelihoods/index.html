@@ -19,6 +19,7 @@ class: center, middle, inverse, title-slide
 ### LabPhon workshop
 ### 2021/07/06 (updated: 2021-06-29)
 
+
 ---
 
 
@@ -53,11 +54,9 @@ class: center, middle, inverse, title-slide
 
 ---
 
-# Regularising priors
+by [Kristoffer Magnusson](https://rpsychologist.com/)
 
-by Nan Xiao | 肖楠
-
-&lt;iframe src="https://nanx.shinyapps.io/conjugate-normal-umkv/" style="border:none;" width="100%" height="80%"&gt;
+&lt;iframe src="https://rpsychologist.com/d3/bayes/" style="border:none;" width="100%" height="80%"&gt;
 
 ---
 
@@ -80,6 +79,65 @@ Use **weakly informative priors**.
 # Prior predictive checks
 
 
+```r
+my_priors &lt;- c(
+  prior(normal(0, 15), class = Intercept),
+  prior(normal(0, 10), class = b, coef = attitudepol),
+  prior(cauchy(0, 1), class = sigma)
+)
+
+b_mod_01_pripc &lt;- brm(
+  articulation_rate ~ attitude,
+  prior = my_priors,
+  sample_prior = "only",
+  data = polite,
+  file = here::here("assets/b_mod_01_pripc")
+)
+```
+
+---
+
+# Prior predictive checks
+
+
+```r
+conditional_effects(b_mod_01_pripc)
+```
+
+&lt;img src="index_files/figure-html/prior-pred-checks-plot-1.png" width="800px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# BRM with non-Gaussian distributions
+
+
+```r
+my_priors &lt;- c(
+  prior(normal(0, 3), class = Intercept),
+  prior(normal(0, 1), class = b, coef = attitudepol),
+  prior(cauchy(0, 0.1), class = sigma)
+)
+
+b_mod_02_pripc &lt;- brm(
+  articulation_rate ~ attitude,
+  prior = my_priors,
+  sample_prior = "only",
+  data = polite,
+  family = lognormal(),
+  file = here::here("assets/b_mod_02_pripc")
+)
+```
+
+---
+
+# BRM with non-Gaussian distributions
+
+
+```r
+conditional_effects(b_mod_02_pripc)
+```
+
+&lt;img src="index_files/figure-html/prior-pred-checks-log-normal-plot-1.png" width="800px" style="display: block; margin: auto;" /&gt;
 
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
