@@ -139,9 +139,6 @@ background-image: url(./libs/chain2.png)
 background-size: 300px
 background-position: 100% 0%
 
-
-
-
 ---
 background-image: url(https://d23.com/app/uploads/2018/11/1180w-600h_112918_mira-royal-detective-announce-780x440.jpg)
 background-size: 800px
@@ -210,7 +207,13 @@ background-color: black
 
 &lt;iframe src="https://chi-feng.github.io/mcmc-demo/app.html" style="border:none;" width="100%" height="100%"&gt;
 
+---
 
+# Model assessment
+
+### Dealing with divergencies
+
+HILL IMAGE
 
 &lt;!--
 If there’s a random way to do something, there’s usually a less random way that is both better and requires more thought. Instead of making random proposals, suppose instead that you run a physics simulation. This is going to sound crazy, but it isn’t. Your vector of parameters is now a particle in n-dimensional space. The surface in this space is a giant n-dimensional bowl. The shape of the bowl is determined by the shape of the logarithm of the target distribution. If the target is a nice Gaussian, for example, then the log-Gaussian is a smooth parabolic bowl like this (in one-dimension):
@@ -225,16 +228,19 @@ Now the proposals are both within the high-probability region of the target—so
 The cost of all this elegance is needing more information about the target. Hamiltonian Monte Carlo does a lot more calculation. But it also needs fewer samples to get a good image of the target. 
 --&gt;
 
+---
 
+# Model assessment
 
-Hoffman and Gelman (2011) “The No-U-Turn Sampler: Adaptively Setting Path Lengths in Hamiltonian Monte Carlo.” arxiv.org/abs/1111.4246
+### More information
 
-Betancourt. “Conceptual Introduction to Hamiltonian Monte Carlo” arxiv.org/abs/1701.02434
+- Hoffman and Gelman (2011) “The No-U-Turn Sampler: Adaptively Setting Path Lengths in Hamiltonian Monte Carlo.” arxiv.org/abs/1111.4246
 
-http://elevanth.org/blog/2017/11/28/build-a-better-markov-chain/
+- Betancourt. “Conceptual Introduction to Hamiltonian Monte Carlo” arxiv.org/abs/1701.02434
 
+- http://elevanth.org/blog/2017/11/28/build-a-better-markov-chain/
 
-More on Rhat and Bulk ESS and Tail ESS: Vehtari et al. (2020)
+- More on Rhat and Bulk ESS and Tail ESS: Vehtari et al. (2020)
 
 ---
 count: false
