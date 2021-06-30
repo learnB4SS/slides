@@ -32,6 +32,7 @@ xaringanExtra:::use_freezeframe()
 
 ```{r, 'helpers', echo=F}
 source(here::here("assets", "helpers.R"))
+b_mod_01 <- readRDS(here("assets", "b_mod_01.rds"))
 ```
 
 ```{r, load_refs, echo=FALSE, cache=FALSE, warning=F, message=F}
@@ -43,20 +44,6 @@ count: false
 background-image: url(./libs/mira1.png)
 background-size: contain
 background-position: 50% 100%
-
----
-
-count: false
-background-image: url(./libs/mira2.png)
-background-size: 800px
-background-position: 50% 100%
-
-
----
-
-count: false
-background-image: url(https://d23.com/app/uploads/2018/11/1180w-600h_112918_mira-royal-detective-announce-780x440.jpg)
-background-size: contain
 
 ???
 
@@ -74,21 +61,80 @@ We will get a good introduction to the topic and I will include some references 
 
 # Model assessment
 
-### Effective sample size and rhat
+### Rhat and effective sample size
 
-- brms output
-	- ess
-	- rhat
-	
+--
+
+```{r, print-brms-model, echo=F}
+summary(b_mod_01)
+#pp_check(b_mod_01, nsamples = 200)
+```
+
+--
+
+background-image: url(./libs/mira2.png), url(https://raw.githubusercontent.com/jvcasillas/media/master/general/img/circle.png)
+background-size: 800px, 410px
+background-position: 150% 50%, 72% 72%
+
 ---
+
+# Model assessment
+
+### Rhat and effective sample size
+
+--
+
+```{r, print-bad-brms-model, echo=F}
+bad_priors <- c(
+  prior(normal(0, 0.001), class = Intercept),
+  prior(normal(0, 0.001), class = b),
+  prior(normal(0, 0.001), class = sigma)
+)
+
+b_mod_01_bad_priors <- brm(
+  formula = articulation_rate ~ attitude, 
+  prior = bad_priors, 
+  data = polite, 
+  control = list(adapt_delta = 0.25), 
+  file = here("assets", "b_mod_01_bad_priors")
+)
+
+#pp_check(b_mod_01_bad_priors, nsamples = 200)
+summary(b_mod_01_bad_priors)
+
+```
+
+--
+
+background-image: url(./libs/mira2.png), url(https://raw.githubusercontent.com/jvcasillas/media/master/general/img/circle.png)
+background-size: 800px, 410px
+background-position: 150% 50%, 72% 72%
+
+---
+class: inverse
+background-image: url(./libs/warning.png)
+background-size: contain
+
+---
+background-image: url(./libs/chain1.png)
+background-size: contain
 
 # Model assessment
 
 ### chains
 
-- chains assessment
+---
+background-image: url(./libs/chain2.png)
+background-size: 300px
+background-position: 100% 0%
+
+
+
 
 ---
+background-image: url(https://d23.com/app/uploads/2018/11/1180w-600h_112918_mira-royal-detective-announce-780x440.jpg)
+background-size: 800px
+background-position: 150% 50%
 
 # Model assessment
 
@@ -200,6 +246,8 @@ Betancourt. “Conceptual Introduction to Hamiltonian Monte Carlo” arxiv.org/a
 
 http://elevanth.org/blog/2017/11/28/build-a-better-markov-chain/
 
+
+More on Rhat and Bulk ESS and Tail ESS: Vehtari et al. (2020)
 
 ---
 count: false
