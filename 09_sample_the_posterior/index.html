@@ -41,17 +41,86 @@ In this session we are going to talk about model assessment
 
 That is, what to do after you have run your model and you want to know about goodness of fit
 
-Specifically we will talk about posterior predictive checks, chains, effective sample size, rhat, and divergent transitions
+We are going to talk about some diagnostics like Rhat and effective sample size, as well as best practices for assessing chains, and correcting for divergent transitions
 
-The purpose of this session is to help you build intuition about how to know when your model is poor
+The purpose of this session is to help you build intuition about how to know when your model is poor, and luckily BRMS makes that quite easy to do
 
-We will get a good introduction to the topic and I will include some references at the end for further reading
+If you have young children or are fans of disney junior, then you might recognize Mira, royal detective. 
+
+If not, Mira is the star of my daughters favorite mystery cartoon. 
+She is the brave and resourceful royal detective in a fictional kingdom called Jalpur 
+
+She travels around the kingdom solving mysteries and I think this is a bit similar to what it's like, especially at first when doing model assessment
+
+So the plan is that we are going to be like Mira and solve some Bayesian mysteries and we'll get a good introduction to the topic, though it won't be exhaustive, and at the end I'll include some references for further reading
+
+---
+class: center, middle
+background-image: url(./libs/chain1.png)
+background-size: contain
+
+???
+
+We hinted before that Bayesian regression involves complicated sampling algorithms that help us approximate a posterior distribution
+
+You may have heard about one class of these algorithms before, called Markov chain Monte Carlo methods
+
+---
+count: false
+class: center, middle
+background-image: url(./libs/chain2.png)
+background-size: contain
+
+# Markov chain Monte Carlo (MCMC)
+
+--
+
+### When we fit a model using `brm()` we run multiple markov chains
+
+--
+
+### The chains sample the parameter space (more on this in a bit)
+
+--
+
+### We assess the chains to get an idea of how well the model converged
+
+--
+
+### If the sampling procedure is sub-optimal we can inspect the chains and check several diagnostics
+
+---
+class: center, middle
+
+&lt;img src="index_files/figure-html/good-chains-1.png" width="936" /&gt;
+
+---
+class: right, middle
+background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ75CzFCTvGIxClCFzrJ6iF2YA6yzxVN-GraQ&amp;usqp=CAU)
+background-size: 800px
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+### .grey[A promising young Markov chain]
+
+---
+class: center, middle
+
+&lt;img src="index_files/figure-html/bad-chains-1.png" width="936" /&gt;
 
 ---
 
 # Model assessment
 
 ### Rhat and effective sample size
+
+???
+
+Now we're going to talk about Rhat and effective sample size
+
+You probably noticed over the course of the last two days that when we examine summary of a brms model we see something like this...
 
 --
 
@@ -78,11 +147,23 @@ We will get a good introduction to the topic and I will include some references 
 ## scale reduction factor on split chains (at convergence, Rhat = 1).
 ```
 
+???
+
+This is the same model we fit earlier today looking at articulation rate as a function of attitude
+
 --
 
 background-image: url(./libs/mira2.png), url(https://raw.githubusercontent.com/jvcasillas/media/master/general/img/circle.png)
 background-size: 800px, 410px
 background-position: 150% 50%, 72% 72%
+
+???
+
+You may also have noticed these three columns on the right-hand side: Rhat, bulk ESS and tail ESS
+
+What is all this about?
+
+Rhat is a convergence diagnostic that compares estimate between and within chains (more on chains in a bit)
 
 ---
 
@@ -125,19 +206,6 @@ background-position: 150% 50%, 72% 72%
 class: inverse
 background-image: url(./libs/warning.png)
 background-size: contain
-
----
-background-image: url(./libs/chain1.png)
-background-size: contain
-
-# Model assessment
-
-### chains
-
----
-background-image: url(./libs/chain2.png)
-background-size: 300px
-background-position: 100% 0%
 
 ---
 background-image: url(https://d23.com/app/uploads/2018/11/1180w-600h_112918_mira-royal-detective-announce-780x440.jpg)
