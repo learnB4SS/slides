@@ -51,18 +51,18 @@ In this session we are going to talk about model assessment
 
 That is, what to do after you have run your model and you want to know about goodness of fit
 
-We are going to talk about some diagnostics like Rhat and effective sample size, as well as best practices for assessing chains, and correcting for divergent transitions
+We are going to talk about Markov chains and some diagnostics like Rhat and effective sample size, as well as best practices for correcting for divergent transitions
 
-The purpose of this session is to help you build intuition about how to know when your model is poor, and luckily BRMS makes that quite easy to do
+The purpose of this session is to help you build intuition about how the sampling process works and to know when your model is poor... luckily BRMS makes that quite obvious
 
-If you have young children or are fans of disney junior, then you might recognize Mira, royal detective. 
+If you have young children or are fans of Disney junior, then you might recognize Mira, royal detective. 
 
 If not, Mira is the star of my daughters favorite mystery cartoon. 
 She is the brave and resourceful royal detective in a fictional kingdom called Jalpur 
 
-She travels around the kingdom solving mysteries and I think this is a bit similar to what it's like, especially at first when doing model assessment
+She travels around the kingdom solving mysteries and I think this is a bit similar to what it's like, especially at first, when building and assessing models
 
-So the plan is that we are going to be like Mira and solve some Bayesian mysteries and we'll get a good introduction to the topic, though it won't be exhaustive, and at the end I'll include some references for further reading
+So, the plan is that we are going to be like Mira and solve some Bayesian mysteries and we'll get a good introduction to the topic, though it won't be exhaustive, and at the end I'll include some references for further reading
 
 ---
 class: center, middle
@@ -107,6 +107,20 @@ bayesplot::mcmc_trace(b_mod_01, pars = "b_Intercept") +
   b4ss_bw(base_size = 22)
 ```
 
+???
+
+They we usually do this is by looking at trace plots
+
+Here we see the values of a parameter on the vertical axis, in this case the estimate of the intercept, and the sample iteration on the horizontal axis
+
+It's hard to tell, but there are 4 different lines that are moving from left to right
+
+This is an example of what we could call good, healthy chains, the algorithm worked... we say the chain have mixed well
+
+As we look from left to right we see what many describe as a hairy caterpillar 
+
+So when we inspect our chains, this is what we want
+
 ---
 class: right, middle
 background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ75CzFCTvGIxClCFzrJ6iF2YA6yzxVN-GraQ&usqp=CAU)
@@ -117,6 +131,10 @@ background-size: 800px
 <br><br><br><br><br><br>
 
 ### .grey[A promising young Markov chain]
+
+???
+
+This is also a healthy chain
 
 ---
 class: center, middle
@@ -140,6 +158,16 @@ bayesplot::mcmc_trace(b_mod_01_bad_priors, pars = "b_Intercept") +
   b4ss_bw(base_size = 22)
 ```
 
+???
+
+If the sampling process does not work properly we might see something like this
+
+If you follow any given line you will notice that they do not sample the parameter space like in the previous plot
+
+That is, there is not a lot of random up and down movement... there is no hairy caterpillar... this means the chains have not mixed well
+
+Now, obviously determining if your trace plot looks like a hairy caterpillar is not precisely an exact science, but luckily there are also diagnostics that tell us about the chains performance
+
 ---
 
 # Model assessment
@@ -148,9 +176,9 @@ bayesplot::mcmc_trace(b_mod_01_bad_priors, pars = "b_Intercept") +
 
 ???
 
-Now we're going to talk about Rhat and effective sample size
+Two of those diagnostics that we're going to talk about Rhat and effective sample size
 
-You probably noticed over the course of the last two days that when we examine summary of a brms model we see something like this...
+You probably noticed over the course of the last two days that when we examine a summary of a brms model we see something like this...
 
 --
 
@@ -163,6 +191,10 @@ summary(b_mod_01)
 
 This is the same model we fit earlier today looking at articulation rate as a function of attitude
 
+Explain "Samples" line
+
+Now I'd like to call your attention to this area of the table...
+
 --
 
 background-image: url(./libs/mira2.png), url(https://raw.githubusercontent.com/jvcasillas/media/master/general/img/circle.png)
@@ -171,68 +203,85 @@ background-position: 150% 50%, 72% 72%
 
 ???
 
-You may also have noticed these three columns on the right-hand side: Rhat, bulk ESS and tail ESS
+You have already noticed these three columns on the right-hand side: Rhat, bulk ESS and tail ESS
 
 What is all this about?
 
-Rhat is a convergence diagnostic that compares estimate between and within chains (more on chains in a bit)
+Rhat is a convergence diagnostic that compares estimates between and within chains (Im simplifying)
+
+The key thing to remember is that this value should less than 1.01, if not, it is a sign the chains did not mix well, i.e., between- and within-chain estimates don't agree
+
+In this case, we can see that all the rhat values are 1.00
+
+With regard to Effective Sample size, this metric "captures the number of independent draws that have the same amount of information as the dependent sample obtained by the MCMC algorithm... 
+
+That's a lot to unpack if you are new at this... the important thing to remember is that these numbers should be high (the max is 4k, or the number of iterations)
+
+It's helpful to compare with a poorly fitted model
 
 ---
 
 # Model assessment
 
-### Rhat and effective sample size
+### Rhat and effective sample size (bad example)
 
---
+???
 
-```{r, print-bad-brms-model, echo=F}
-#pp_check(b_mod_01_bad_priors, nsamples = 200)
-summary(b_mod_01_bad_priors)
-
-```
+This model fits the same parameters but I purposely gave it vary bad priors
 
 --
 
 background-image: url(./libs/mira2.png), url(https://raw.githubusercontent.com/jvcasillas/media/master/general/img/circle.png)
 background-size: 800px, 410px
 background-position: 150% 50%, 72% 72%
+
+```{r, print-bad-brms-model, echo=F}
+summary(b_mod_01_bad_priors)
+```
+
+???
+
+Notice that the Rhat values are higher than 1.01, and the ESS are very low, less than 100x 4 chains
 
 ---
 class: inverse
 background-image: url(./libs/warning.png)
 background-size: contain
 
+???
+
+Luckily, when something like this happens BRMS will also give us warnings
+
+Note that it specifically suggests caution when analyzing the results and gives helpful suggestions
+
+1. Run more iterations on each chain
+2. Take another look at your priors (the problem here)
+
+Notice that there is another warning (part 2): Divergent transitions
+
+In this case BRMS also gives us a suggestion for combating this problem (increase delta), as well as a link with more information
+
+So we already know what the solutions is, but let's unpack the problem...
+
+
 ---
+class: middle, center
 background-image: url(https://d23.com/app/uploads/2018/11/1180w-600h_112918_mira-royal-detective-announce-780x440.jpg)
 background-size: 800px
-background-position: 150% 50%
+background-position: 50% 40%
 
-# Model assessment
+<br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br>
 
-- divergences
+# Divergent transitions
 
 ---
 
-# Sampling
-
-
-
+SAMPLES IMAGE
 
 ???
 
-Calculating a posterior is computationally costly
-
-This is part of the reason why we didn't start seeing complex Bayesian models until relatively recently
-
-As computational power has increased so has our ability to approximate posterior distributions
-
-Furthermore, we've developed faster methods of sampling from the parameter space
-
-The "meat and potatos" of this workshop has already been served, if you will. 
-At this point you already know quite regarding what BDA is all about
-
-In this penultimate session we are going to build on our intuitions regarding what it means to sample from parameter space and how this is done, but know that you have already finished the principle components of this workshop. 
-This final session is merely to give you more of an idea of how some of the "under the hood" machinery works as you move forward as Bayesians
+Again this is an issue related to sampling the parameter space, so let's talk about parameter space...
 
 ---
 class: center, middle
@@ -241,7 +290,7 @@ class: center, middle
 
 ???
 
-So, what is parameter space?
+what is it?
 
 You  may have noticed that I say this quite a bit
 
@@ -274,25 +323,52 @@ broom::augment(mod) %>%
 
 ```
 
+???
+
+Explain data space
+
 ---
 
 <br><br>
 
 <iframe src="https://jvcasillas.shinyapps.io/shiny_parameter_space/" style="border:none;" width="100%" height="100%">
 
+
+???
+
+compare data space with parameter space
+
+This is an extremely simple example in which we only fit a couple of parameters and we can easily visualize the parameter space in two dimensions
+
 ---
 background-image: url(./libs/dark_density_posterior1.png)
 background-size: contain
 background-color: black
+
+???
+
+or 3 dimensions
 
 ---
 background-image: url(./libs/dark_density_posterior2.png)
 background-size: contain
 background-color: black
 
+???
+
+EXPLAIN HOW SAMPLING WORKS HERE
+
 ---
 
 <iframe src="https://chi-feng.github.io/mcmc-demo/app.html" style="border:none;" width="100%" height="100%">
+
+???
+
+This helps us develop intuition about the problem but remember we rarely fit such simple models
+
+It isn't unusual to fit models with 100's or even 1000's of parameters
+
+As humans, we struggle even imagining what a high dimensional parameter space might look like... so plotting can't help us there
 
 ---
 
@@ -303,6 +379,29 @@ background-color: black
 HILL IMAGE
 
 <!--
+
+
+Calculating a posterior is computationally costly
+
+This is part of the reason why we didn't start seeing complex Bayesian models until relatively recently
+
+As computational power has increased so has our ability to approximate posterior distributions
+
+Furthermore, we've developed faster methods of sampling from the parameter space
+
+The "meat and potatos" of this workshop has already been served, if you will. 
+At this point you already know quite regarding what BDA is all about
+
+In this penultimate session we are going to build on our intuitions regarding what it means to sample from parameter space and how this is done, but know that you have already finished the principle components of this workshop. 
+This final session is merely to give you more of an idea of how some of the "under the hood" machinery works as you move forward as Bayesians
+
+
+
+
+
+
+
+
 If there’s a random way to do something, there’s usually a less random way that is both better and requires more thought. Instead of making random proposals, suppose instead that you run a physics simulation. This is going to sound crazy, but it isn’t. Your vector of parameters is now a particle in n-dimensional space. The surface in this space is a giant n-dimensional bowl. The shape of the bowl is determined by the shape of the logarithm of the target distribution. If the target is a nice Gaussian, for example, then the log-Gaussian is a smooth parabolic bowl like this (in one-dimension):
 
 
@@ -328,6 +427,8 @@ The cost of all this elegance is needing more information about the target. Hami
 - http://elevanth.org/blog/2017/11/28/build-a-better-markov-chain/
 
 - More on Rhat and Bulk ESS and Tail ESS: Vehtari et al. (2020)
+
+Stan warnings: https://mc-stan.org/misc/warnings.html
 
 ---
 count: false
