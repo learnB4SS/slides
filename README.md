@@ -9,7 +9,7 @@ learnB4SS workshop slides
 -   [Bayes theorem - How does it
     work?](https://learnb4ss.github.io/slides/02_bayes_theorem/index.pdf)
 -   [Application to regression II - Priors and Bayesian
-    updating](https://learnb4ss.github.io/slides/03_a2r_prior_and_bayesian_updating/index.html)
+    updating](https://learnb4ss.github.io/slides/03_a2r_priors_and_bayesian_updating/index.html)
 -   [NHST vs. Bayesian
     inference](https://learnb4ss.github.io/slides/04_nhst_vs_bayesian_inference/index.pdf)
 

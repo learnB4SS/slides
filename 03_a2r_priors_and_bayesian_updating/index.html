@@ -16,7 +16,7 @@ class: center, middle, inverse, title-slide
 ## Priors and Bayesian updating
 ### Timo Roettger, Stefano Coretta and Joseph Casillas
 ### LabPhon workshop
-### 2021/07/05 (updated: 2021-06-29)
+### 2021/07/05 (updated: 2021-07-02)
 
 ---
 
@@ -37,11 +37,11 @@ class: middle
 
 We are faced every day with probabilities. Just think about the weather forecast.
 
-There is a 70% prob that it will rain today. Prob of an event occurring.
+We say things like t"here is a 70% prob that it will rain today". In this sense, probability is the probability of an event occurring.
 
-What about complex events? =&gt; list of probs.
+But what about more complex situations that are not a flip-of-coin kinda situation? For example what about rolling two dice?
 
-(I might want to introduce random variables here... with an extra slide)
+Here is where probability distributions come in.
 
 ---
 
@@ -55,9 +55,7 @@ What about complex events? =&gt; list of probs.
 
 ???
 
-Lists of probs are probability distributions.
-
-A list of values with corresponding probability.
+A probability distribution is a list of values and their corresponding probability.
 
 ---
 
@@ -83,13 +81,20 @@ Depending on the nature of the values a variable can take, there are 2 types of 
 
 ???
 
-Counting as probability. Fractions as probability.
+
+A discrete probability distributions is like counting how many ways you can get a particular value.
+
+For example, if you roll a white and a black dice, there are 3 ways to get a 4 or a 10, but 6 ways to get a 7.
 
 ---
 
 # Discrete probability distributions
 
 &lt;img src="index_files/figure-html/discs-p-1.png" width="800px" style="display: block; margin: auto;" /&gt;
+
+???
+
+The Poisson is the probability distribution of counts (like counting eyes, number of fillers in speech, etc).
 
 ---
 
@@ -99,9 +104,9 @@ Counting as probability. Fractions as probability.
 
 ???
 
-With cont probs we cannot count for all possible values (0.0, 0.00, 0.000, 0.000...) and we cannot assign a prob to any specific value.
+With continuous probabilities we cannot make a list of all the possible values (0.0, 0.00, 0.000, 0.0001...), because there is an infinite number of possible values. So we cannot assign a probability to a specific value.
 
-Instead we can assign a prob to a range of values.
+Instead, we assign probabilities to a range of values.
 
 ---
 
@@ -109,11 +114,23 @@ Instead we can assign a prob to a range of values.
 
 &lt;img src="index_files/figure-html/cont-p-2-1.png" width="800px" style="display: block; margin: auto;" /&gt;
 
+???
+
+In this example, we want to know the probability of getting a mean f0 between 0 and 160 Hz.
+
+We simply calculate the area under the curve between those two values (the total area under the curve is 1).
+
+The probability of f0 being less than 160 Hz is 0.212.
+
 ---
 
 # Continuous probability distributions
 
 &lt;img src="index_files/figure-html/cont-p-3-1.png" width="800px" style="display: block; margin: auto;" /&gt;
+
+???
+
+The probability of f0 being greater than 220 Hz is 0.345.
 
 ---
 
@@ -121,6 +138,9 @@ Instead we can assign a prob to a range of values.
 
 &lt;img src="index_files/figure-html/cont-p-4-1.png" width="800px" style="display: block; margin: auto;" /&gt;
 
+???
+
+The probability of f0 being between 120 and 210 Hz is 0.524
 
 ---
 
@@ -130,9 +150,9 @@ Instead we can assign a prob to a range of values.
 
 ???
 
-There are many other types of cont prob distrs.
+There are many other types of continuous probability distributions
 
-The beta is one of them. It's bounded between 0 and 1, used for proportions, percentages.
+This is the beta distribution. It's bounded between 0 and 1, and it's used for example with proportions and percentages (which can take on any value between 0-1 and 0-100%).
 
 ---
 
@@ -142,11 +162,9 @@ class: middle
 
 ???
 
-But how do we describe prob distrs? We can't make a list of all values and probs.
+But how do we describe probability distributions? We can't make a list of all values and probabilities, especially for continuous probabilities.
 
 Instead, we specify the value of a few parameters that describe the distribution in a succinct way.
-
-(The example from seeing theory shows that with different values you get different "shapes")
 
 ---
 class: middle
@@ -155,7 +173,11 @@ class: middle
 
 ???
 
-(Here I explain the simple formula of a Gauss distr.)
+Let's look at some formulas.
+
+This is the formula of a variable `\(y_1\)` that is distributed according to (~) a Normal probability distribution.
+
+As we have seen in the example above, a Normal distribution can be described with two parameters: the mean and the standard deviation.
 
 ---
 class: middle
@@ -164,7 +186,9 @@ class: middle
 
 ???
 
-(While here I give a real-world example: with f0.)
+Remember the example above of a Gaussian/Normal distribution of f0?
+
+We can describe that distribution with this formula (much easier than listing all the values and their probability).
 
 ---
 
@@ -174,9 +198,14 @@ class: center middle
 
 ???
 
-Nothing new here. Just a distribution as we've seen before.
+Nothing new here. Just the distribution as we've seen before.
 
-(Show them how that looks like.)
+---
+
+class: inverse center bottom
+background-image: url("img/chris-robert-unsplash.jpg")
+
+# BREAK
 
 ---
 
@@ -190,11 +219,11 @@ Nothing new here. Just a distribution as we've seen before.
 
 ???
 
-Freq stats forgets about the past (memory loss).
+Frequentist statistics suffers from "memory loss": results of past studies are "forgotten".
 
-Another important component of Bayesian analysis is prior knowledge (you've seen that in B theorem).
+One important aspect of Bayesian analysis is prior knowledge (you've seen that with the Bayes theorem).
 
-We can take prior knowledge or belief into consideration in what is called "Bayesian belief update".
+We can take prior knowledge, or belief, into consideration thanks to "Bayesian belief updating".
 
 ---
 
@@ -208,11 +237,11 @@ We can take prior knowledge or belief into consideration in what is called "Baye
 
 How do we ensure that prior knowledge is not lost?
 
-You've seen in 01 that Bayesian analysis is about estimating the post distr of the variable of interest.
+You've seen in Session 01 that Bayesian analysis is about estimating the posterior probability distribution of a variable of interest.
 
-The post distr is (roughly) the combination of the prior belief and the evidence derived from the data (remember Bayes Theorem).
+Roughly speaking, the posterior probability distribution is the combination of the prior belief and the evidence derived from the data.
 
-Both prior and evidence are probability distributions.
+Prior and evidence are, of course, probability distributions.
 
 ---
 
@@ -226,72 +255,78 @@ class: middle
 
 &amp;nbsp;
 
-&lt;span style="font-size:3em;"&gt;$$\text{art_rate}_i \sim Normal(\mu, \sigma)$$&lt;/span&gt;
+&lt;span style="font-size:3em;"&gt;$$\text{articulation_rate}_i \sim Normal(\mu, \sigma)$$&lt;/span&gt;
 
 ???
 
-Our prior belief about articulation rate is that it is distributed according to a Normal (aka Gaussian) distr.
+Our prior belief about articulation rate is that it is distributed according to a Normal (aka Gaussian) distribution.
 
-The Normal has two parameters: mean, SD.
+The Normal distribution has two parameters: mean `\(\mu\)` and standard deviation `\(\sigma\)`.
 
-Here we are trying to estimate these parameters.
+Now, we want to estimate these two parameters from the data.
 
 ---
 
 # Prior belief as probability distributions
 
-&lt;span style="font-size:3em;"&gt;$$\text{art_rate}_i \sim Normal(\mu, \sigma)$$&lt;/span&gt;
+&lt;span style="font-size:2.5em;"&gt;$$\text{articulation_rate}_i \sim Normal(\mu, \sigma)$$&lt;/span&gt;
 
-&lt;span style="font-size:3em;"&gt;$$\mu = ...?$$&lt;/span&gt;
+&lt;span style="font-size:2.5em;"&gt;$$\mu = ...?$$&lt;/span&gt;
 
 ???
 
-We do have an idea of what the mean could be like but we are not certain.
+We do have an idea of what the mean articulation rate could be like but we are not certain.
 
-When you are not certain, you make a list of values and their prob, i.e. a prob distr!
+When you are not certain, you make a list of values and their probability, i.e. a probability distribution!
 
 ---
 
 # Prior belief as probability distributions
 
-&lt;span style="font-size:3em;"&gt;$$\text{art_rate}_i \sim Normal(\mu, \sigma)$$&lt;/span&gt;
+&lt;span style="font-size:2.5em;"&gt;$$\text{articulation_rate}_i \sim Normal(\mu, \sigma)$$&lt;/span&gt;
 
-&lt;span style="font-size:3em;"&gt;$$\mu \sim Normal(\mu_1, \sigma_1)$$&lt;/span&gt;
+&lt;span style="font-size:2.5em;"&gt;$$\mu \sim Normal(\mu_1, \sigma_1)$$&lt;/span&gt;
 
 ???
 
-Usually, we assume the mean to be a value taken from another Normal distribution (with its mean and SD).
+Usually, we assume the mean to be a value taken from another Normal distribution (with its own mean and SD).
 
-This Normal is the prior probability distribution (or simply prior) of the mean.
+This Normal distribution is the **prior probability distribution** (or simply prior) of the mean.
 
 ---
 
 # Prior belief as probability distributions
 
-&lt;span style="font-size:3em;"&gt;$$\text{art_rate}_i \sim Normal(\mu, \sigma)$$&lt;/span&gt;
+&lt;span style="font-size:2.5em;"&gt;$$\text{articulation_rate}_i \sim Normal(\mu, \sigma)$$&lt;/span&gt;
 
-&lt;span style="font-size:3em;"&gt;$$\mu \sim Normal(0, \sigma_1)$$&lt;/span&gt;
+&lt;span style="font-size:2.5em;"&gt;$$\mu \sim Normal(0, \sigma_1)$$&lt;/span&gt;
 
 ???
 
-We will talk about types of priors later. For now it's sufficient to remember that a conservative approach (which is what we want) is to set `\(\mu_1\)` to 0.
+We will talk about different types of priors later. For now it's sufficient to remember that a conservative approach (which is what we want to do) is to set `\(\mu_1\)` to 0.
+
+--
+
+&lt;span style="font-size:2.5em;"&gt;$$\sigma_1 = ...?$$&lt;/span&gt;
+
+???
 
 What about `\(\sigma_1\)`?
 
 ---
 
-# 68–95–99.7 rule
+# The empirical rule
 
-.center[
-![:scale 50%](img/Empirical_rule_histogram.svg)
-]
+
+&lt;img src="index_files/figure-html/empirical-rule-1.png" width="800px" style="display: block; margin: auto;" /&gt;
+
 ???
 
-As a general rule, plus/minus two times the SD ($\sigma_1$) covers 95% of the distribution, which means we are 95% confident that the value lies within that range.
+As a general rule, `\(\pm2\sigma_1\)` covers 95% of the Normal distribution, which means we are 95% confident that the value lies within that range.
 
-Let's be generous and assume that the mean articulation rate will not be greater than 20 syls per sec.
+Let's be generous and assume that the mean articulation rate will definitely not be greater than 30 syllables per second. (This might seem like a very high number, but we will see tomorrow how it can help estimation)
 
-20/2 = 10 (remember, two times the SD), so we can set `\(\sigma_1\)` to 10.
+30/2 = 15 (remember, two times the SD), so we can set `\(\sigma_1 = 15\)`.
 
 ---
 
@@ -303,7 +338,7 @@ Let's be generous and assume that the mean articulation rate will not be greater
 
 Visualising priors is important, because it's easier to grasp its meaning when you can actually see the shape of the distribution.
 
-We will see more about priors and how to visualise them tomorrow.
+Are you wondering about the negative values? (Articulation rate cannot be negative!) I will tell more about this and how to "fix" it tomorrow.
 
 ---
 
@@ -311,6 +346,34 @@ class: inverse center middle
 background-image: url("img/code-matrix.jpg")
 
 # &lt;span style="font-size:3em;"&gt;LIVE CODING&lt;/span&gt;
+
+---
+
+# And `\(\sigma\)`?
+
+&lt;span style="font-size:2.5em;"&gt;$$\text{articulation_rate}_i \sim Normal(\mu, \sigma)$$&lt;/span&gt;
+
+&lt;span style="font-size:2.5em;"&gt;$$\mu \sim Normal(0, 15)$$&lt;/span&gt;
+
+&lt;span style="font-size:2.5em;"&gt;$$\sigma = ...?$$&lt;/span&gt;
+
+???
+
+Now, what about `\(\sigma\)`? (Be careful not to mix up `\(\sigma\)` and `\(\sigma_1\)`! This is `\(\sigma\)` from the first line, not `\(sigma_1\)` from the second line).
+
+---
+
+class: bottom inverse
+
+background-image: url("img/matt-walsh-unsplash.jpg")
+
+# &lt;span style="font-size:3em;"&gt;EXERCISE&lt;/span&gt;
+
+???
+
+Find out in the exercise!
+
+Run `open_exercise(3)` in the console to open the exercise.
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
