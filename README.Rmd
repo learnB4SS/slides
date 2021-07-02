@@ -23,7 +23,7 @@ pretty_names <- c(
   )
 base <- "https://learnb4ss.github.io/slides/"
 dirs <- as.character(fs::dir_ls(path = ".", regexp = "[0-9]"))
-end  <- c("/index.pdf", "/index.html", "/index.pdf", "/index.html",  "/index.pdf", "/index.html", "/index.html", "/index.html", "/index.pdf", "/index.html", "/index.html")
+end  <- c("/index.pdf", "/index.html", "/index.pdf", "/index.html",  "/index.pdf", "/index.html", "/index.html", "/index.html", "/index.pdf", "/index.html", "/index.pdf")
 glue::glue("## Day 1\n\n")
 glue::glue(
   "- [{pretty_names[1:5]}]({base}{dirs[1:5]}{end[1:5]})"
