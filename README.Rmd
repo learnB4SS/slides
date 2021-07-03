@@ -12,17 +12,24 @@ pretty_names <- c(
   "Introduction", 
   "Application to regression I - Demo", 
   "Bayes theorem - How does it work?", 
-  "Application to regression II - The prior and Bayesian updating", 
+  "Application to regression II - Priors and Bayesian updating", 
   "NHST vs. Bayesian inference", 
   "Interim review", 
   "Application to regression III - More Bayesian inference", 
-  "Application to regression IV - Leveling up", 
   "More on priors", 
+  "Application to regression IV - Leveling up", 
   "Sampling from the posterior", 
   "Wrap up"
   )
 base <- "https://learnb4ss.github.io/slides/"
-dirs <- fs::dir_ls(path = ".", regexp = "[0-9]")
-end  <- "/index.html"
-glue::glue("- [{pretty_names}]({base}{dirs}{end})")
+dirs <- as.character(fs::dir_ls(path = ".", regexp = "[0-9]"))
+end  <- c("/index.pdf", "/index.html", "/index.pdf", "/index.html",  "/index.pdf", "/index.html", "/index.html", "/index.html", "/index.pdf", "/index.html", "/index.pdf")
+glue::glue("## Day 1\n\n")
+glue::glue(
+  "- [{pretty_names[1:5]}]({base}{dirs[1:5]}{end[1:5]})"
+)
+glue::glue("\n\n## Day 2\n\n")
+glue::glue(
+  "- [{pretty_names[6:11]}]({base}{dirs[6:11]}{end[6:11]})"
+)
 ```

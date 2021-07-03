@@ -1,0 +1,152 @@
+---
+title: "Bayesian Data <br>Analysis<br> for <br>Speech Sciences"
+subtitle: "More on priors"
+author: "Timo Roettger, Stefano Coretta and Joseph Casillas"
+institute: "LabPhon workshop"
+date: "2021/07/06 (updated: `r Sys.Date()`)"
+output:
+  xaringan::moon_reader:
+    css: ["https://learnb4ss.github.io/b4ss-theme/css/b4ss.css", "https://learnb4ss.github.io/b4ss-theme/css/b4ss-fonts.css"]
+    lib_dir: libs
+    nature:
+      beforeInit: ["https://learnb4ss.github.io/b4ss-theme/js/b4ss_xaringan.js"]
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: 16:9
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+library(tidyverse)
+theme_set(theme_minimal())
+library(brms)
+library(learnB4SS)
+data("polite")
+```
+
+```{r xaringanExtra, echo=FALSE}
+xaringanExtra::use_xaringan_extra(c("tachyons"))
+```
+
+
+---
+
+![](img/informativity.png)
+
+---
+
+![](img/informativity-scale.png)
+
+---
+
+![](img/informativity-scale-types.png)
+
+---
+
+# Prior informativity
+
+```{r f0-prior, echo=FALSE, fig.width=7, fig.height=4, out.width="800px", fig.retina=2, fig.align="center"}
+x <- seq(-200, 600)
+y_1 <- dnorm(x, 200, 100)
+y_2 <- dnorm(x, 200, 50)
+y_3 <- dnorm(x, 200, 20)
+
+ggplot() +
+  aes(x) +
+  geom_hline(aes(yintercept = 0.004, colour = "orange"), size = 1.5, linetype = "dashed") +
+  geom_line(aes(y = y_1, colour = "#cbc9e2"), size = 1.5) +
+  geom_line(aes(y = y_2, colour = "#9e9ac8"), size = 1.5) +
+  geom_line(aes(y = y_3, colour = "#6a51a3"), size = 1.5) +
+  labs(
+    x = "f0 (Hz)", y = "Density",
+    title = "Prior of the mean f0"
+  ) +
+  scale_color_identity(guide = "legend", name = "Informativity", labels = c("very strong", "strong", "weak", "none"))
+```
+
+
+
+---
+
+![](img/regularising.png)
+
+---
+
+by [Kristoffer Magnusson](https://rpsychologist.com/)
+
+<iframe src="https://rpsychologist.com/d3/bayes/" style="border:none;" width="100%" height="80%">
+
+---
+
+# Recommendations
+
+.bg-washed-blue.b--black.ba.bw2.br3.shadow-5.ph4.mt2[
+Use **regularising priors**.
+
+- Prior mean = 0.
+]
+
+.bg-washed-blue.b--black.ba.bw2.br3.shadow-5.ph4.mt2[
+Use **weakly informative priors**.
+
+- Prior standard deviation as large as it makes sense.
+]
+
+---
+
+# Prior predictive checks
+
+```{r prior-pred-checks, eval=TRUE}
+my_priors <- c(
+  prior(normal(0, 15), class = Intercept),
+  prior(normal(0, 10), class = b, coef = attitudepol),
+  prior(cauchy(0, 1), class = sigma)
+)
+
+b_mod_01_pripc <- brm(
+  articulation_rate ~ attitude,
+  prior = my_priors,
+  sample_prior = "only",
+  data = polite,
+  file = here::here("assets/b_mod_01_pripc")
+)
+```
+
+---
+
+# Prior predictive checks
+
+```{r prior-pred-checks-plot, eval=TRUE, fig.width=7, fig.height=4, out.width="800px", fig.retina=2, fig.align="center"}
+conditional_effects(b_mod_01_pripc)
+```
+
+---
+
+# BRM with non-Gaussian distributions
+
+```{r prior-pred-checks-log-normal, eval=TRUE}
+my_priors <- c(
+  prior(normal(0, 3), class = Intercept),
+  prior(normal(0, 1), class = b, coef = attitudepol),
+  prior(cauchy(0, 0.1), class = sigma)
+)
+
+b_mod_02_pripc <- brm(
+  articulation_rate ~ attitude,
+  prior = my_priors,
+  sample_prior = "only",
+  data = polite,
+  family = lognormal(),
+  file = here::here("assets/b_mod_02_pripc")
+)
+```
+
+---
+
+# BRM with non-Gaussian distributions
+
+```{r prior-pred-checks-log-normal-plot, eval=TRUE, fig.width=7, fig.height=4, out.width="800px", fig.retina=2, fig.align="center"}
+conditional_effects(b_mod_02_pripc)
+```
+

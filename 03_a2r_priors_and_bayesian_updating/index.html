@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Bayesian Data  Analysis  for  Speech Sciences</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Timo Roettger, Stefano Coretta and Joseph Casillas" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link rel="stylesheet" href="https://learnb4ss.github.io/b4ss-theme/css/b4ss.css" type="text/css" />
+    <link rel="stylesheet" href="https://learnb4ss.github.io/b4ss-theme/css/b4ss-fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Bayesian Data <br>Analysis<br> for <br>Speech Sciences
+## Priors and Bayesian updating
+### Timo Roettger, Stefano Coretta and Joseph Casillas
+### LabPhon workshop
+### 2021/07/05 (updated: 2021-07-02)
+
+---
+
+
+
+
+class: middle
+
+.pull-left[
+![](img/06-rainy-umbrella-humid.svg)
+]
+
+.pull-right[
+![](img/01-sunny.svg)
+]
+
+???
+
+We are faced every day with probabilities. Just think about the weather forecast.
+
+We say things like t"here is a 70% prob that it will rain today". In this sense, probability is the probability of an event occurring.
+
+But what about more complex situations that are not a flip-of-coin kinda situation? For example what about rolling two dice?
+
+Here is where probability distributions come in.
+
+---
+
+# Grubabilities
+
+&amp;nbsp;
+
+.center[
+![:scale 90%](img/grubabilities.png)
+]
+
+???
+
+A probability distribution is a list of values and their corresponding probability.
+
+---
+
+# Discrete and continuous
+
+.center[
+![:scale 80%](img/discr-cont-probs.png)
+]
+
+???
+
+Depending on the nature of the values a variable can take, there are 2 types of probs.
+
+
+
+---
+
+# Discrete probability distributions
+
+.center[
+![:scale 60%](img/dice.png)
+]
+
+???
+
+
+A discrete probability distributions is like counting how many ways you can get a particular value.
+
+For example, if you roll a white and a black dice, there are 3 ways to get a 4 or a 10, but 6 ways to get a 7.
+
+---
+
+# Discrete probability distributions
+
+&lt;img src="index_files/figure-html/discs-p-1.png" width="800px" style="display: block; margin: auto;" /&gt;
+
+???
+
+The Poisson is the probability distribution of counts (like counting eyes, number of fillers in speech, etc).
+
+---
+
+# Continuous probability distributions
+
+&lt;img src="index_files/figure-html/cont-p-1.png" width="800px" style="display: block; margin: auto;" /&gt;
+
+???
+
+With continuous probabilities we cannot make a list of all the possible values (0.0, 0.00, 0.000, 0.0001...), because there is an infinite number of possible values. So we cannot assign a probability to a specific value.
+
+Instead, we assign probabilities to a range of values.
+
+---
+
+# Continuous probability distributions
+
+&lt;img src="index_files/figure-html/cont-p-2-1.png" width="800px" style="display: block; margin: auto;" /&gt;
+
+???
+
+In this example, we want to know the probability of getting a mean f0 between 0 and 160 Hz.
+
+We simply calculate the area under the curve between those two values (the total area under the curve is 1).
+
+The probability of f0 being less than 160 Hz is 0.212.
+
+---
+
+# Continuous probability distributions
+
+&lt;img src="index_files/figure-html/cont-p-3-1.png" width="800px" style="display: block; margin: auto;" /&gt;
+
+???
+
+The probability of f0 being greater than 220 Hz is 0.345.
+
+---
+
+# Continuous probability distributions
+
+&lt;img src="index_files/figure-html/cont-p-4-1.png" width="800px" style="display: block; margin: auto;" /&gt;
+
+???
+
+The probability of f0 being between 120 and 210 Hz is 0.524
+
+---
+
+# Continuous probability distributions
+
+&lt;img src="index_files/figure-html/cont-p-5-1.png" width="800px" style="display: block; margin: auto;" /&gt;
+
+???
+
+There are many other types of continuous probability distributions
+
+This is the beta distribution. It's bounded between 0 and 1, and it's used for example with proportions and percentages (which can take on any value between 0-1 and 0-100%).
+
+---
+
+class: middle
+
+&lt;iframe src="https://seeing-theory.brown.edu/probability-distributions/index.html#section2" style="border:none;" width="100%" height="100%"&gt;
+
+???
+
+But how do we describe probability distributions? We can't make a list of all values and probabilities, especially for continuous probabilities.
+
+Instead, we specify the value of a few parameters that describe the distribution in a succinct way.
+
+---
+class: middle
+
+&lt;span style="font-size:3.5em;"&gt;$$y_i \sim Normal(\mu, \sigma)$$&lt;/span&gt;
+
+???
+
+Let's look at some formulas.
+
+This is the formula of a variable `\(y_1\)` that is distributed according to (~) a Normal probability distribution.
+
+As we have seen in the example above, a Normal distribution can be described with two parameters: the mean and the standard deviation.
+
+---
+class: middle
+
+&lt;span style="font-size:3.5em;"&gt;$$\text{f0}_i \sim Normal(200, 50)$$&lt;/span&gt;
+
+???
+
+Remember the example above of a Gaussian/Normal distribution of f0?
+
+We can describe that distribution with this formula (much easier than listing all the values and their probability).
+
+---
+
+class: center middle
+
+&lt;img src="index_files/figure-html/f0-prior-1.png" width="800px" style="display: block; margin: auto;" /&gt;
+
+???
+
+Nothing new here. Just the distribution as we've seen before.
+
+---
+
+class: inverse center bottom
+background-image: url("img/chris-robert-unsplash.jpg")
+
+# BREAK
+
+---
+
+# Memory loss
+
+.center[
+![:scale 40%](img/Goldfish-MEME.png)
+]
+
+&lt;span style="font-size:10pt;"&gt;https://thinking.umwblogs.org/2020/02/26/goldfish-memory/&lt;/span&gt;
+
+???
+
+Frequentist statistics suffers from "memory loss": results of past studies are "forgotten".
+
+One important aspect of Bayesian analysis is prior knowledge (you've seen that with the Bayes theorem).
+
+We can take prior knowledge, or belief, into consideration thanks to "Bayesian belief updating".
+
+---
+
+# Bayesian belief update
+
+.center[
+![:scale 60%](img/prior-update.png)
+]
+
+???
+
+How do we ensure that prior knowledge is not lost?
+
+You've seen in Session 01 that Bayesian analysis is about estimating the posterior probability distribution of a variable of interest.
+
+Roughly speaking, the posterior probability distribution is the combination of the prior belief and the evidence derived from the data.
+
+Prior and evidence are, of course, probability distributions.
+
+---
+
+class: middle
+
+&lt;iframe src="https://seeing-theory.brown.edu/bayesian-inference/index.html#section3" style="border:none;" width="100%" height="100%"&gt;
+
+---
+
+# Prior belief as probability distributions
+
+&amp;nbsp;
+
+&lt;span style="font-size:3em;"&gt;$$\text{articulation_rate}_i \sim Normal(\mu, \sigma)$$&lt;/span&gt;
+
+???
+
+Our prior belief about articulation rate is that it is distributed according to a Normal (aka Gaussian) distribution.
+
+The Normal distribution has two parameters: mean `\(\mu\)` and standard deviation `\(\sigma\)`.
+
+Now, we want to estimate these two parameters from the data.
+
+---
+
+# Prior belief as probability distributions
+
+&lt;span style="font-size:2.5em;"&gt;$$\text{articulation_rate}_i \sim Normal(\mu, \sigma)$$&lt;/span&gt;
+
+&lt;span style="font-size:2.5em;"&gt;$$\mu = ...?$$&lt;/span&gt;
+
+???
+
+We do have an idea of what the mean articulation rate could be like but we are not certain.
+
+When you are not certain, you make a list of values and their probability, i.e. a probability distribution!
+
+---
+
+# Prior belief as probability distributions
+
+&lt;span style="font-size:2.5em;"&gt;$$\text{articulation_rate}_i \sim Normal(\mu, \sigma)$$&lt;/span&gt;
+
+&lt;span style="font-size:2.5em;"&gt;$$\mu \sim Normal(\mu_1, \sigma_1)$$&lt;/span&gt;
+
+???
+
+Usually, we assume the mean to be a value taken from another Normal distribution (with its own mean and SD).
+
+This Normal distribution is the **prior probability distribution** (or simply prior) of the mean.
+
+---
+
+# Prior belief as probability distributions
+
+&lt;span style="font-size:2.5em;"&gt;$$\text{articulation_rate}_i \sim Normal(\mu, \sigma)$$&lt;/span&gt;
+
+&lt;span style="font-size:2.5em;"&gt;$$\mu \sim Normal(0, \sigma_1)$$&lt;/span&gt;
+
+???
+
+We will talk about different types of priors later. For now it's sufficient to remember that a conservative approach (which is what we want to do) is to set `\(\mu_1\)` to 0.
+
+--
+
+&lt;span style="font-size:2.5em;"&gt;$$\sigma_1 = ...?$$&lt;/span&gt;
+
+???
+
+What about `\(\sigma_1\)`?
+
+---
+
+# The empirical rule
+
+
+&lt;img src="index_files/figure-html/empirical-rule-1.png" width="800px" style="display: block; margin: auto;" /&gt;
+
+???
+
+As a general rule, `\(\pm2\sigma_1\)` covers 95% of the Normal distribution, which means we are 95% confident that the value lies within that range.
+
+Let's be generous and assume that the mean articulation rate will definitely not be greater than 30 syllables per second. (This might seem like a very high number, but we will see tomorrow how it can help estimation)
+
+30/2 = 15 (remember, two times the SD), so we can set `\(\sigma_1 = 15\)`.
+
+---
+
+# Seeing is believing
+
+&lt;img src="index_files/figure-html/prior-1-1.png" width="800px" style="display: block; margin: auto;" /&gt;
+
+???
+
+Visualising priors is important, because it's easier to grasp its meaning when you can actually see the shape of the distribution.
+
+Are you wondering about the negative values? (Articulation rate cannot be negative!) I will tell more about this and how to "fix" it tomorrow.
+
+---
+
+class: inverse center middle
+background-image: url("img/code-matrix.jpg")
+
+# &lt;span style="font-size:3em;"&gt;LIVE CODING&lt;/span&gt;
+
+---
+
+# And `\(\sigma\)`?
+
+&lt;span style="font-size:2.5em;"&gt;$$\text{articulation_rate}_i \sim Normal(\mu, \sigma)$$&lt;/span&gt;
+
+&lt;span style="font-size:2.5em;"&gt;$$\mu \sim Normal(0, 15)$$&lt;/span&gt;
+
+&lt;span style="font-size:2.5em;"&gt;$$\sigma = ...?$$&lt;/span&gt;
+
+???
+
+Now, what about `\(\sigma\)`? (Be careful not to mix up `\(\sigma\)` and `\(\sigma_1\)`! This is `\(\sigma\)` from the first line, not `\(sigma_1\)` from the second line).
+
+---
+
+class: bottom inverse
+
+background-image: url("img/matt-walsh-unsplash.jpg")
+
+# &lt;span style="font-size:3em;"&gt;EXERCISE&lt;/span&gt;
+
+???
+
+Find out in the exercise!
+
+Run `open_exercise(3)` in the console to open the exercise.
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="https://learnb4ss.github.io/b4ss-theme/js/b4ss_xaringan.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
