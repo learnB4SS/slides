@@ -354,6 +354,7 @@ p_to_pd(0.01)
 ```
 
 ---
+exclude: true
 class: center, middle
 
 ```{r, pd-p-comparison, fig.width=14, fig.height=8, echo=F}
