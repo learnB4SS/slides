@@ -17,28 +17,50 @@ class: center, middle, inverse, title-slide
 ## More on priors
 ### Timo Roettger, Stefano Coretta and Joseph Casillas
 ### LabPhon workshop
-### 2021/07/06 (updated: 2021-06-29)
-
-
----
-
-
-
-
-
-
+### 2021/07/06 (updated: 2021-07-03)
 
 ---
+
+
+
+
+
+
+class: center middle
 
 ![](img/informativity.png)
 
+???
+
+Priors can convey different amounts of prior knowledge, or information. This is called "informativity".
+
 ---
+
+class: center middle
 
 ![](img/informativity-scale.png)
 
+???
+
+Informativity is a scale: from the least to the greatest amount of information.
+
+Note that the scale is relative, not absolute.
+
 ---
 
+class: center middle
+
 ![](img/informativity-scale-types.png)
+
+???
+
+Based on the scale, we can identify three types of priors:
+
+- Uninformative priors: virtually no prior knowledge/information is added to the model. These are also called "flat" priors, because the distribution is flat (all values have the same probability). No influence on the posterior.
+
+- Weakly informative priors: some prior knowledge/information is added to the model, but it is vague or at least less informative than what the actual prior knowledge is.
+
+- Strongly informative priors: most or all of the prior knowledge/information is added to the model. This have the strongest influence on the posterior.
 
 ---
 
@@ -46,17 +68,30 @@ class: center, middle, inverse, title-slide
 
 &lt;img src="index_files/figure-html/f0-prior-1.png" width="800px" style="display: block; margin: auto;" /&gt;
 
+???
+
+Examples of priors with different degrees of informativity in relation to the mean f0.
 
 
 ---
 
+class: center middle
+
 ![](img/regularising.png)
+
+???
+
+Regularising priors are priors centered on 0 (i.e. with mean = 0). These priors are help with model estimation and safe-guard against extreme effects.
 
 ---
 
 by [Kristoffer Magnusson](https://rpsychologist.com/)
 
 &lt;iframe src="https://rpsychologist.com/d3/bayes/" style="border:none;" width="100%" height="80%"&gt;
+
+???
+
+Here we can visualise the effect of the prior on the posterior.
 
 ---
 
@@ -95,6 +130,14 @@ b_mod_01_pripc &lt;- brm(
 )
 ```
 
+???
+
+When choosing priors it's important to check that they are weakly informative enough, but not too weakly informative.
+
+You can run prior predictive checks using the same code as you would use when fitting the model, but with the argument `sample_prior = "only"`.
+
+This code will run the model sampling values from the priors.
+
 ---
 
 # Prior predictive checks
@@ -105,6 +148,14 @@ conditional_effects(b_mod_01_pripc)
 ```
 
 &lt;img src="index_files/figure-html/prior-pred-checks-plot-1.png" width="800px" style="display: block; margin: auto;" /&gt;
+
+???
+
+You can now plot the model predictions based on the priors with `conditional_effects()`. (You can use this function with a full model too!)
+
+Remember yesterday we were wondering about negative values (articulation rate cannot be negative)? That is because, in fact, articulation rate does not follow a normal/Gaussian distribution.
+
+Instead, we can use a log-normal distribution as the family of the outcome variable.
 
 ---
 
@@ -127,6 +178,14 @@ b_mod_02_pripc &lt;- brm(
   file = here::here("assets/b_mod_02_pripc")
 )
 ```
+
+???
+
+This is just a quick example with `family = lognormal()`. Note that priors have to be specified on the log-scale and that the posterior will also be on the log scale.
+
+Unfortunately we don't have time to go into details (it would need a workshop on its own!), but if you used logistic regressions before, you can use your knowledge to set priors and interpret the model output.
+
+The same concepts we covered with priors for `family = gaussian()` apply to other distributions.
 
 ---
 
