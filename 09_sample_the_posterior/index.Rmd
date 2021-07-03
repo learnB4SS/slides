@@ -218,6 +218,8 @@ With regard to Effective Sample size, this metric "captures the number of indepe
 
 That's a lot to unpack if you are new at this... the important thing to remember is that these numbers should be high (the max is 4k, or the number of iterations)
 
+A general rule-of-thumb is that, at a minimum, the ESS should be 100x the number of chains (100 x 4 = 400)
+
 It's helpful to compare with a poorly fitted model
 
 ---
@@ -245,7 +247,7 @@ summary(b_mod_01_bad_priors)
 Notice that the Rhat values are higher than 1.01, and the ESS are very low, less than 100x 4 chains
 
 ---
-class: inverse
+background-color: #272822
 background-image: url(./libs/warning.png)
 background-size: contain
 
@@ -257,6 +259,23 @@ Note that it specifically suggests caution when analyzing the results and gives 
 
 1. Run more iterations on each chain
 2. Take another look at your priors (the problem here)
+
+--
+
+.pull-left[
+```{r, fix-rhat, eval=F}
+mod <- brm(
+  formula = y ~ x, 
+  prior = priors, #<<
+  chains = 4, 
+  iter = 4000,  #<<
+  warmup = 2000, 
+  data = data
+)
+```
+]
+
+???
 
 Notice that there is another warning (part 2): Divergent transitions
 
@@ -275,10 +294,6 @@ background-position: 50% 40%
 <br><br><br><br><br><br><br><br>
 
 # Divergent transitions
-
----
-
-SAMPLES IMAGE
 
 ???
 
@@ -326,7 +341,9 @@ broom::augment(mod) %>%
 
 ???
 
-Explain data space
+Let's consider a simple example, y ~ x, where both variable are continuous and we can plot them in a scatter plot like this one, this is the data space
+
+We can fit a line through the data that is defined by an intercept and a slope
 
 ---
 
@@ -336,9 +353,19 @@ Explain data space
 
 ???
 
-compare data space with parameter space
+We could also plot the values of the intercept and the slope in a 2d plane as you see in the right panel here
 
-This is an extremely simple example in which we only fit a couple of parameters and we can easily visualize the parameter space in two dimensions
+This allows us to compare the data space with parameter space in an interactive way
+
+If the value of the intercept were higher, we see the line moves up in the data space and the red point moves up in the parameter space
+
+If the value of the slope were higher, we see the line becomes more steep in the data space and the red point moves to the right in the parameter space
+
+If I decrease the slope the inclination of the line changes in the opposite direction and the red point moves to the left
+
+When we fit a bayesian model the markov chains sample the parameter space, in other words it randomly moves around in the grid we see in the plot on the right
+
+Keep in mind that this is an extremely simple example in which we only fit a couple of parameters and we can easily visualize the parameter space in two dimensions
 
 ---
 background-image: url(./libs/dark_density_posterior1.png)
@@ -347,7 +374,7 @@ background-color: black
 
 ???
 
-or 3 dimensions
+We can also visualize this in 3 dimensions as the amount of samples increase from a given area of the parameter space
 
 ---
 background-image: url(./libs/dark_density_posterior2.png)
@@ -356,7 +383,37 @@ background-color: black
 
 ???
 
-EXPLAIN HOW SAMPLING WORKS HERE
+To understand this it helps to look at the plot with a slight inclination to help us realize that it is like a small mountain
+
+Now Im going to show you a simulation of how the sampling procedure actually works
+
+Keep in mind the idea that in our simplified example the parameter space is 3 dimensional, but for math reasons let's assume it's flipped upside down like a bowl
+
+---
+background-image: url(./libs/param_space.png)
+background-size: contain
+
+???
+
+So now we are looking at a similar plot of a hypothetical parameter space
+
+We can imagine that the vertical axis is the intercept and the horizontal axis is the slope
+
+The blue circles and gradient in the center represents the depth of our bowl in 3d
+
+To understand how the sampling works, let's pretend that our bowl has a frictionless surface and that we don't know the shape (just that it is bowl-like) so we are going to survey it 
+
+In this imaginary example we'll put a marble in the bowl in a random spot and flick it to see where it goes 
+
+We'll keep track of where it stops and that will be the values we sampled in the parameter space 
+
+---
+background-image: url(./libs/spiral.gif)
+background-size: contain
+
+???
+
+I like to think about it a bit like this, if you have ever seen one of these
 
 ---
 
@@ -379,7 +436,52 @@ As humans, we struggle even imagining what a high dimensional parameter space mi
 
 ### Dealing with divergencies
 
-HILL IMAGE
+```{r, fix-divergencies, eval=F}
+mod <- brm(
+  formula = y ~ x, 
+  prior = priors, 
+  chains = 4, 
+  iter = 4000, 
+  warmup = 2000, 
+  control = list(adapt_delta = 0.99), #<<
+  data = data
+)
+```
+
+???
+
+More often than not you can get rid of divergent transitions with simple models by adjusting adapt_delta, as you see in the code here. 
+
+This forces the samples to "take smaller steps down the mountain"
+
+The tradeoff is that your model may be slower
+
+This may also be a solution to your problems when dealing with a more complex parameter space, but in my personal experience this often has to do with the assumptions of the generative model, like the choice of likelihood and sensible priors, so definitely think critically about those and double check your choices
+
+---
+
+# Model assessment
+
+### More information
+
+- [About Markov chains](http://elevanth.org/blog/2017/11/28/build-a-better-markov-chain/)
+
+- Hoffman, M. & Gelman, A. (2011). “The No-U-Turn Sampler: Adaptively Setting Path Lengths in Hamiltonian Monte Carlo”. [arxiv.org/abs/1111.4246](https://www.arxiv.org/abs/1111.4246)
+
+- Betancourt, M. (2017) “Conceptual Introduction to Hamiltonian Monte Carlo”. [arxiv.org/abs/1701.02434](https://www.arxiv.org/abs/1701.02434)
+
+- More on Rhat and effective sample size: [Vehtari et al. (2020)](https://arxiv.org/abs/1903.08008)
+
+- [Explanations of Stan warnings](https://mc-stan.org/misc/warnings.html)
+
+---
+count: false
+background-image: url(./libs/mira.gif)
+background-size: contain
+background-color: black
+
+
+
 
 <!--
 
@@ -392,51 +494,17 @@ As computational power has increased so has our ability to approximate posterior
 
 Furthermore, we've developed faster methods of sampling from the parameter space
 
-The "meat and potatos" of this workshop has already been served, if you will. 
-At this point you already know quite regarding what BDA is all about
 
-In this penultimate session we are going to build on our intuitions regarding what it means to sample from parameter space and how this is done, but know that you have already finished the principle components of this workshop. 
-This final session is merely to give you more of an idea of how some of the "under the hood" machinery works as you move forward as Bayesians
+The surface in this space is a giant bowl.
 
+suppose that this surface is frictionless. 
 
+Now what we do is flick the marble in a random direction. 
 
+The marble moves across the bowl and eventually will turn around. 
 
+If we take samples of the marbles position along its path, and then flick it in another random direction once it stops, then we can learn about the shape of the surface
 
+It flows across the target and maps out its whole shape very efficiently
 
-
-
-If there’s a random way to do something, there’s usually a less random way that is both better and requires more thought. Instead of making random proposals, suppose instead that you run a physics simulation. This is going to sound crazy, but it isn’t. Your vector of parameters is now a particle in n-dimensional space. The surface in this space is a giant n-dimensional bowl. The shape of the bowl is determined by the shape of the logarithm of the target distribution. If the target is a nice Gaussian, for example, then the log-Gaussian is a smooth parabolic bowl like this (in one-dimension):
-
-
-To make things a little crazier, suppose that this surface is frictionless. Now what we do is flick the particle in a random direction. It will frictionlessly flow across the bowl, eventually turning around. If we take samples of the particle’s position along its path, before flicking it off in another random trajectory, then we can learn about the shape of the surface.
-
-This is the principle behind Hamiltonian Monte Carlo. It will be easier to see it in action. Here is another simulation, this time using Hamiltonian Monte Carlo, again on the two-dimensional Gaussian target. The paths are flicks of the particle, and the green arrows again represent accepted proposals.
-
-Now the proposals are both within the high-probability region of the target—so many fewer proposals are rejected—and the proposals can get far away from their starting point, so that the chain efficiently explores the whole shape of the target in less time. Effectively, it flows across the target and maps out its whole shape much faster.
-
-The cost of all this elegance is needing more information about the target. Hamiltonian Monte Carlo does a lot more calculation. But it also needs fewer samples to get a good image of the target. 
 -->
-
----
-
-# Model assessment
-
-### More information
-
-- Hoffman and Gelman (2011) “The No-U-Turn Sampler: Adaptively Setting Path Lengths in Hamiltonian Monte Carlo.” arxiv.org/abs/1111.4246
-
-- Betancourt. “Conceptual Introduction to Hamiltonian Monte Carlo” arxiv.org/abs/1701.02434
-
-- http://elevanth.org/blog/2017/11/28/build-a-better-markov-chain/
-
-- More on Rhat and Bulk ESS and Tail ESS: Vehtari et al. (2020)
-
-Stan warnings: https://mc-stan.org/misc/warnings.html
-
----
-count: false
-background-image: url(./libs/mira.gif)
-background-size: contain
-background-color: black
-
-
