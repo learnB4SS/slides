@@ -17,7 +17,7 @@ class: center, middle, inverse, title-slide
 ## Application to regression
 ### Timo Roettger, Stefano Coretta and Joseph Casillas
 ### LabPhon workshop
-### 2021/07/05 (updated: 2021-06-29)
+### 2021/07/05 (updated: 2021-07-04)
 
 ---
 
@@ -110,14 +110,15 @@ class: center, middle
 # What if...
 
 ### There isn't one true population parameter... &lt;br&gt;
---
-but an entire distribution of parameters, some more plausible than others
-
 ???
 
 But for now, consider this...
 
 What if there isn't one *true* population parameter
+--
+but an entire distribution of parameters,&lt;br&gt; some more plausible than others
+
+???
 
 What if instead there is an entire distribution of parameters, some more plausible than others
 
@@ -156,15 +157,17 @@ class: middle
 
 ## .blue[Classical]: There is a single "true" line of best fit, and I'll give my best estimate of it.
 
---
-
-## **Bayesian**: There is a distribution of lines of fit...some more plausible than others...and I'll give you samples from that distribution.
-
 ???
 
 As many of us already know, in standard linear regression in a frequentist framework, we typically estimate what we call a line of best fit, either using OLS or maximum likelihood estimation
 
 It's actually quite simple at it's core, we have some blob of data and we try to shove a line through it to describe it the best we can
+
+--
+
+## **Bayesian**: There is a distribution of lines of fit...some more plausible than others...and I'll give you samples from that distribution.
+
+???
 
 Under a Bayesian framework, we derive a distribution of lines that are compatible with our data and our prior assumptions
 
@@ -331,6 +334,14 @@ Let's explore the `articulation_rate` variable
 
 ]
 
+???
+
+We can use standard methods to describe the distribution of values for articulation_rate
+
+For we example, we have 224 observations, which range from 3.38 to 12.16
+
+The average articulation rate is 6.68 (SD = 1.16)
+
 --
 
 .pull-left[
@@ -348,12 +359,6 @@ $$
 ]
 
 ???
-
-We can use standard methods to describe the distribution of values for articulation_rate
-
-For we example, we have 224 observations, which range from 3.38 to 12.16
-
-The average articulation rate is 6.68 (SD = 1.16)
 
 Now we will use this distribution in a simple linear model, the simplest model we can fit is an intercept only model 
 
