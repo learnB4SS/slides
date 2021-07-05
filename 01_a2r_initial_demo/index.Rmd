@@ -626,7 +626,7 @@ rayshader::render_snapshot(
 
 ---
 background-color: black
-background-image: url(https://raw.githubusercontent.com/jvcasillas/media/master/rstats/memes/bayesian_bey.png)
+background-image: url(https://i.pinimg.com/originals/1b/58/77/1b58772e23bb5b761ded9aa1d1e1d7e4.gif)
 background-size: contain
 
 ???
